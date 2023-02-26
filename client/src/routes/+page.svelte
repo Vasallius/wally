@@ -1,6 +1,9 @@
 <script>
-// @ts-nocheck
+	import { onMount } from 'svelte';
 
+
+// @ts-nocheck
+  
   let loggedIn = false;
   let username = "test";
   let password = "test";
@@ -13,7 +16,7 @@
     })
     .then(res => res.json())
     .then(data => {
-      data.forEach(val => {
+      data.forEach((val) => {
         console.log(val);
       })
     });
@@ -22,6 +25,7 @@
   const submit = async () => {
     let body = {username, password};
     console.log(body);
+    localStorage.setItem("loggedIn", true);
     await fetch("http://127.0.0.1:3002/login", {
       method: "POST",
       headers: {
@@ -39,7 +43,17 @@
 
   const logout = () => {
     loggedIn = !loggedIn;
+    localStorage.setItem("loggedIn", false);
+    localStorage.removeItem("loggedIn");
   }
+
+  onMount(
+    () => {
+      if (localStorage.getItem("loggedIn") !== null) {
+        loggedIn = localStorage.getItem("loggedIn");
+      }
+    }
+  );
 
 </script>
 <div>
@@ -62,6 +76,7 @@
   {:else}
     <h1>Yay!</h1>
     <button on:click={logout}>Log Out</button>
+    <a href="/test">Test</a>
   {/if}
   
 </div>
