@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+var ObjectId = require('mongodb').ObjectId;
 
 const main = async () => {
   const uri = 'mongodb://127.0.0.1:27017';
@@ -20,10 +21,21 @@ const main = async () => {
     // await addListing(client, newListing);
     
     let filter = {
-      "rating": {$lte: 10},
+      "_id": new ObjectId("63fb00227b5c287e4a6a0915")
     };
 
     await findListing(client, filter);
+
+    let newProperties = {
+      "title": "Bumma",
+      "author": "Takina Inoue",
+      "pages": 400,
+      "genres": ["action", "romance"],
+      "rating": 7
+    };
+
+    // await updateListing(client, "Memenatari", newProperties);
+
   } catch (e) {
     console.error(e);
   } finally {
@@ -48,6 +60,14 @@ const findListing = async (client, filter) => {
   const query = await client.db("bookstore").collection("books").find(filter);
   const res = await query.toArray();
   console.log(res);
+}
+
+const updateListing = async (client, filter, properties) => {
+  // const objectId = new ObjectId(filter)  
+  const query = await client.db("bookstore").collection("books").updateOne(filter, {$set: properties});
+  // const result = await client.db("sample_airbnb").collection("listingsAndReviews")
+  //                       .updateOne({ name: nameOfListing }, { $set: updatedListing });
+  console.log(query.matchedCount);
 }
 
 main().catch(console.error);
