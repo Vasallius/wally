@@ -1,10 +1,13 @@
 const { MongoClient } = require('mongodb');
 var ObjectId = require('mongodb').ObjectId;
 
+const cors = require('cors');
 const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+
 const uri = 'mongodb://127.0.0.1:27017';
 const client = new MongoClient(uri);
 
@@ -50,10 +53,7 @@ const main = async () => {
 
 const listDatabases = async (client) => {
   const databaseList = await client.db().admin().listDatabases();
-  console.log("Databases:");
-  databaseList.databases.forEach(db => {
-    console.log(db['name']);
-  });
+  return databaseList;
 }
 
 const addListing = async (client, newListing) => {
@@ -90,6 +90,26 @@ app.post('/signup', async (req, res) => {
   };
   await addUser(client, body);
   res.status(200).send("goods boi");
+})
+
+app.post('/login', async (req, res) => {
+  const result = await client.db("bookstore")
+                              .collection("users")
+                              .find({
+                                username: req.body.username,
+                                password: req.body.password,
+                              });
+  let data = await result.toArray();
+  if (data.length == 1) {
+    res.status(200).send(true);
+  } else {
+    res.status(200).send(false);
+  }
+})
+
+app.get('/listdatabases', async (req, res) => {
+  const result = await listDatabases(client);
+  res.status(200).send(result.databases);
 })
 
 app.listen(3002, () => {
