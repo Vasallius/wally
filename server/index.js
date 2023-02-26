@@ -1,9 +1,14 @@
 const { MongoClient } = require('mongodb');
 var ObjectId = require('mongodb').ObjectId;
 
-const main = async () => {
-  const uri = 'mongodb://127.0.0.1:27017';
-  const client = new MongoClient(uri);
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+const uri = 'mongodb://127.0.0.1:27017';
+const client = new MongoClient(uri);
+
+const main = async () => {  
 
   try {
     await client.connect();
@@ -24,7 +29,7 @@ const main = async () => {
       "_id": new ObjectId("63fb00227b5c287e4a6a0915")
     };
 
-    await findListing(client, filter);
+    // await findListing(client, filter);
 
     let newProperties = {
       "title": "Bumma",
@@ -39,7 +44,7 @@ const main = async () => {
   } catch (e) {
     console.error(e);
   } finally {
-    await client.close();
+    console.log("hi");
   }
 }
 
@@ -70,4 +75,24 @@ const updateListing = async (client, filter, properties) => {
   console.log(query.matchedCount);
 }
 
-main().catch(console.error);
+const addUser = async (client, userInformation) => {
+  const query = await client.db("bookstore").collection("users").insertOne(userInformation);
+}
+
+const userLogIn = async (client, loginInformation) => {
+  const query = await client.db("bookstore").collection("users").find(loginInformation);
+}
+
+app.post('/signup', async (req, res) => {
+  const body = {
+    "username": req.body.username,
+    "password": req.body.password
+  };
+  await addUser(client, body);
+  res.status(200).send("goods boi");
+})
+
+app.listen(3002, () => {
+  console.log("App running on port 3002");
+  main().catch(console.error);
+})

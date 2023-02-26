@@ -1,0 +1,2 @@
+create connection when signing up since it's the first instance of database usage
+close conenction once user logs out
