@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const uri = 'mongodb://127.0.0.1:27017';
+const uri = 'mongodb+srv://clydefrongoso:PoUF40DZdEhrQ4gQ@wally.koixbjb.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(uri);
 
 const main = async () => {  
@@ -92,7 +92,7 @@ const listDatabases = async (client) => {
   return databaseList;
 }
 
-const addListing = async (client, newListing) => {
+const addListing = async (newListing) => {
   const query = await client.db("bookstore")
                             .collection("books")
                             .insertOne(newListing);
@@ -143,7 +143,7 @@ app.post('/signup', async (req, res) => {
     "password": req.body.password
   };
   await addUser(client, body);
-  res.status(200).send("goods boi");
+  res.status(200).send(true);
 })
 
 app.post('/login', async (req, res) => {
@@ -174,6 +174,23 @@ app.post('/userbooks', async (req, res) => {
   const reste = await result.toArray();
   res.status(200).send(reste);
 })
+
+app.post('/addnewbook', async (req, res) => {
+  const newbook = {title: req.body.title,
+                  author: req.body.author,
+                  pages: req.body.pages,
+                  rating: req.body.rating,
+                  userID: new ObjectId(req.body.userID),
+                };
+  const query = await addListing(newbook);
+})
+
+app.delete('/deleteEntry', async (req, res) => {
+  await client.db("bookstore")
+              .collection("books")
+              .deleteOne({_id: new ObjectId(req.body.entryID)})
+  res.status(200).send("goods");
+});
 
 app.listen(3002, () => {
   console.log("App running on port 3002");
