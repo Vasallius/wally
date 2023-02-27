@@ -16,7 +16,7 @@
     })
     .then(res => res.json())
     .then(data => {
-      data.forEach((val) => {
+      data.forEach((/** @type {string} */ val) => {
         console.log(val);
       })
     });
@@ -25,7 +25,6 @@
   const submit = async () => {
     let body = {username, password};
     console.log(body);
-    localStorage.setItem("loggedIn", true);
     await fetch("http://127.0.0.1:3002/login", {
       method: "POST",
       headers: {
@@ -37,13 +36,14 @@
     .then(dat => {
       if (dat) {
         loggedIn = !loggedIn;
+        localStorage.setItem("loggedIn", "true");
       }
     });
   }
 
   const logout = () => {
     loggedIn = !loggedIn;
-    localStorage.setItem("loggedIn", false);
+    localStorage.setItem("loggedIn", "false");
     localStorage.removeItem("loggedIn");
   }
 
@@ -58,8 +58,7 @@
 </script>
 <div>
   {#if !loggedIn}
-    <h1>Welcome to SvelteKit</h1>
-    <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+    <h1>Test App</h1>
     <form>
       <label>
         Username:
@@ -71,8 +70,7 @@
       </label>
       <button on:click={submit}>Click me</button>
     </form>
-    <h1>{username}</h1>
-    <h2>{password}</h2>
+    <p>Sign up <a href="/signup">here</a></p>
   {:else}
     <h1>Yay!</h1>
     <button on:click={logout}>Log Out</button>
