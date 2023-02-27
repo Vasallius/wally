@@ -40,4 +40,7 @@
     Submit
   </button>
 </form>
+
+<p>Welcome to Wally!</p>
+<p>Build your own personalized wallet buddy</p>
 <a href="/">Home</a>
