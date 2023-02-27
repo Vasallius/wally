@@ -46,46 +46,58 @@ const main = async () => {
 
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("hi");
   }
 }
 
 const listDatabases = async (client) => {
-  const databaseList = await client.db().admin().listDatabases();
+  const databaseList = await client.db()
+                                    .admin()
+                                    .listDatabases();
   return databaseList;
 }
 
 const addListing = async (client, newListing) => {
-  const query = await client.db("bookstore").collection("books").insertOne(newListing);
+  const query = await client.db("bookstore")
+                            .collection("books")
+                            .insertOne(newListing);
   console.log(`Successful find with ID ${query.insertedId}`);
 }
 
 const findListing = async (client, filter) => {
-  const query = await client.db("bookstore").collection("books").find(filter);
+  const query = await client.db("bookstore")
+                            .collection("books")
+                            .find(filter);
   const res = await query.toArray();
   console.log(res);
 }
 
 const updateListing = async (client, filter, properties) => {
   // const objectId = new ObjectId(filter)  
-  const query = await client.db("bookstore").collection("books").updateOne(filter, {$set: properties});
+  const query = await client.db("bookstore")
+                            .collection("books")
+                            .updateOne(filter, {$set: properties});
   // const result = await client.db("sample_airbnb").collection("listingsAndReviews")
   //                       .updateOne({ name: nameOfListing }, { $set: updatedListing });
   console.log(query.matchedCount);
 }
 
 const addUser = async (client, userInformation) => {
-  const query = await client.db("bookstore").collection("users").insertOne(userInformation);
+  const query = await client.db("bookstore")
+                            .collection("users")
+                            .insertOne(userInformation);
 }
 
 const userLogIn = async (client, loginInformation) => {
-  const query = await client.db("bookstore").collection("users").find(loginInformation);
+  const query = await client.db("bookstore")
+                            .collection("users")
+                            .find(loginInformation);
 }
 
 app.post('/signup', async (req, res) => {
   const body = {
     "username": req.body.username,
+    "fullname": req.body.fullname,
+    "email": req.body.email,
     "password": req.body.password
   };
   await addUser(client, body);
