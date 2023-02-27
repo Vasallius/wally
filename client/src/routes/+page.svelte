@@ -34,9 +34,10 @@
     })
     .then(res => res.json())
     .then(dat => {
-      if (dat) {
+      if (dat !== null) {
         loggedIn = !loggedIn;
         localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userID", dat);
       }
     });
   }
@@ -45,6 +46,7 @@
     loggedIn = !loggedIn;
     localStorage.setItem("loggedIn", "false");
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("userID");
   }
 
   onMount(
@@ -73,8 +75,9 @@
     <p>Sign up <a href="/signup">here</a></p>
   {:else}
     <h1>Yay!</h1>
+    <h4><a href="/test">Test</a></h4>
     <button on:click={logout}>Log Out</button>
-    <a href="/test">Test</a>
+    
   {/if}
   
 </div>
