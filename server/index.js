@@ -18,16 +18,52 @@ const main = async () => {
 
     // await listDatabases(client);
 
-    let newListing = {
-      "title": "Monokatari",
-      "author": "Meme Oshino",
-      "pages": 690,
-      "genres": ["fantasy", "adventure", "avant-garde"],
-      "rating": 10
-    };
+    let newListings = [
+      {
+        "title": "Monokatari",
+        "author": "Meme Oshino",
+        "pages": 690,
+        "genres": ["fantasy", "adventure", "avant-garde"],
+        "rating": 10,
+        "userID": new ObjectId("63fbf74eab1b57aa610b380f"),
+      },
+      {
+        "title": "Neko Cat",
+        "author": "Neko Cat",
+        "pages": 20,
+        "genres": ["fantasy"],
+        "rating": 9,
+        "userID": new ObjectId("63fbf794ab1b57aa610b3810"),
+      },
+      {
+        "title": "Sasha",
+        "author": "Misha",
+        "pages": 75,
+        "genres": ["romance"],
+        "rating": 8,
+        "userID": new ObjectId("63fbf74eab1b57aa610b380f"),
+      },
+      {
+        "title": "Buru Locku",
+        "author": "Isagi Yoichi",
+        "pages": 100,
+        "genres": ["sports"],
+        "rating": 10,
+        "userID": new ObjectId("63fbf74eab1b57aa610b380f"),
+      },
+      {
+        "title": "Baka-monokatari",
+        "author": "Shinobu Oshino",
+        "pages": 700,
+        "genres": ["action", "avant-garde"],
+        "rating": 10,
+        "userID": new ObjectId("63fbf794ab1b57aa610b3810"),
+      },
+    ];
 
     // await addListing(client, newListing);
-    
+    // await addListings(client, newListings);
+
     let filter = {
       "_id": new ObjectId("63fb00227b5c287e4a6a0915")
     };
@@ -61,6 +97,12 @@ const addListing = async (client, newListing) => {
                             .collection("books")
                             .insertOne(newListing);
   console.log(`Successful find with ID ${query.insertedId}`);
+}
+
+const addListings = async (client, newListing) => {
+  const query = await client.db("bookstore")
+                            .collection("books")
+                            .insertMany(newListing);
 }
 
 const findListing = async (client, filter) => {
@@ -113,15 +155,24 @@ app.post('/login', async (req, res) => {
                               });
   let data = await result.toArray();
   if (data.length == 1) {
-    res.status(200).send(true);
+    res.status(200).send(data[0]["_id"]);
   } else {
-    res.status(200).send(false);
+    res.status(200).send(null);
   }
 })
 
 app.get('/listdatabases', async (req, res) => {
   const result = await listDatabases(client);
   res.status(200).send(result.databases);
+})
+
+app.post('/userbooks', async (req, res) => {
+  const userID = new ObjectId(req.body.userID);
+  const result = await client.db("bookstore")
+                              .collection("books")
+                              .find({userID});
+  const reste = await result.toArray();
+  res.status(200).send(reste);
 })
 
 app.listen(3002, () => {
