@@ -79,7 +79,7 @@
   {/if} -->
 
 	<div
-		class="flex flex-col h-screen w-96 justify-center m-auto border-solid border-2 border-sky-500"
+		class="flex flex-col h-screen max-w-md justify-center m-auto border-solid border-2 border-sky-500"
 	>
 		
 
@@ -87,25 +87,25 @@
 			<img class= "w-36 h-36" src="/Logo.svg" alt="background" />
 		</div>
 		<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary">Welcome to Wally!</div>
-		<div class="text-small-arian text-agray-600 mx-7 mb-5 font-normal font-primary" />
+		<div class="text-xs text-agray-600 mx-7 mb-5 font-normal font-primary" />
 		<div>
 			<div class="flex flex-col items-center mb-9">
-				<div
-					class="text-header5 bg-primary w-80 text-center text-white py-3 font-semibold rounded-lg font-primary"
+				<button
+						class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary"
+					>
+						<a href="/signup">Sign up with email</a>
+				</button>
+				<div class="w-11/12 text-xs text-agray-500 width-screen my-2 text-center">or</div>
+				<button
+					class="text-header5 text-agray-600 bg-agray-300 w-11/12 text-center py-3 font-semibold rounded-lg font-primary"
 				>
-					Sign up with email
-				</div>
-				<div class="text-small-arian">or</div>
-				<div
-					class="text-header5 text-agray-600 bg-agray-300 w-80 text-center  py-3 font-semibold rounded-lg font-primary"
-				>
-					Continue with Google
-				</div>
+					<a href="/">Continue with Google</a>
+			</button>
 			</div>
 		</div>
 		<div class="mx-7 flex">
-			<div class="text-small-arian text-agray-500 font-semibold">Already have an account?</div>
-			<div class="text-small-arian mx-1 text-primary font-semibold">Log In</div>
+			<div class="text-xs text-agray-500 font-semibold">Already have an account?</div>
+			<a href="/login" class="text-xs mx-1 text-primary font-semibold">Log In</a>
 		</div>
 	</div>
 </div>
