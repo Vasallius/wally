@@ -45,6 +45,6 @@
 
   <div class="mx-7 flex">
     <div class="text-xs text-agray-500 font-semibold">Don't have an account yet?</div>
-    <a href="/signup" class="text-xs mx-1 text-primary font-semibold">Sign Up</a>
+    <a href="/signup" class="text-xs mx-1 text-primary font-semibold hover:underline">Sign Up</a>
   </div>
 </div>

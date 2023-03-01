@@ -6,8 +6,7 @@
 <div class="text-field">
     <input type={type} id={id} name={id} placeholder=" " required >
     <label for={id}>
-        <slot>
-        </slot>
+        <slot></slot>
     </label>
 </div>
 
@@ -23,7 +22,7 @@
 	-webkit-transition: 0.5s ;
     transition: 0.5s ;
 	outline: none ;
-	padding: 12px 20px 6px 10px ;
+	padding: 12px 20px 10px 10px ;
 	border-radius: 5px ;
 }
 
@@ -43,6 +42,7 @@
 	color: gray;
 	font-size: 14px;
 	pointer-events: none;
+	transition: 0.2s ease all; 
 }
 
 .text-field input:focus ~ label, .text-field input:not(:placeholder-shown) ~ label {
