@@ -1,4 +1,6 @@
 <script>
+	import Textfield from "../../components/Textfield.svelte";
+
   let username = "";
   let fullname = "";
   let email = "";
@@ -19,26 +21,23 @@
     });
   }
 </script>
-<div class="flex flex-col h-screen max-w-md m-auto border-solid border-2 border-sky-500 pt-8">
-  <button class="mx-7 w-12 h-12 bg-light-green mb-8 rounded-full">
-    <img class= "w-12 h-12" src="/Logo.svg" alt="background" />
-  </button>
+
+<div>
+  <a href="/">
+    <div class="mx-7 w-12 h-12 bg-light-green mb-8 rounded-full">
+      <img class= "w-12 h-12 transition ease-in-out hover:-translate-x-0.5 duration-100" src="/ArrowLeftShort.svg" alt="background" />
+    </div>
+  </a>
   <div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
   <form>
     <div class="mx-7 mb-2">
-      <label>
-        Email:
-        <input type="email" bind:value={email} />
-      </label>
+      <Textfield type="email" id="email">Email</Textfield>
     </div>
     <div class="mx-7 mb-64">
-      <label>
-        Password:
-        <input type="password" bind:value={password} />
-      </label>
+        <Textfield type="password" id="password">Password</Textfield>
     </div>
     <div class="flex flex-col items-center mb-5">
-      <button on:click={submit} class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary">
+      <button on:click={submit} class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90">
         Log in
       </button>
     </div>
