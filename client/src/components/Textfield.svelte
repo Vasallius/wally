@@ -4,7 +4,7 @@
 </script>
 
 <div class="text-field">
-    <input type={type} id={id} name={id} required>
+    <input type={type} id={id} name={id} placeholder=" " required >
     <label for={id}>
         <slot>
         </slot>
@@ -14,6 +14,7 @@
 <style>
 .text-field {
 	position: relative;
+	margin: 1.2rem 0;
 }
 
 .text-field input {
@@ -22,7 +23,7 @@
 	-webkit-transition: 0.5s ;
     transition: 0.5s ;
 	outline: none ;
-	padding: 15px 20px 10px 10px ;
+	padding: 12px 20px 6px 10px ;
 	border-radius: 5px ;
 }
 
@@ -37,14 +38,14 @@
 .text-field label {
 	content: '';
 	position: absolute;
-	top: 15px;
+	top: 14px;
 	left: 10px;
 	color: gray;
-	font-size: 15px;
+	font-size: 14px;
 	pointer-events: none;
 }
 
-.text-field input:focus ~ label, .text-field input:valid ~ label {
+.text-field input:focus ~ label, .text-field input:not(:placeholder-shown) ~ label {
 	font-size: 11px;
 	top: -9px;
 	transition: 0.2s ease all; 
@@ -52,6 +53,7 @@
     -webkit-transition: 0.2s ease all;
 	color: var(--primary);
 	background-color: white;
-	padding: 3px;
+	padding: 2px;
 }
+
 </style>
