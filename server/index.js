@@ -2,6 +2,8 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
 
+require('dotenv').config();
+
 const app = express();
 
 const uri = process.env.uri;
@@ -31,10 +33,10 @@ const main = async () => {
   }
 }
 
-app.listen(3002, () => {
+app.listen(3002, async () => {
   try {
     console.log("Server running at port 3002");
-    main();
+    await main();
   } catch (error) {
     console.error(error);
   }
