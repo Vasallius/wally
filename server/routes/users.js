@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const ObjectId = require('mongodb').ObjectId;
 
 require('dotenv').config();
@@ -19,15 +21,21 @@ router.get('/', (req, res) => {
 });
 
 /**
- * TO-DO: Apply hashing on password (utilize bcrypt)
+ * TO-DO: Remove double data-binding, apply 
  */
 router.post('/signup', async (req, res) => {
   try {
+    const pass = await bcrypt
+                        .genSalt(saltRounds)
+                        .then(salt => {
+                          return bcrypt.hash(req.body.password, salt);
+                        })
+                        .catch(err => console.error(err.message));
     const body = {
       fullname: req.body.fullname,
       address: req.body.address,
       email: req.body.email,
-      password: req.body.password,
+      password: pass,
     };
     await client.db(database)
                 .collection("users")
@@ -40,25 +48,20 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-
-/**
- * TO-DO: Hash password and check.
- */
 router.post('/login', async (req, res) => {
   try {
     const body = {
       email: req.body.email,
-      password: req.body.password,
     };
-  
     const result = await client.db(database)
                                 .collection("users")
                                 .find(body)
                                 .toArray();
-    if (result.length != 1) {
-      res.send(false);
-    } else {
+    const isPasswordCorrect = await bcrypt.compare(req.body.password, result[0].password);                                                      
+    if (isPasswordCorrect && result.length === 1) {
       res.send(true);
+    } else {
+      res.send(false);
     }
   } catch (error) {
     res.send(false);
