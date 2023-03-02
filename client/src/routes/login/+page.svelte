@@ -36,9 +36,9 @@
     <div class="mx-7 mb-64">
         <Textfield type="password" id="password">Password</Textfield>
     </div>
-    <div class="flex flex-col items-center mb-5">
-      <button on:click={submit} class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90">
-        Log in
+    <div class="flex flex-col items-center mb-5 mx-7">
+      <button on:click={submit} class="text-header5 w-full bg-primary text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90">
+        Log In
       </button>
     </div>
   </form>
