@@ -48,52 +48,25 @@
 		localStorage.removeItem('loggedIn');
 		localStorage.removeItem('userID');
 	};
-
-	// onMount(() => {
-	// 	if (localStorage.getItem('loggedIn') !== null) {
-	// 		loggedIn = localStorage.getItem('loggedIn');
-	// 	}
-	// });
 </script>
 
 <div>
-	<!-- {#if !loggedIn}
-    <h1>Test App</h1>
-    <form>
-      <label>
-        Username:
-        <input type="text" name="username" bind:value={username}/>
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" bind:value={password}/>
-      </label>
-      <button on:click={submit}>Click me</button>
-    </form>
-    <p>Sign up <a href="/signup">here</a></p>
-  {:else}
-    <h1>Yay!</h1>
-    <h4><a href="/test">Test</a></h4>
-    <button on:click={logout}>Log Out</button>
-    
-  {/if} -->
-
 	<div>
 		<div class="mx-auto w-36 h-36 bg-light-green mb-36 rounded-full">
 			<img class= "w-36 h-36" src="/Logo.svg" alt="background" />
 		</div>
-		<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary">Welcome to Wally!</div>
+		<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Welcome to Wally!</div>
 		<div class="text-xs text-agray-600 mx-7 mb-5 font-normal font-primary" />
 		<div>
-			<div class="flex flex-col items-center mb-9">
+			<div class="flex flex-col items-center mb-9 mx-7">
 				<button
-					class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
+					class="text-header5 bg-primary w-full text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 				>
 						<a href="/signup">Sign up with email</a>
 				</button>
-				<div class="w-11/12 text-xs text-agray-500 width-screen my-2 text-center">or</div>
+				<div class="mx-7 text-xs text-agray-500 width-screen my-2 text-center">or</div>
 				<button
-					class="text-header5 text-agray-600 bg-agray-300 w-11/12 text-center py-3 font-semibold rounded-lg font-primary hover:opacity-80"
+					class="text-header5 text-agray-600 bg-agray-300 w-full text-center py-3 font-semibold rounded-lg font-primary hover:opacity-80"
 				>
 					<a href="/">Continue with Google</a>
 				</button>
