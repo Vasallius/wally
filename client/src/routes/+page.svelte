@@ -45,7 +45,9 @@
 	};
 </script>
 
-<div>
+<div
+	class="flex flex-col h-screen max-w-md justify-center m-auto border-solid border-2 border-sky-500"
+>
 	<div class="mx-auto w-36 h-36 bg-light-green mb-36 rounded-full">
 		<img class="w-36 h-36" src="/Logo.svg" alt="background" />
 	</div>
