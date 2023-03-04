@@ -78,9 +78,11 @@
     
   {/if} -->
 
-	<div>
+	<div
+		class="flex flex-col h-screen w-96 justify-center m-auto border-solid border-2 border-sky-500"
+	>
 		<div class="mx-auto w-36 h-36 bg-light-green mb-36 rounded-full">
-			<img class= "w-36 h-36" src="/Logo.svg" alt="background" />
+			<img class="w-36 h-36" src="/Logo.svg" alt="background" />
 		</div>
 		<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary">Welcome to Wally!</div>
 		<div class="text-xs text-agray-600 mx-7 mb-5 font-normal font-primary" />
@@ -89,7 +91,7 @@
 				<button
 					class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 				>
-						<a href="/signup">Sign up with email</a>
+					<a href="/signup">Sign up with email</a>
 				</button>
 				<div class="w-11/12 text-xs text-agray-500 width-screen my-2 text-center">or</div>
 				<button
