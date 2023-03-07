@@ -3,15 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-    --primary:#00C09F;
-    --secondary:#F12848;
-    --tertiary:#FFA200;
-    --accent-pink:#FF7AB0;
-    --accent-blue:#4F8CE2;
-    --accent-green:#3BCB86;
-    --accent-yellow:#FFA200;
-    --accent-violet:#8E82F6;
+:root {
+    --primary: #00C09F;
+    --secondary: #F12848;
+    --tertiary: #FFA200;
+    --accent-pink: #FF7AB0;
+    --accent-blue: #4F8CE2;
+    --accent-green: #3BCB86;
+    --accent-yellow: #FFA200;
+    --accent-violet: #8E82F6;
     --agray-700: #3E3E3E;
     --agray-600: #6A6A6A;
     --agray-500: #919191;
@@ -20,4 +20,3 @@
     --agray-200: #F5F5F5;
     --agray-50: #FAFAFA;
 }
-
