@@ -1,3 +1,7 @@
+<script>
+	import RecordCard from '../../../components/RecordCard.svelte';
+</script>
+
 <div>
 	<div class="flex mx-3 mt-4 db-nav">
 		<div class="flex justify-center items-center">
@@ -19,47 +23,49 @@
 				<div class="font-primary  font-normal  text-gdark text-xs">Total Income</div>
 				<div class="font-primary  font-semibold text-primary text-xs">₱2,500</div>
 			</div>
-			<div class="mx-5  flex flex-row justify-between items-center ">
+			<div
+				class="mx-5  flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
+			>
 				<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
 				<div class="font-primary  font-semibold text-secondary text-xs">-₱1,500</div>
 			</div>
-			<div class="mx-5  flex flex-row justify-between items-center ">
-				<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
-				<div class="font-primary  font-semibold text-secondary text-xs">-₱1,500</div>
+			<div class="mx-5  flex flex-row justify-between items-center pb-4">
+				<div class="font-primary  font-normal  text-agray-700 text-xs">Total</div>
+				<div class="font-primary  font-semibold text-agray-700 text-xs">₱1,000</div>
 			</div>
 		</div>
 	</div>
-	<div class="flex">
-		<div>Wallets</div>
-		<div>progress bar</div>
+	<div class="flex mx-3 mt-3.5 mb-1.5">
+		<div class="text-header5 font-primary font-semibold">Wallets</div>
 	</div>
-	<div class="flex carousel">
-		<div class="flex">
-			<div>CASH</div>
-			<div>2500</div>
+	<div class="flex carousel mx-3">
+		<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
+			<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
 		</div>
 
-		<div class="flex">
-			<div>CASH</div>
-			<div>2500</div>
+		<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
+			<div class="text-agray-200 font-medium text-xs font-primary">BANK</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
 		</div>
 
-		<div class="flex">
-			<div>CASH</div>
-			<div>2500</div>
+		<div class="flex flex-col pl-2 pt-3 grow -16 bg-primary rounded-lg">
+			<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
 		</div>
 	</div>
-	<div>Records</div>
-	<div class="flex">
-		<div>All Income</div>
-		<div>All Income</div>
-		<div>All Income</div>
-		<div>All Income</div>
+	<div class="flex mx-3 mt-5 mb-4">
+		<div class="text-header5 font-primary font-semibold">Records</div>
+	</div>
+	<div class="flex mx-3 space-x-1.5">
+		<div class="bg-agray-200 text-xs py-2.5 rounded-lg font-medium px-3">All</div>
+		<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Income</div>
+		<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Expense</div>
+		<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Transfer</div>
 	</div>
 	<div class="flex flex-col">
-		<div class="record">
-			<div class="flex">Foods & Drinks -2500</div>
-			<div class="flex">Cash Nov10</div>
-		</div>
+		<RecordCard category="Foods & Drinks" wallet="Cash" />
+		<RecordCard category="Income" wallet="Bank" />
+		<RecordCard category="Foods & Drinks" wallet="Gcash" />
 	</div>
 </div>
