@@ -1,53 +1,55 @@
 <script>
+// @ts-nocheck
+
 	import { onMount } from 'svelte';
 
 
 // @ts-nocheck
   
   let loggedIn = false;
-  let username = "test";
-  let password = "test";
-  const clicked = async () => {
-    await fetch("http://127.0.0.1:3002/listdatabases", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      data.forEach((/** @type {string} */ val) => {
-        console.log(val);
-      })
-    });
-  }
+  // let username = "test";
+  // let password = "test";
+  // const clicked = async () => {
+  //   await fetch("http://127.0.0.1:3002/listdatabases", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-type": "application/json",
+  //     }
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     data.forEach((/** @type {string} */ val) => {
+  //       console.log(val);
+  //     })
+  //   });
+  // }
 
-  const submit = async () => {
-    let body = {username, password};
-    console.log(body);
-    await fetch("http://127.0.0.1:3002/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then(dat => {
-      if (dat !== null) {
-        loggedIn = !loggedIn;
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("userID", dat);
-      }
-    });
-  }
+  // const submit = async () => {
+  //   let body = {username, password};
+  //   console.log(body);
+  //   await fetch("http://127.0.0.1:3002/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-type": "application/json"
+  //     },
+  //     body: JSON.stringify(body)
+  //   })
+  //   .then(res => res.json())
+  //   .then(dat => {
+  //     if (dat !== null) {
+  //       loggedIn = !loggedIn;
+  //       localStorage.setItem("loggedIn", "true");
+  //       localStorage.setItem("userID", dat);
+  //     }
+  //   });
+  // }
 
-  const logout = () => {
-    loggedIn = !loggedIn;
-    localStorage.setItem("loggedIn", "false");
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("userID");
-  }
+  // const logout = () => {
+  //   loggedIn = !loggedIn;
+  //   localStorage.setItem("loggedIn", "false");
+  //   localStorage.removeItem("loggedIn");
+  //   localStorage.removeItem("userID");
+  // }
 
   onMount(
     () => {
@@ -59,24 +61,26 @@
 
 </script>
 <div>
-  {#if !loggedIn}
+  {#if !loggedIn || (localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") != true)}
     <h1>Test App</h1>
-    <form>
+    <form method="POST" action="/login">
       <label>
         Username:
-        <input type="text" name="username" bind:value={username}/>
+        <input type="text" name="email" />
       </label>
       <label>
         Password:
-        <input type="password" name="password" bind:value={password}/>
+        <input type="password" name="password" />
       </label>
-      <button on:click={submit}>Click me</button>
+      <button>Click me</button>
     </form>
     <p>Sign up <a href="/signup">here</a></p>
   {:else}
     <h1>Yay!</h1>
     <h4><a href="/test">Test</a></h4>
-    <button on:click={logout}>Log Out</button>
+    <form action="/logout">
+      <button>Log Out</button>
+    </form>
     
   {/if}
   

@@ -150,7 +150,7 @@ app.post('/login', async (req, res) => {
   const result = await client.db("bookstore")
                               .collection("users")
                               .find({
-                                username: req.body.username,
+                                email: req.body.email,
                                 password: req.body.password,
                               });
   let data = await result.toArray();
