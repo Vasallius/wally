@@ -1,4 +1,4 @@
-<div class="flex flex-col h-screen w-96  m-auto border-solid border-2 border-sky-500">
+<div>
 	<div class="flex mx-3 mt-4 db-nav">
 		<div class="flex justify-center items-center">
 			<div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" />
