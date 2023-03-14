@@ -10,8 +10,15 @@ module.exports = {
       },
       colors:{
         'agray-700': '#3E3E3E',
-        'agray-600': '#6A6A6A'
+        'agray-600': '#6A6A6A',
+        'agray-300': '#F5F5F5',
+        'agray-500': '#919191',
+        'primary' : '#00C09F',
+        'light-green': 'rgba(0, 192, 159, 0.15)'
       },
+      fontFamily:{
+        'primary':['Inter'],
+      }
     }
   },
   plugins: []

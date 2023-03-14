@@ -1,5 +1,7 @@
-<h1 class="text-3xl font-bold underline bg-green-300">Hello world!</h1>
-
+<script>
+	import { onMount } from 'svelte';
+	import Logo from '/static/Logo.png';
+	// let magic = "static/Logo.png"
 	// @ts-nocheck
 
 	let loggedIn = false;
@@ -47,11 +49,11 @@
 		localStorage.removeItem('userID');
 	};
 
-	onMount(() => {
-		if (localStorage.getItem('loggedIn') !== null) {
-			loggedIn = localStorage.getItem('loggedIn');
-		}
-	});
+	// onMount(() => {
+	// 	if (localStorage.getItem('loggedIn') !== null) {
+	// 		loggedIn = localStorage.getItem('loggedIn');
+	// 	}
+	// });
 </script>
 
 <div>
@@ -79,14 +81,31 @@
 	<div
 		class="flex flex-col h-screen w-96 justify-center m-auto border-solid border-2 border-sky-500"
 	>
-		<div class="text-header2 text-agray-700 mx-5">Welcome to Wally!</div>
-		<div class="text-small-arian text-agray-600 mx-5 mb-5">Build your own personalized wallet buddy</div>
+		
+
+		<div class="mx-auto w-36 h-36 bg-light-green mb-36 rounded-full">
+			<img class= "w-36 h-36" src="/Logo.svg" alt="background" />
+		</div>
+		<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary">Welcome to Wally!</div>
+		<div class="text-small-arian text-agray-600 mx-7 mb-5 font-normal font-primary" />
 		<div>
-			<div class="flex flex-col items-center">
-				<div class="text-header5 bg-emerald-400 w-80 text-center">Sign up with email</div>
+			<div class="flex flex-col items-center mb-9">
+				<div
+					class="text-header5 bg-primary w-80 text-center text-white py-3 font-semibold rounded-lg font-primary"
+				>
+					Sign up with email
+				</div>
 				<div class="text-small-arian">or</div>
-				<div class="text-header5 bg-gray-400 w-80 text-center">Continue with Google</div>
+				<div
+					class="text-header5 text-agray-600 bg-agray-300 w-80 text-center  py-3 font-semibold rounded-lg font-primary"
+				>
+					Continue with Google
+				</div>
 			</div>
+		</div>
+		<div class="mx-7 flex">
+			<div class="text-small-arian text-agray-500 font-semibold">Already have an account?</div>
+			<div class="text-small-arian mx-1 text-primary font-semibold">Log In</div>
 		</div>
 	</div>
 </div>
