@@ -33,7 +33,7 @@
 		</div>
 	</a>
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
-	<form>
+	<form method="POST">
 		<div class="mx-7 mb-2">
 			<Textfield type="email" id="email">Email</Textfield>
 		</div>
@@ -42,7 +42,7 @@
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button
-				on:click={submit}
+				type="submit"
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
 				Log in

@@ -147,17 +147,17 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-  const result = await client.db("bookstore")
+  const result = await client.db("wally")
                               .collection("users")
                               .find({
-                                username: req.body.username,
+                                email: req.body.email,
                                 password: req.body.password,
                               });
   let data = await result.toArray();
   if (data.length == 1) {
-    res.status(200).send(data[0]["_id"]);
+    res.status(200).send("true");
   } else {
-    res.status(200).send(null);
+    res.status(200).send("false");
   }
 })
 
