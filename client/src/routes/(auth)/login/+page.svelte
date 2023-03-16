@@ -6,20 +6,6 @@
 	let email = '';
 	let password = '';
 
-	const submit = async () => {
-		const body = { username, fullname, email, password };
-		await fetch('http://127.0.0.1:3002/signup', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: JSON.stringify(body)
-		})
-			.then((res) => res.json())
-			.then((returnValue) => {
-				console.log(returnValue);
-			});
-	};
 </script>
 
 <div>
