@@ -7,6 +7,7 @@ module.exports = {
         'header2': '24px',
         'header5': '16px',
         'small-arian': '12px',
+        'super-sm': "8px",
       },
       colors: {
         'agray-700': '#3E3E3E',
@@ -15,6 +16,7 @@ module.exports = {
         'agray-500': '#919191',
         'agray-50': '#FAFAFA',
         'agray-200': '#F5F5F5',
+        'agray-100': '#F8F8F8',
         'primary': '#00C09F',
         'secondary': '#F12848',
         'gdark': '#080808',
