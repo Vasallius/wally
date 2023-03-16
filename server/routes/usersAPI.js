@@ -53,10 +53,6 @@ router.post('/login', async (req, res) => {
   } else {
     res.send(false);
   }
-})
-
-router.patch('/updateProfile', (req, res) => {
-  
-})
+});
 
 module.exports = router;

@@ -26,16 +26,54 @@ router.post('/addRecord', async (req, res) => {
   res.send(request.acknowledged);
 });
 
+/**
+ * FIX: specific search properties
+ */
+
 router.post('/getRecord', async (req, res) => {
-  
+  const body = {
+    userID: ObjectId(req.body.userID)
+  };
+
+  const request = await client.db("wally")
+                              .collection("record")
+                              .find(body)
+                              .toArray();
+
+  res.send(request);
 });
 
 router.post('/getRecords', async (req, res) => {
-  
+  const body = {
+    userID: ObjectId(req.body.userID)
+  };
+
+  const request = await client.db("wally")
+                              .collection("record")
+                              .find(body)
+                              .toArray();
+
+  res.send(request);
 });
 
 router.delete('/deleteRecord', async (req, res) => {
+  try {
+    const body = {
+      _id: ObjectId(req.body._id)
+    };
   
+    const request = await client.db("wally")
+                                .collection("record")
+                                .deleteOne(body)
+  
+    if (request.acknowledged) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 });
 
 router.patch('/editRecord', (req, res) => {
