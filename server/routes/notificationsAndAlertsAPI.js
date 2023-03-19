@@ -1,3 +1,3 @@
 /**
- * Note: will think about this further
+ * Middleware na maguupdate after a certain time.
  */
