@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 
 require('dotenv').config();
 
@@ -9,28 +10,23 @@ const client = new MongoClient(uri);
 
 router.post('/addBudget', async (req, res) => {
   try {
-    const body = {
-      type: req.body.type,
-      balance: req.body.balance
-    };
+    const body = req.body;
     const request = await client.db("wally")
                                 .collection("budgets")
                                 .insertOne(body);
-    res.send(request);
+    res.send(request.acknowledged);
   } catch (error) {
     console.error(error.message);
     res.send(null);
   }
 });
 
-router.post('/getBudget', async (req, res) => {
+router.get('/getAllBudget', async (req, res) => {
   try {
-    const body = {
-      type: req.body.type
-    };
     const request = await client.db("wally")
                                 .collection("budgets")
-                                .find(body);
+                                .find()
+                                .toArray();
     res.send(request);
   } catch (error) {
     console.error(error.message);
@@ -39,14 +35,17 @@ router.post('/getBudget', async (req, res) => {
 });
 
 router.delete('/deleteBudget', async (req, res) => {
-  const body = {
-    type: req.body.type,
-    balance: req.body.balance
-  };
-  const request = await client.db("wally")
-                              .collection("budgets")
-                              .deleteOne(body);
-  res.send(request);
+  try {
+    const body = {
+      _id: new ObjectId(req.body._id)
+    };
+    const request = await client.db("wally")
+                                .collection("budgets")
+                                .deleteOne(body);
+    res.send(request.acknowledged);
+  } catch (error) {
+    res.send(null);
+  }
 });
 
 module.exports = router;
