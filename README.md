@@ -5,4 +5,4 @@ This is a course requirements for CS191/192 Software Engineering Courses of the 
 - Calderon, Jamielle Kyle Calderon 
 - Frongoso, Justin Clyde 
 - Rey, Pe Arian
-- Tan, Jedidah Carl 
+- Tan, Jedidiah Carl 
