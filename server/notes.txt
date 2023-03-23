@@ -1,2 +1,36 @@
-create connection when signing up since it's the first instance of database usage
-close conenction once user logs out
+create a connection only when the database is needed
+close it once the api is not needed anymore
+
+so bale iaadd siya as a middleware kasi hindi pwedeng laging bukas yung connection sa database
+
+users
+- name
+- email
+- password
+records
+- name
+- userID
+- balance
+- walletID
+- recordType
+- category
+- subcategory
+- dateIssued
+categories
+- name
+- subcategories
+wallets
+- name
+- balance
+- dailyBudget
+- weeklyBudget
+
+DONE:
+budgetsAPI
+usersAPI
+settingsAPI
+categoriesAPI - subcategories ok na
+recordManipulationsAPI
+dashboardCardsAPI - works
+
+need middlewares for authentication and yung mga shiz
