@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
+  content: ['./src/**/*.{html,js,svelte,ts}',],
   theme: {
     extend: {
       fontSize: {
@@ -18,7 +18,8 @@ module.exports = {
         'primary': '#00C09F',
         'secondary': '#F12848',
         'gdark': '#080808',
-        'light-green': 'rgba(0, 192, 159, 0.15)'
+        'light-green': 'rgba(0, 192, 159, 0.15)',
+        'accent-green' : '#3BCB86'
       },
       fontFamily: {
         'primary': ['Inter'],
