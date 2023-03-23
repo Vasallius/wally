@@ -9,8 +9,10 @@ users
 - password
 records
 - name
+- userID
 - balance
-- wallet
+- walletID
+- recordType
 - category
 - subcategory
 - dateIssued
@@ -28,11 +30,7 @@ budgetsAPI
 usersAPI
 settingsAPI
 categoriesAPI - subcategories ok na
-
-Medyo:
 recordManipulationsAPI
+dashboardCardsAPI - works
 
-Hindi pa:
-dashboardCardsAPI
-
-Ask kung kailangang naka-array yung mga binabalik, pero most probably oo kasi kailangang imap siya
+need middlewares for authentication and yung mga shiz

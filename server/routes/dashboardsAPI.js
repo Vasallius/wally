@@ -7,6 +7,6 @@ const categories = require('./dashboard_routes/categoriesAPI');
 const dashboardCards = require('./dashboard_routes/dashboardCardsAPI');
 
 router.use('/categories', categories);
-router.use('/dashboardcards', dashboardCards);
+router.use('/dashboardCards', dashboardCards);
 
 module.exports = router;

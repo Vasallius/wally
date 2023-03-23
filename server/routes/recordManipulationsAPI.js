@@ -8,76 +8,81 @@ require('dotenv').config();
 const uri = process.env.uri;
 const client = new MongoClient(uri);
 
+/**
+ * all requests that starts with the keyword "get" must have its contents added as URL params
+ */
+
 router.post('/addRecord', async (req, res) => {
-  const record = {
-    balance: req.body.balance,
-    category: req.body.category,
-    subcategory: req.body.subcategory,
-    recordType: req.body.recordType,
-    paymentType: req.body.paymentType,
-    paymentStatus: req.body.paymentStatus,
-    userID: ObjectId(req.body.userID)
-  };
+  let record = req.body;
+  delete record._id;
+  delete record.userID;
+  record.userID = new ObjectId(req.body.userID);
 
   const request = await client.db("wally")
-                              .collection("record")
+                              .collection("records")
                               .insertOne(record);
 
   res.send(request.acknowledged);
 });
 
-/**
- * FIX: specific search properties
- */
-
-router.post('/getRecord', async (req, res) => {
-  const body = {
-    userID: ObjectId(req.body.userID)
-  };
-
-  const request = await client.db("wally")
-                              .collection("record")
-                              .find(body)
+router.get('/getRecord/:userID', async (req, res) => {
+  try {
+    const request = await client.db("wally")
+                              .collection("records")
+                              .find({ userID: req.params.userID })
                               .toArray();
-
-  res.send(request);
+    res.send(request);
+  } catch (error) {
+    console.error(error.message);
+    res.send(null);
+  }
 });
 
-router.post('/getRecords', async (req, res) => {
-  const body = {
-    userID: ObjectId(req.body.userID)
-  };
-
-  const request = await client.db("wally")
+router.get('/getRecords', async (req, res) => {
+  try {
+    const request = await client.db("wally")
                               .collection("record")
-                              .find(body)
+                              .find({})
                               .toArray();
-
-  res.send(request);
+    res.send(request);
+  } catch (error) {
+    console.error(error.message);
+    res.send(null);
+  }
 });
 
 router.delete('/deleteRecord', async (req, res) => {
   try {
-    const body = {
-      _id: ObjectId(req.body._id)
+    const filter = {
+      _id: new ObjectId(req.body._id)
     };
   
     const request = await client.db("wally")
                                 .collection("record")
-                                .deleteOne(body)
+                                .deleteOne(filter)
   
-    if (request.acknowledged) {
-      res.send(true);
-    } else {
-      res.send(false);
-    }
+    res.send(request.acknowledged);
   } catch (error) {
     console.error(error.message);
+    res.send(null);
   }
 });
 
-router.patch('/editRecord', (req, res) => {
-  
+router.patch('/editRecord', async (req, res) => {
+  try {
+    const filter = {
+      _id: new ObjectId(req.body._id)
+    };
+    const newProperties = req.body;
+    delete newProperties._id;
+    const request = await client.db("wally")
+                                .collection("records")
+                                .updateOne(filter, {$set: newProperties});
+    res.send(request.acknowledged);
+  } catch (error) {
+    console.error(error.message);
+    res.send(null);
+  }
 });
 
 module.exports = router;
