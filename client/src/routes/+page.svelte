@@ -1,73 +1,78 @@
 <script>
-	import Textfield from '../../../components/Textfield.svelte';
-	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-	import { initializeApp } from 'firebase/app';
-
-	let username = '';
-	let fullname = '';
-	let email = '';
-	let password = '';
-
-	const firebaseConfig = {
-		apiKey: 'AIzaSyDTLyLUaVgvIihRMDLOXypjqfBenGh2fQk',
-		authDomain: 'wally-75d4e.firebaseapp.com',
-		projectId: 'wally-75d4e',
-		storageBucket: 'wally-75d4e.appspot.com',
-		messagingSenderId: '518053974573',
-		appId: '1:518053974573:web:8aa5410f6c4b98ffd75ea4'
-	};
-	const app = initializeApp(firebaseConfig);
-
-	const login = () => {
-		console.log('test');
-		console.log('email and pass');
-		console.log(email, password);
-		const auth = getAuth(app);
-
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				// Signed in
-				const user = userCredential.user;
-				console.log(user);
-				// ...
-			})
-			.catch((error) => {
-				const errorCode = error.code;
-				const errorMessage = error.message;
+	let loggedIn = false;
+	let username = 'test';
+	let password = 'test';
+	const clicked = async () => {
+		await fetch('http://127.0.0.1:3002/listdatabases', {
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json'
+			}
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				data.forEach((/** @type {string} */ val) => {
+					console.log(val);
+				});
 			});
+	};
+
+	const submit = async () => {
+		let body = { username, password };
+		console.log(body);
+		await fetch('http://127.0.0.1:3002/login', {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(body)
+		})
+			.then((res) => res.json())
+			.then((dat) => {
+				if (dat !== null) {
+					loggedIn = !loggedIn;
+					localStorage.setItem('loggedIn', 'true');
+					localStorage.setItem('userID', dat);
+				}
+			});
+	};
+
+	const logout = () => {
+		loggedIn = !loggedIn;
+		localStorage.setItem('loggedIn', 'false');
+		localStorage.removeItem('loggedIn');
+		localStorage.removeItem('userID');
 	};
 </script>
 
-<div>
-	<a href="/">
-		<div class="mx-7 w-12 h-12 bg-light-green mb-8 rounded-full">
-			<img
-				class="w-12 h-12 transition ease-in-out hover:-translate-x-0.5 duration-100"
-				src="/ArrowLeftShort.svg"
-				alt="background"
-			/>
-		</div>
-	</a>
-	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
-	<form>
-		<div class="mx-7 mb-2">
-			<Textfield bind:value={email} type="email" id="email">Email</Textfield>
-		</div>
-		<div class="mx-7 mb-64">
-			<Textfield bind:value={password} type="password" id="password">Password</Textfield>
-		</div>
-		<div class="flex flex-col items-center mb-5">
-			<button
-				on:click={login}
-				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
+<div
+	class="flex flex-col h-screen max-w-md justify-center m-auto border-solid border-2 border-sky-500"
+>
+	<div class="mx-auto w-36 h-36 bg-light-green mb-36 rounded-full">
+		<img class="w-36 h-36" src="/Logo.svg" alt="background" />
+	</div>
+	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">
+		Welcome to Wally!
+	</div>
+	<div class="text-xs text-agray-600 mx-7 mb-5 font-normal font-primary" />
+	<div>
+		<div class="flex flex-col items-center mb-9 mx-7">
+			<a
+				href="/signup"
+				class="text-header5 bg-primary w-full text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
-				Log in
-			</button>
+				Sign up with email
+			</a>
+			<div class="w-11/12 text-xs text-agray-500 width-screen my-2 text-center">or</div>
+			<a
+				href="/"
+				class="text-header5 text-agray-600 bg-agray-300 w-full text-center py-3 font-semibold rounded-lg font-primary hover:opacity-80"
+				>Continue with Google</a
+			>
 		</div>
-	</form>
-
+	</div>
 	<div class="mx-7 flex">
-		<div class="text-xs text-agray-500 font-semibold">Don't have an account yet?</div>
-		<a href="/signup" class="text-xs mx-1 text-primary font-semibold hover:underline">Sign Up</a>
+		<div class="text-xs text-agray-500 font-semibold">Already have an account?</div>
+		<a href="/login" class="text-xs mx-1 text-primary font-semibold hover:underline">Log In</a>
 	</div>
 </div>
