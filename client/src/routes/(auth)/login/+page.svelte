@@ -1,23 +1,39 @@
 <script>
 	import Textfield from '../../../components/Textfield.svelte';
+	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+	import { initializeApp } from 'firebase/app';
 
 	let username = '';
 	let fullname = '';
 	let email = '';
 	let password = '';
 
-	const submit = async () => {
-		const body = { username, fullname, email, password };
-		await fetch('http://127.0.0.1:3002/signup', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: JSON.stringify(body)
-		})
-			.then((res) => res.json())
-			.then((returnValue) => {
-				console.log(returnValue);
+	const firebaseConfig = {
+		apiKey: 'AIzaSyDTLyLUaVgvIihRMDLOXypjqfBenGh2fQk',
+		authDomain: 'wally-75d4e.firebaseapp.com',
+		projectId: 'wally-75d4e',
+		storageBucket: 'wally-75d4e.appspot.com',
+		messagingSenderId: '518053974573',
+		appId: '1:518053974573:web:8aa5410f6c4b98ffd75ea4'
+	};
+	const app = initializeApp(firebaseConfig);
+
+	const login = () => {
+		console.log('test');
+		console.log('email and pass');
+		console.log(email, password);
+		const auth = getAuth(app);
+
+		signInWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+				// Signed in
+				const user = userCredential.user;
+				console.log(user);
+				// ...
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
 			});
 	};
 </script>
@@ -35,14 +51,14 @@
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
 	<form>
 		<div class="mx-7 mb-2">
-			<Textfield type="email" id="email">Email</Textfield>
+			<Textfield bind:value={email} type="email" id="email">Email</Textfield>
 		</div>
 		<div class="mx-7 mb-64">
-			<Textfield type="password" id="password">Password</Textfield>
+			<Textfield bind:value={password} type="password" id="password">Password</Textfield>
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button
-				on:click={submit}
+				on:click={login}
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
 				Log in
