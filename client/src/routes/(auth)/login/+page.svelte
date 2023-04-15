@@ -1,12 +1,24 @@
-<script>
+<script lang="ts">
 	import Textfield from '../../../components/Textfield.svelte';
+<<<<<<< HEAD
 	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 	import { initializeApp } from 'firebase/app';
 
+=======
+	import {
+		getAuth,
+		onAuthStateChanged,
+		type User,
+		signInWithEmailAndPassword
+	} from 'firebase/auth';
+	import { initializeApp } from 'firebase/app';
+	import { onMount } from 'svelte';
+>>>>>>> main
 	let username = '';
 	let fullname = '';
 	let email = '';
 	let password = '';
+	let user: User | null;
 
 	const firebaseConfig = {
 		apiKey: 'AIzaSyDTLyLUaVgvIihRMDLOXypjqfBenGh2fQk',
@@ -36,6 +48,13 @@
 				const errorMessage = error.message;
 			});
 	};
+
+	onMount(async () => {
+		const auth = getAuth(app);
+		onAuthStateChanged(auth, (newUser) => {
+			user = newUser;
+		});
+	});
 </script>
 
 <div>
