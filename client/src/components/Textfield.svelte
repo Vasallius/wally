@@ -1,11 +1,15 @@
 <script lang="ts">
-	export let type: string;
+	export let type: string = 'text';
 	export let id: string;
 	export let value: string;
+
+	function typeAction(node: any) {
+		node.type = type;
+	}
 </script>
 
 <div class="text-field">
-	<input type="text" {id} name={id} placeholder=" " required bind:value />
+	<input use:typeAction name={id} placeholder=" " required bind:value />
 	<label for={id}>
 		<slot />
 	</label>
