@@ -2,7 +2,8 @@
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import BudgetRecord from '../../../components/BudgetRecord.svelte';
 
-	import AddPopUp from '../../../components/AddPopUp.svelte';
+	import PopUpBudget from '../../../components/PopUpBudget.svelte';
+	
 
 	export const name = 'budget';
 	let isModalOpen = false;
@@ -32,12 +33,12 @@
 <BudgetRecord title="Food" budgetSpent={290} budget={300} />
 
 <div class="flex flex-col mt-auto relative">
-	<button on:click={openPopUp} class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90"> + </button>
+	<button on:click={openPopUp} class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"> + </button>
 </div>
 
 <!-- need - center (ayusin position!), bg, design   --> 
-<div class="">
-	<AddPopUp
+<div class="flex absolute z-50 h-full max-w-full m-auto">
+	<PopUpBudget
 		isOpen={isModalOpen}
 		label={label}
 		budget={budget}
