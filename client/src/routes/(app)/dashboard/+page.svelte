@@ -1,5 +1,27 @@
 <script>
+// @ts-nocheck
+
+	import { onMount } from 'svelte';
 	import RecordCard from '../../../components/RecordCard.svelte';
+	import { getMonthlySummary, addCategory, editCategory, deleteCategory, addSubcategory, deleteSubcategory } from '../../../server/index';
+	let val = [];
+	onMount(
+		async () => {
+			val = await getMonthlySummary();
+			// addRecord({"balance": 5000, "category": "Job2", "dateIssued": "something", "name": "Part Time2", recordType: "Income", subcategory: "Part Time", userID: "ZJAHehKdBMbpEFZAmRGHOezZ4gn1"});
+			// deleteRecord("B9ExjnAeFEjT3bkXcSLK");
+			// editRecord("HF7wBkLDGeFrMv3QWeCr", {"balance": 2500, "recordType": "Transfer"});
+			// 
+			// let vv = await getAllBudgets();
+			// addBudget({balance: 5000, name: "Project", type: "Daily", userID: "ZJAHehKdBMbpEFZAmRGHOezZ4gn1"});
+			// deleteBudget("eHL2CwZS4ha1u1oB1IW6");
+			// addCategory({name: "Sample Categ", subcategories: ["subcateg1", "subcateg2", "subcateg3"], userID: "ZJAHehKdBMbpEFZAmRGHOezZ4gn1"});
+			// deleteCategory("4Ojp2DUgs5WxuszB5YuG");
+			// const vv = await addSubcategory("2FF8jNmA5GRuqvOrdRvb", "subcateg4")
+			const vv = await deleteSubcategory("2FF8jNmA5GRuqvOrdRvb", "subcateg4")
+			console.log("newval");
+		}
+	);
 </script>
 
 <div>
@@ -21,17 +43,17 @@
 			</div>
 			<div class="mx-5  mb-2 flex flex-row justify-between items-center ">
 				<div class="font-primary  font-normal  text-gdark text-xs">Total Income</div>
-				<div class="font-primary  font-semibold text-primary text-xs">₱2,500</div>
+				<div class="font-primary  font-semibold text-primary text-xs">₱{val[0]}</div>
 			</div>
 			<div
 				class="mx-5  flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 			>
 				<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
-				<div class="font-primary  font-semibold text-secondary text-xs">-₱1,500</div>
+				<div class="font-primary  font-semibold text-secondary text-xs">-₱{val[1]}</div>
 			</div>
 			<div class="mx-5  flex flex-row justify-between items-center pb-4">
 				<div class="font-primary  font-normal  text-agray-700 text-xs">Total</div>
-				<div class="font-primary  font-semibold text-agray-700 text-xs">₱1,000</div>
+				<div class="font-primary  font-semibold text-agray-700 text-xs">₱{val[0]-val[1]}</div>
 			</div>
 		</div>
 	</div>

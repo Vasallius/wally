@@ -1,0 +1,20 @@
+DONE
+[X] - budgetsAPI
+[X] - usersAPI
+[X] - recordManipulationsAPI almost done
+[X] - dashboardCardsAPI
+[X] - categoriesAPI
+[/] - settingsAPI
+[ ] - notifcationsAndAlertsAPI
+
+Auth to all components
+
+Working APIs
+[X] - budgetsAPI
+[X] - usersAPI // note that i haven't tested log out yet kasi ala pa log out boton
+[X] - recordManipulationsAPI
+[X] - dashboardCardsAPI
+[X] - categoriesAPI // note doesn't consider repetitions
+-skip these two-
+[ ] - settingsAPI not sure dito
+[ ] - notifcationsAndAlertsAPI not sure dito

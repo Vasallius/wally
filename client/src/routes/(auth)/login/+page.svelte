@@ -1,10 +1,21 @@
 <script>
 	import Textfield from '../../../components/Textfield.svelte';
+	import { logIn } from '../../../server';
 
 	let username = '';
 	let fullname = '';
 	let email = '';
 	let password = '';
+
+	const login = () => {
+		try {
+			// @ts-ignore
+			logIn(document.querySelector('.login').email.value, document.querySelector('.login').password.value);
+			console.log("goods");
+		} catch (error) {
+			console.log("error");
+		}
+	}
 
 </script>
 
@@ -19,7 +30,7 @@
 		</div>
 	</a>
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
-	<form method="POST">
+	<form class="login">
 		<div class="mx-7 mb-2">
 			<Textfield type="email" id="email">Email</Textfield>
 		</div>
@@ -28,7 +39,7 @@
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button
-				type="submit"
+				on:click={login}
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
 				Log in
