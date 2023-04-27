@@ -8,7 +8,7 @@
 <!-- changed from a to div muna -->
 <div class="flex flex-row px-8 py-4 justify-between border-b hover:bg-agray-50">
 	<div class="flex flex-col">
-		<h1 class="text-base text-agray-700 font-bold">{title}</h1>
+		<h1 class="text-base text-agray-700 font-semibold">{title}</h1>
 		<p class="text-xs text-agray-600">₱{balance}</p>
 	</div>
 	<!--

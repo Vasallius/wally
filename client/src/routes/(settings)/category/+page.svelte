@@ -8,13 +8,21 @@
   	let label = '';
 	let edit = '';
 
+	let CategoryRecords = [
+		{ id: 0, component: CategoryRecord, category:"Shopping" },
+		{ id: 1, component: CategoryRecord, category:"Essentials" },
+	];
+
   	const openPopUp = () => {
     	isModalOpen = true;
   	};
 </script>
 
 <SettingsNav>Category</SettingsNav>
-<CategoryRecord category="Shopping" />
+
+{#each CategoryRecords as item}
+	<svelte:component this={item.component} category={item.category}/>
+{/each}
 
 <div class="flex flex-col mt-auto relative">
 	<button on:click={openPopUp} class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"> + </button>
