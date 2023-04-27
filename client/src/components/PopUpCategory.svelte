@@ -1,5 +1,6 @@
 <script>
-    
+    import CategoryRecord from "./CategoryRecord.svelte";
+    import CategoryRecords from "../routes/(settings)/category/+page.svelte"
     export let isOpen = false;
     export let label = '';
   
@@ -11,10 +12,9 @@
   
     const closeModal = () => {
       isOpen = false;
+      label = '';
     };
   </script>
-  
-  <!-- need - ayusin itsura ng input fields --> 
 
   {#if isOpen}
     <div class="flex w-full min-h-full items-center bg-black/40 px-20 border border-x-1 border-black/40 border-r-transparent">

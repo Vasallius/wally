@@ -31,7 +31,7 @@
 
 <div class="absolute z-50 h-full m-auto ">
 	<PopUpWallet
-		isOpen={isModalOpen}
+		bind:isOpen={isModalOpen}
 		label={label}
 		amount={amount}
 	/>

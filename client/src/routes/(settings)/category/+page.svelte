@@ -8,7 +8,7 @@
   	let label = '';
 	let edit = '';
 
-	let CategoryRecords = [
+	export let CategoryRecords = [
 		{ id: 0, component: CategoryRecord, category:"Shopping" },
 		{ id: 1, component: CategoryRecord, category:"Essentials" },
 	];
@@ -30,7 +30,7 @@
 
 <div class="absolute z-50 h-full m-auto ">
 	<PopUpCategory
-		isOpen={isModalOpen}
+		bind:isOpen={isModalOpen}
 		label={label}
 	/>
 </div>

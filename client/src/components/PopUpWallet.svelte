@@ -13,6 +13,8 @@
   
     const closeModal = () => {
       isOpen = false;
+      amount = 0;
+      label = '';
     };
   </script>
   

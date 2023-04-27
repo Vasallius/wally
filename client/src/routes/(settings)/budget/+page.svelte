@@ -10,7 +10,7 @@
   	let budget = 0;
   	let intervals = '';
 
-	let MonthRecords = [
+	export let MonthRecords = [
 		{ id: 0, component: BudgetRecord, title:"Shopping", budgetSpent:200, budget:1000 },
 	];
 	let WeekRecords = [
@@ -77,7 +77,7 @@
 <!-- need - center (ayusin position!), bg, design   --> 
 <div class="flex absolute z-50 h-full max-w-full m-auto">
 	<PopUpBudget
-		isOpen={isModalOpen}
+		bind:isOpen={isModalOpen}
 		label={label}
 		budget={budget}
 		intervals={intervals}

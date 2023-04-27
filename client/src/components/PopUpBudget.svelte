@@ -1,20 +1,26 @@
 <script>
+	import BudgetRecord from "./BudgetRecord.svelte";
+  import MonthRecords from "../routes/(settings)/budget/+page.svelte"
     
     export let isOpen = false;
     export let label = '';
     export let budget = 0;
     export let intervals = ''; 
-  
+
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log(`Label: ${label}`);
       console.log(`Budget: ${budget}`);
       console.log(`Intervals: ${intervals}`);
+
       closeModal();
     };
   
     const closeModal = () => {
       isOpen = false;
+      label = '';
+      budget = 0;
+      intervals = '';
     };
   </script>
   
