@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { authUser1 } from '../stores/stores';
+import { get } from 'svelte/store'
 
 const firebaseConfig = {
   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
@@ -14,7 +16,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig)
 
-const auth = getAuth();
+export const auth = getAuth();
 
 export const signUp = async (email, password) => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -32,6 +34,10 @@ export const logIn = (email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
       console.log('user created:', cred.user)
+      authUser1.set(cred.user.uid);
+      console.log("weh")
+      console.log(get(authUser1));
+      console.log(auth);
       return true;
     })
     .catch(err => {

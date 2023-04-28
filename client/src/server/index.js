@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, getDocs } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { addBudget, getAllBudgets, deleteBudget } from './routes/budgetsAPI';
 import { signUp, logIn, logOut } from './routes/usersAPI';
 import { 
@@ -24,6 +25,9 @@ import {
   deleteRecord,
   editRecord,
 } from './routes/recordManipulationsAPI';
+import {
+  authUser1
+} from '../server/stores/stores';
 
 const firebaseConfig = {
   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
@@ -37,6 +41,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const db = getFirestore()
+const auth = getAuth();
 
 const colRef = collection(db, 'budgets')
 
