@@ -14,7 +14,9 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig)
 
-const auth = getAuth();
+
+
+export const auth = getAuth();
 
 export const signUp = async (email, password) => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -31,9 +33,12 @@ export const signUp = async (email, password) => {
 export const logIn = (email, password) => {
   console.log("Email:", email, "Password:", password);
 
+
+  
   signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
       console.log('user logged in:', cred.user)
+      window.location.href = '/dashboard'; // redirect to dashboard
       return '';
     })
     .catch(err => {
