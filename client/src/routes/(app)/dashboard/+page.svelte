@@ -1,5 +1,8 @@
 <script>
+// @ts-nocheck
+
 	import RecordCard from '../../../components/RecordCard.svelte';
+	export let data;
 </script>
 
 <div>
@@ -21,17 +24,17 @@
 			</div>
 			<div class="mx-5  mb-2 flex flex-row justify-between items-center ">
 				<div class="font-primary  font-normal  text-gdark text-xs">Total Income</div>
-				<div class="font-primary  font-semibold text-primary text-xs">₱2,500</div>
+				<div class="font-primary  font-semibold text-primary text-xs">₱{data.monthlySummary[0]}</div>
 			</div>
 			<div
 				class="mx-5  flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 			>
 				<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
-				<div class="font-primary  font-semibold text-secondary text-xs">-₱1,500</div>
+				<div class="font-primary  font-semibold text-secondary text-xs">-₱{data.monthlySummary[1]}</div>
 			</div>
 			<div class="mx-5  flex flex-row justify-between items-center pb-4">
 				<div class="font-primary  font-normal  text-agray-700 text-xs">Total</div>
-				<div class="font-primary  font-semibold text-agray-700 text-xs">₱1,000</div>
+				<div class="font-primary  font-semibold text-agray-700 text-xs">₱{data.monthlySummary[0]-data.monthlySummary[1]}</div>
 			</div>
 		</div>
 	</div>
@@ -40,18 +43,18 @@
 	</div>
 	<div class="flex carousel mx-3">
 		<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
-			<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
-			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
+			<div class="text-agray-200 font-medium text-xs font-primary">{data.wallets[0].name}</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱{data.wallets[0].balance}</div>
 		</div>
 
 		<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
-			<div class="text-agray-200 font-medium text-xs font-primary">BANK</div>
-			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
+			<div class="text-agray-200 font-medium text-xs font-primary">{data.wallets[1].name}</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱{data.wallets[1].balance}</div>
 		</div>
 
 		<div class="flex flex-col pl-2 pt-3 grow -16 bg-primary rounded-lg">
-			<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
-			<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
+			<div class="text-agray-200 font-medium text-xs font-primary">{data.wallets[2].name}</div>
+			<div class="text-agray-200 font-primary font-semibold text-header5">₱{data.wallets[2].balance}</div>
 		</div>
 	</div>
 	<div class="flex mx-3 mt-5 mb-4">

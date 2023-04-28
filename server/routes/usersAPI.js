@@ -23,12 +23,12 @@ router.post('/signup', async (req, res) => {
                                       })
                                       .catch(err => console.error(err.message));
   const signUpBody = {
-    name: req.body.name,
+    name: req.body.fullname,
     email: req.body.email,
     password: hashedPassword,
   };
   const logInBody = {
-    name: req.body.name
+    fullname: req.body.fullname
   };
   const userCheck = await accountCheck(logInBody);
   if (userCheck.length == 0) {
@@ -47,11 +47,10 @@ router.post('/login', async (req, res) => {
   };
   const userCheck = await accountCheck(body);
   const passwordCompare = await bcrypt.compare(req.body.password, userCheck[0].password);
-
-  if (passwordCompare && request.length == 1){
-    res.send(true);
+  if (passwordCompare && userCheck.length == 1){
+    res.send([true, userCheck[0]._id]);
   } else {
-    res.send(false);
+    res.send([false, null]);
   }
 });
 

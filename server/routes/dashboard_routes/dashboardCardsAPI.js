@@ -36,7 +36,8 @@ router.get("/getMonthlySummary", async (req, res) => {
 router.get('/getWallets', async (req, res) => {
   const request = await client.db("wally")
                               .collection("wallets")
-                              .find({});
+                              .find({})
+                              .toArray();
   res.send(request);
 });
 

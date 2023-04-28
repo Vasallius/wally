@@ -21,7 +21,7 @@ app.use('/settings', settings);
 
 require('dotenv').config();
 
-const uri = process.env.uri;
+const uri = 'mongodb://127.0.0.1:27017';
 const client = new MongoClient(uri);
 
 const main = async () => {  
