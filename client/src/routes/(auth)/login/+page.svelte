@@ -2,21 +2,33 @@
 	import Textfield from '../../../components/Textfield.svelte';
 	import { logIn } from '../../../server';
 
+	// @ts-ignore
 	let username = '';
+	// @ts-ignore
 	let fullname = '';
+	// @ts-ignore
 	let email = '';
+	// @ts-ignore
 	let password = '';
 
-	const login = () => {
+	const login = async () => {
 		try {
 			// @ts-ignore
-			logIn(document.querySelector('.login').email.value, document.querySelector('.login').password.value);
-			console.log("goods");
-		} catch (error) {
-			console.log("error");
-		}
-	}
+			let x = document.querySelector('.login').email.value;
+			// @ts-ignore
+			let y = document.querySelector('.login').password.value;
+			console.log(x, y);
 
+			const errorMessage = await logIn(x, y); // Add 'await' here
+			if (errorMessage === '') {
+				console.log('goods');
+			} else {
+				console.log('error:', errorMessage);
+			}
+		} catch (error) {
+			console.log('error');
+		}
+	};
 </script>
 
 <div>

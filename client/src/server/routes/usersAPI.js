@@ -29,16 +29,18 @@ export const signUp = async (email, password) => {
 }
 
 export const logIn = (email, password) => {
+  console.log("Email:", email, "Password:", password);
+
   signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
-      console.log('user created:', cred.user)
-      return true;
+      console.log('user logged in:', cred.user)
+      return '';
     })
     .catch(err => {
-      console.log(err.message)
-      return false;
+      return err.message;
     })
 }
+
 
 export const logOut = () => {
   try {
