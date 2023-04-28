@@ -1,11 +1,15 @@
 <script lang="ts">
-	export let type: string;
+	export let type: string = 'text';
 	export let id: string;
 	export let value: string;
+
+	function typeAction(node: any) {
+		node.type = type;
+	}
 </script>
 
 <div class="text-field">
-	<input type="text" {id} name={id} placeholder=" " required bind:value />
+	<input use:typeAction name={id} placeholder=" " required bind:value />
 	<label for={id}>
 		<slot />
 	</label>
@@ -56,5 +60,13 @@
 		color: var(--primary);
 		background-color: white;
 		padding: 2px;
+	}
+
+	/* Change the white to any color */
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 30px white inset !important;
 	}
 </style>
