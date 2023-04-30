@@ -10,7 +10,7 @@
 				<h1 class="text-xl font-bold tracking-widest">WALLY</h1>
 			</div>
 			<a href="/dashboard">
-				<X fill="var(--agray-500)" height="2rem" width="2rem" />
+				<X on:click={closeModal} fill="var(--agray-500)" height="2rem" width="2rem" />
 			</a>
 		</header>
 		<a href="/profile" class="flex flex-row px-2 py-3 justify-between">

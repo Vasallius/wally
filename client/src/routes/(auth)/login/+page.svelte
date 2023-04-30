@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Textfield from '../../../components/Textfield.svelte';
+<<<<<<< HEAD
+	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+	import { initializeApp } from 'firebase/app';
+
+=======
 	import {
 		getAuth,
 		onAuthStateChanged,
@@ -8,6 +13,7 @@
 	} from 'firebase/auth';
 	import { initializeApp } from 'firebase/app';
 	import { onMount } from 'svelte';
+>>>>>>> main
 	let username = '';
 	let fullname = '';
 	let email = '';
