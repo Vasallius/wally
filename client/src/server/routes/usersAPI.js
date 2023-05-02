@@ -34,7 +34,7 @@ export const logIn = (email, password) => {
   console.log("Email:", email, "Password:", password);
 
 
-  
+
   signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
       console.log('user logged in:', cred.user)
@@ -50,12 +50,12 @@ export const logIn = (email, password) => {
 export const logOut = () => {
   try {
     signOut(auth)
-    .then(() => {
-      console.log("User logged out")
-    })
-    .catch((err) => {
-      console.log(err.message)
-    })
+      .then(() => {
+        console.log("User logged out")
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
     return true;
   } catch (error) {
     return false;
