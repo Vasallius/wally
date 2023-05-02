@@ -1,24 +1,23 @@
 <script>
-	import Textfield from '../../../components/Textfield.svelte';
+// @ts-nocheck
 
-	let username = '';
+	import Textfield from '../../../components/Textfield.svelte';
+	import { signUp } from '../../../server/index.js';
+	// @ts-ignore
 	let fullname = '';
+	// @ts-ignore
 	let email = '';
+	// @ts-ignore
 	let password = '';
 
-	const submit = async () => {
-		const body = { username, fullname, email, password };
-		await fetch('http://127.0.0.1:3002/signup', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: JSON.stringify(body)
-		})
-			.then((res) => res.json())
-			.then((returnValue) => {
-				console.log(returnValue);
-			});
+	const submit = () => {
+		try {
+			// @ts-ignore
+			signUp(document.querySelector('.signup').email.value, document.querySelector('.signup').password.value);
+			console.log("goods");
+		} catch (error) {
+			console.log("error");
+		}
 	};
 </script>
 
@@ -33,7 +32,7 @@
 		</div>
 	</a>
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Sign Up</div>
-	<form>
+	<form class="signup">
 		<div class="mx-7 mb-2">
 			<Textfield type="text" id="name">Name</Textfield>
 		</div>
