@@ -8,8 +8,9 @@
   </div>
   <!-- note that we must loop over given wallets in a database any not hard code this -->
   <div class="flex carousel mx-3">
-    <WalletItem label="CASH" amount="₱2,500" />
-    <WalletItem label="BANK" amount="₱2,500" />
-    <WalletItem label="CASH" amount="₱2,500" />
+      <WalletItem label="CASH" amount="₱2,500" active= "True"/>
+      <WalletItem label="GCASH" amount="₱2,500" active= "False"/>
+      <WalletItem label="BANK" amount="₱2,500" active= "False"/>
+      
   </div>
   
