@@ -1,3 +1,10 @@
-import { writable } from "svelte/store";
+// @ts-nocheck
+// stores.js
+import { writable } from 'svelte/store';
+import { auth } from '../routes/firebase';
+export const authStore = writable(null);
 
-export const authUser1 = writable();
+auth.onAuthStateChanged(user => {
+    console.log("stores setting user")
+    authStore.set(user);
+});

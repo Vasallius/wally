@@ -1,38 +1,39 @@
 <script>
 	// @ts-nocheck
 	import { logOut } from '../../../server/routes/usersAPI';
-	import { db, auth} from '../../../server/routes/firebase'
+	import { db, auth } from '../../../server/routes/firebase';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
 	import { getDashboardRecords, getMonthlySummary, getWallets } from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
+	import { authStore } from '../../../server/stores/stores';
+
 	let monthlySummary = [0, 0];
 	let records = [];
-	let wallets = [{name: "wah", balance:-1}, {name: "wah", balance:-1}];
+	let wallets = [
+		{ name: 'wah', balance: -1 },
+		{ name: 'wah', balance: -1 }
+	];
 	let user = null;
 
 	onAuthStateChanged(auth, async (currentUser) => {
 		console.log('state changed');
 		user = currentUser;
-		if(user !== null){
-			monthlySummary = await getMonthlySummary(user.uid)
-			.then((val) => {
-				return val
-			});
-			records = await getDashboardRecords(user.uid)
-			.then((val) => {
+		if (user !== null) {
+			monthlySummary = await getMonthlySummary(user.uid).then((val) => {
 				return val;
 			});
-			wallets = await getWallets(user.uid)
-			.then((val) => {
-				return val
+			records = await getDashboardRecords(user.uid).then((val) => {
+				return val;
+			});
+			wallets = await getWallets(user.uid).then((val) => {
+				return val;
 			});
 		}
 		console.log('Current user:', user);
 	});
 
-	
 	console.log(auth);
 
 	function handleLogout() {
@@ -45,7 +46,7 @@
 	}
 </script>
 
-{#if user}
+{#if $authStore}
 	<div>{user.auth.currentUser.email}</div>
 	<button on:click={handleLogout}>Logout</button>
 	<div>
@@ -75,15 +76,19 @@
 					class="mx-5  flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 				>
 					<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
-					<div class="font-primary  font-semibold text-secondary text-xs">-₱{monthlySummary[1]}</div>
+					<div class="font-primary  font-semibold text-secondary text-xs">
+						-₱{monthlySummary[1]}
+					</div>
 				</div>
 				<div class="mx-5  flex flex-row justify-between items-center pb-4">
 					<div class="font-primary  font-normal  text-agray-700 text-xs">Total</div>
-					<div class="font-primary  font-semibold text-agray-700 text-xs">₱{monthlySummary[0] - monthlySummary[1]}</div>
+					<div class="font-primary  font-semibold text-agray-700 text-xs">
+						₱{monthlySummary[0] - monthlySummary[1]}
+					</div>
 				</div>
 			</div>
 		</div>
-		<Wallet {user}/>
+		<Wallet {user} />
 		<RecordBar />
 		<div class="flex flex-col">
 			<RecordCard category="Foods & Drinks" wallet="Cash" />
