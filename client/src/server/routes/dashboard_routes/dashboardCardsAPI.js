@@ -70,14 +70,14 @@ export const getWallets = async () => {
   // return wallets;
 };
 
-export const getIncomeRecords = async () => {
-  return await findFunction('Income');
+export const getIncomeRecords = async (userID) => {
+  return await findFunction('Income', userID);
 };
 
-export const getExpenseRecords = async () => {
-  return await findFunction('Expense');
+export const getExpenseRecords = async (userID) => {
+  return await findFunction('Expense', userID);
 };
 
-export const getTransferRecords = async () => {
-  return await findFunction('Transfer');
+export const getTransferRecords = async (userID) => {
+  return await findFunction('Transfer', userID);
 };

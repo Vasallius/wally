@@ -11,7 +11,9 @@
 	onAuthStateChanged(auth, async (currentUser) => {
 		console.log('state changed');
 		user = currentUser;
-		val = await getMonthlySummary(user.uid);
+		if(user.uid !== null){
+			val = await getMonthlySummary(user.uid);
+		}
 		console.log('Current user:', user);
 	});
 
