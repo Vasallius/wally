@@ -7,7 +7,7 @@
 	import { getDashboardRecords, getMonthlySummary, getWallets } from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore } from '../../../server/stores/stores';
+	import { authStore, isLoading, isLoggingOut } from '../../../server/stores/stores';
 
 	let monthlySummary = [0, 0];
 	let records = [];
@@ -18,9 +18,12 @@
 	let user = null;
 
 	onAuthStateChanged(auth, async (currentUser) => {
-		console.log('state changed');
+		isLoading.set(true); // Set isLoading to true
+
+		console.log('Authentication state changed');
 		user = currentUser;
 		if (user !== null) {
+			console.log('User is not null. Wil proceed to get data.');
 			monthlySummary = await getMonthlySummary(user.uid).then((val) => {
 				return val;
 			});
@@ -30,23 +33,36 @@
 			wallets = await getWallets(user.uid).then((val) => {
 				return val;
 			});
+		} else {
+			console.log('User is null.');
 		}
-		console.log('Current user:', user);
+		// console.log(isLoading);
+
+		// console.log('Current user:', user);
 	});
 
 	console.log(auth);
 
-	function handleLogout() {
-		const success = logOut();
+	async function handleLogout() {
+		isLoggingOut.set(true);
+
+		const success = await logOut();
 		if (success) {
-			// Redirect to login page or update UI as needed
+			console.log('Succesfully logged out');
+			isLoading.set(false);
+			console.log('IS LOADING VALUE');
+			console.log($isLoading);
+			window.location.href = '/login';
 		} else {
-			// Handle error
+			console.log('Log out failed');
+			isLoggingOut.set(false);
 		}
 	}
 </script>
 
-{#if $authStore}
+{#if $isLoading && $authStore == null}
+	<div>LOADING!!!</div>
+{:else if $authStore}
 	<div>{user.auth.currentUser.email}</div>
 	<button on:click={handleLogout}>Logout</button>
 	<div>
@@ -96,6 +112,8 @@
 			<RecordCard category="Foods & Drinks" wallet="Gcash" />
 		</div>
 	</div>
+{:else if $isLoggingOut}
+	<div>Logging out...</div>
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}

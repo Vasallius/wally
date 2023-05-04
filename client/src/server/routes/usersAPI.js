@@ -1,7 +1,8 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { db , auth } from './firebase'
+import { db, auth } from './firebase'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { isLoading } from '../stores/stores'
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
@@ -34,10 +35,10 @@ export const logIn = (email, password) => {
   console.log("Email:", email, "Password:", password);
 
 
-  
+
   signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
-      console.log('user logged in:', cred.user)
+      // console.log('user logged in:', cred.user)
       window.location.href = '/dashboard'; // redirect to dashboard
       return '';
     })
@@ -48,16 +49,19 @@ export const logIn = (email, password) => {
 
 
 export const logOut = () => {
-  try {
-    signOut(auth)
-    .then(() => {
-      console.log("User logged out")
-    })
-    .catch((err) => {
-      console.log(err.message)
-    })
-    return true;
-  } catch (error) {
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      signOut(auth)
+        .then(() => {
+          resolve(true);
+          ; // redirect to dashboard
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    } catch (error) {
+      reject(false);
+    }
+  });
 }
