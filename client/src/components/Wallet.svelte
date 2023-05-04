@@ -12,15 +12,10 @@
     (async () => {
     
         if (user){
-            console.log("current user:")
-            console.log(user)
             monthlySummary = await getMonthlySummary(user.uid).then((val) => val);
             records = await getDashboardRecords(user.uid).then((val) => val);
             wallets = await getWallets(user.uid).then((val) => val);
-            console.log(wallets)
         } else {
-            console.log("error")
-            console.log(user)
         }
       
     })();
