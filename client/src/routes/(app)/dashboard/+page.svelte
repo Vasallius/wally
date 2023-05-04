@@ -4,12 +4,14 @@
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
-	let val = [];
+	import { getMonthlySummary } from '../../../server';
+	let val = [0, 0];
 	let user = null;
 
-	onAuthStateChanged(auth, (currentUser) => {
+	onAuthStateChanged(auth, async (currentUser) => {
 		console.log('state changed');
 		user = currentUser;
+		val = await getMonthlySummary(user.uid);
 		console.log('Current user:', user);
 	});
 

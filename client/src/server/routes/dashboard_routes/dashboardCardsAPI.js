@@ -22,29 +22,26 @@ console.log(auth);
 
 let newval = "";
 
-const findFunction = async (recordType) => {
+const findFunction = async (recordType, userID) => {
   const coll = collection(db, 'records')
   // eslint-disable-next-line no-undef
-  console.log(auth.currentUser, newval);
+  // console.log(auth.currentUser, newval);
   const incomeRecordsReference = query(coll,
     where('recordType', '==', recordType),
-    where('userID', '==', get(authUser1))
+    where('userID', '==', userID)
   );
   let records = []
   const querySnap = await getDocs(incomeRecordsReference);
-  console.log('here4');
   querySnap.forEach((doc) => {
     records.push({...doc.data(), id: doc.id});
   });
   return records;
 }
 
-export const getMonthlySummary = async () => {
+export const getMonthlySummary = async (userID) => {
   try {
-    const expense = await findFunction('Expense');
-    console.log('here1');
-    const income = await findFunction('Income');
-    console.log('here2');
+    const expense = await findFunction('Expense', userID);
+    const income = await findFunction('Income', userID);
     const totalExpense = expense.reduce((total, val) => {
       return total+val.balance;
     }, 0);
