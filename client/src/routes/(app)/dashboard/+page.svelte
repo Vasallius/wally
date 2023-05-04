@@ -73,25 +73,6 @@
 			</div>
 		</div>
 		<Wallet/>
-		<!-- <div class="flex mx-3 mt-3.5 mb-1.5">
-			<div class="text-header5 font-primary font-semibold">Wallets</div>
-		</div>
-		<div class="flex carousel mx-3">
-			<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
-				<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
-				<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
-			</div>
-
-			<div class="flex flex-col pl-2 pt-3 mr-3 grow h-16 bg-primary rounded-lg">
-				<div class="text-agray-200 font-medium text-xs font-primary">BANK</div>
-				<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
-			</div>
-
-			<div class="flex flex-col pl-2 pt-3 grow -16 bg-primary rounded-lg">
-				<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
-				<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
-			</div>
-		</div> -->
 		<div class="flex mx-3 mt-5 mb-4">
 			<div class="text-header5 font-primary font-semibold">Records</div>
 		</div>
