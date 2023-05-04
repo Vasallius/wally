@@ -5,18 +5,30 @@
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
-	import { getMonthlySummary } from '../../../server';
+	import { getDashboardRecords, getMonthlySummary, getWallets } from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
-	import { Record } from 'svelte-bootstrap-icons';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	let val = [0, 0];
+	let monthlySummary = [0, 0];
+	let records = [];
+	let wallets = [{name: "wah", balance:-1}, {name: "wah", balance:-1}];
 	let user = null;
 
 	onAuthStateChanged(auth, async (currentUser) => {
 		console.log('state changed');
 		user = currentUser;
 		if(user !== null){
-			val = await getMonthlySummary(user.uid);
+			monthlySummary = await getMonthlySummary(user.uid)
+			.then((val) => {
+				return val
+			});
+			records = await getDashboardRecords(user.uid)
+			.then((val) => {
+				return val;
+			});
+			wallets = await getWallets(user.uid)
+			.then((val) => {
+				return val
+			});
 		}
 		console.log('Current user:', user);
 	});
@@ -60,22 +72,22 @@
 				</div>
 				<div class="mx-5  mb-2 flex flex-row justify-between items-center ">
 					<div class="font-primary  font-normal  text-gdark text-xs">Total Income</div>
-					<div class="font-primary  font-semibold text-primary text-xs">₱{val[0]}</div>
+					<div class="font-primary  font-semibold text-primary text-xs">₱{monthlySummary[0]}</div>
 				</div>
 				<div
 					class="mx-5  flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 				>
 					<div class="font-primary  font-normal  text-agray-700 text-xs">Total Expenses</div>
-					<div class="font-primary  font-semibold text-secondary text-xs">-₱{val[1]}</div>
+					<div class="font-primary  font-semibold text-secondary text-xs">-₱{monthlySummary[1]}</div>
 				</div>
 				<div class="mx-5  flex flex-row justify-between items-center pb-4">
 					<div class="font-primary  font-normal  text-agray-700 text-xs">Total</div>
-					<div class="font-primary  font-semibold text-agray-700 text-xs">₱{val[0] - val[1]}</div>
+					<div class="font-primary  font-semibold text-agray-700 text-xs">₱{monthlySummary[0] - monthlySummary[1]}</div>
 				</div>
 			</div>
 		</div>
-		<Wallet/>
-		<RecordBar/>
+		<Wallet />
+		<RecordBar />
 		<div class="flex flex-col">
 			<RecordCard category="Foods & Drinks" wallet="Cash" />
 			<RecordCard category="Income" wallet="Bank" />
