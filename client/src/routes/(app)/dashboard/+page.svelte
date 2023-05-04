@@ -6,6 +6,7 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
 	import { getMonthlySummary } from '../../../server';
+	import Wallet from '../../../components/Wallet.svelte';
 	let val = [0, 0];
 	let user = null;
 
@@ -71,7 +72,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex mx-3 mt-3.5 mb-1.5">
+		<Wallet/>
+		<!-- <div class="flex mx-3 mt-3.5 mb-1.5">
 			<div class="text-header5 font-primary font-semibold">Wallets</div>
 		</div>
 		<div class="flex carousel mx-3">
@@ -89,7 +91,7 @@
 				<div class="text-agray-200 font-medium text-xs font-primary">CASH</div>
 				<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="flex mx-3 mt-5 mb-4">
 			<div class="text-header5 font-primary font-semibold">Records</div>
 		</div>
