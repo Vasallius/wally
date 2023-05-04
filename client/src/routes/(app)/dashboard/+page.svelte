@@ -2,7 +2,6 @@
 	// @ts-nocheck
 	import { logOut } from '../../../server/routes/usersAPI';
 	import { db, auth} from '../../../server/routes/firebase'
-	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
 	import { getDashboardRecords, getMonthlySummary, getWallets } from '../../../server';
@@ -33,9 +32,7 @@
 		console.log('Current user:', user);
 	});
 
-	const isAuthenticated = () => {
-		return user !== null;
-	};
+	
 	console.log(auth);
 
 	function handleLogout() {
@@ -86,7 +83,7 @@
 				</div>
 			</div>
 		</div>
-		<Wallet />
+		<Wallet {user}/>
 		<RecordBar />
 		<div class="flex flex-col">
 			<RecordCard category="Foods & Drinks" wallet="Cash" />

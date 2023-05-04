@@ -1,16 +1,38 @@
 <script>
-    import WalletItem from './WalletItem.svelte';
+// @ts-nocheck
 
+	import WalletItem from './WalletItem.svelte';
+
+	import { getDashboardRecords, getMonthlySummary, getWallets } from '../server';
+    let monthlySummary, records;
+    let wallets = [];
+    export let user
+   
+    {
+    (async () => {
+    
+        if (user){
+            console.log("current user:")
+            console.log(user)
+            monthlySummary = await getMonthlySummary(user.uid).then((val) => val);
+            records = await getDashboardRecords(user.uid).then((val) => val);
+            wallets = await getWallets(user.uid).then((val) => val);
+            console.log(wallets)
+        } else {
+            console.log("error")
+            console.log(user)
+        }
+      
+    })();
+  }
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
-    <div class="text-header5 font-primary font-semibold">Wallets</div>
-  </div>
-  <!-- note that we must loop over given wallets in a database any not hard code this -->
-  <div class="flex carousel mx-3">
-      <WalletItem label="CASH" amount="₱2,500" active= "True"/>
-      <WalletItem label="GCASH" amount="₱2,500" active= "False"/>
-      <WalletItem label="BANK" amount="₱2,500" active= "False"/>
-      
-  </div>
-  
+	<div class="text-header5 font-primary font-semibold">Wallets</div>
+</div>
+<div class="flex carousel mx-3">
+	{#each wallets as wallet}
+    <WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} />
+    {/each}
+</div>
+
