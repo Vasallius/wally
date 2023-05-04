@@ -1,22 +1,22 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { initializeApp } from 'firebase/app'
+import { db , auth } from './firebase'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
-const firebaseConfig = {
-  apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
-  authDomain: "wally-55432.firebaseapp.com",
-  projectId: "wally-55432",
-  storageBucket: "wally-55432.appspot.com",
-  messagingSenderId: "116738427703",
-  appId: "1:116738427703:web:6f072f98620c5ce4d668b2"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
+//   authDomain: "wally-55432.firebaseapp.com",
+//   projectId: "wally-55432",
+//   storageBucket: "wally-55432.appspot.com",
+//   messagingSenderId: "116738427703",
+//   appId: "1:116738427703:web:6f072f98620c5ce4d668b2"
+// };
 
-initializeApp(firebaseConfig)
+// initializeApp(firebaseConfig)
 
 
 
-export const auth = getAuth();
+// export const auth = getAuth();
 
 export const signUp = async (email, password) => {
   createUserWithEmailAndPassword(auth, email, password)

@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
-	import { auth, logOut } from '../../../server/routes/usersAPI';
+	import { logOut } from '../../../server/routes/usersAPI';
+	import { db, auth} from '../../../server/routes/firebase'
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
