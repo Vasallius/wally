@@ -11,7 +11,7 @@
 
 			const errorMessage = await logIn(x, y); // Add 'await' here
 			if (errorMessage === '') {
-				console.log('goods');
+				console.log('Log in succesful.');
 			} else {
 				console.log('error:', errorMessage);
 			}

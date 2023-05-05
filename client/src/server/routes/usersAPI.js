@@ -63,7 +63,6 @@ export const logIn = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
       authStore.set(cred)
-      console.log(cred)
       goto('/dashboard')
       return '';
     })
