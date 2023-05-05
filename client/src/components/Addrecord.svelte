@@ -1,16 +1,12 @@
 <script lang="ts">
+	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
+	import Textfield from './Textfield.svelte';
 	// <<START: Modal Pop Up>>
 	export let isOpen = false;
-	const handleSubmit = (event: any) => {
-		event.preventDefault();
-		closeModal();
-	};
 	const closeModal = () => {
 		isOpen = false;
 	};
 	// <<END: Modal Pop Up>>
-
-	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 
 	let numberInput = '';
 	let total = 0;
@@ -39,7 +35,7 @@
 	const operators = ['*', '+', '-', '^', '.', '%', '^', '/'];
 
 	function isDuplicate(value: string | number) {
-		if (operators.includes(numberInput.slice(-1)) && operators.includes(value)) {
+		if (operators.includes(numberInput.slice(-1)) && operators.includes(value.toString())) {
 			return true; // Return true if last character is already an operator and new value is also an operator
 		}
 		return false; // For all other cases, return false to allow the input
@@ -86,14 +82,6 @@
 		total = result().toString();
 	}
 
-	function handleKeyPress(event) {
-		if (event.key === 'Enter') {
-			calculate();
-		} else if (!allowedKeys.includes(event.key)) {
-			event.preventDefault();
-		}
-	}
-
 	function onBlur(this: HTMLInputElement) {
 		this.focus();
 	}
@@ -101,8 +89,8 @@
 
 {#if isOpen}
 	<form class="bg-black/40 flex flex-co h-screen m-auto max-w-md">
-		<div class="bg-white rounded-lg h-fit w-11/12 m-auto p-5">
-			<div class="flex justify-between w-11/12 m-auto ">
+		<div class="bg-white rounded-lg h-fit w-11/12 m-auto p-6">
+			<div class="flex justify-between m-auto mb-4">
 				<button on:click={closeModal} class=""
 					><X fill="var(--agray-600)" width={32} height={32} /></button
 				>
@@ -110,24 +98,20 @@
 					<Check fill="var(--agray-600)" width={32} height={32} /></button
 				>
 			</div>
-			<div class="flex flex-row w-11/12 mx-auto">
-				<a
-					href="/"
-					class="flex grow align-center text-header5 font-semibold bg-primary rounded-l-lg"
-				>
-					Income
-				</a>
-				<a href="/" class="flex grow align-center text-header5 font-semibold bg-agray-300"
-					>Expense</a
-				>
-				<a
-					href="/"
-					class="flex grow align-center text-header5 font-semibold bg-agray-300 rounded-r-lg"
-				>
-					Tracker
-				</a>
+			<div class="radio-group mb-4">
+				<input type="radio" id="income" name="transaction-type" value="income" checked />
+				<label for="income" class="rounded-l-lg">Income</label>
+
+				<input type="radio" id="expense" name="transaction-type" value="expense" />
+				<label for="expense">Expense</label>
+
+				<input type="radio" id="transfer" name="transaction-type" value="transfer" />
+				<label for="transfer" class="rounded-r-lg">Transfer</label>
 			</div>
-			<div class="flex flex-row w-11/12 mb-4 mx-auto">
+
+			<!-- START OF CODE TO BE REVISED -->
+
+			<div class="flex flex-row mb-4 mx-auto gap-2">
 				<div class="flex grow rounded-lg border-2 border-sky-500">
 					<img class="ml-4 mr-8" src="/WalletFill.svg" alt="background" />
 					<div class="flex flex-col">
@@ -143,8 +127,24 @@
 					</div>
 				</div>
 			</div>
+			<!-- ====== REVISION ===== -->
+			<div class="flex flex-row mb-4 mx-auto gap-2">
+				<select
+					class="flex grow rounded-lg border-2 border-primary py-2"
+					placeholder=" "
+					id="intervals-select"
+				>
+					<option value="Daily">Wallet</option>
+					<option value="Daily">Wallet</option>
+					<option value="Daily">Wallet</option>
+				</select>
+				<label for="intervals-select" class="text-super-sm font-primary font-semibold text-center">
+					Account
+				</label>
+			</div>
 
-			<div class="flex justify-between w-11/12 mx-auto border-b-2 pb-6">
+			<!-- END OF CODE TO BE REVISED -->
+			<div class="flex justify-between mx-auto border-b-2 pb-6">
 				<div class="font-primary text-primary font-normal text-6xl">+</div>
 				<div class="flex">
 					<!-- svelte-ignore a11y-autofocus -->
@@ -169,7 +169,7 @@
 				</div>
 			</div>
 
-			<div class="keypad w-11/12 mx-auto py-6">
+			<div class="keypad mx-auto py-6">
 				<button on:click={clear}>C</button>
 				<button on:click={() => addToEquation('**')}>x<sup>□</sup></button>
 				<button on:click={() => addToEquation('%')}>%</button>
@@ -203,13 +203,14 @@
 {/if}
 
 <style>
+	/* ===== Keypad Styles 	=====*/
 	.keypad {
 		display: grid;
 		grid-template-columns: repeat(4, 25%);
 		grid-template-rows: repeat(5, 20%);
 	}
 
-	button {
+	.keypad button {
 		grid-column: span 1;
 		padding: 1.3rem 1rem;
 		background-color: var(--agray-100);
@@ -217,7 +218,35 @@
 		margin: 5px;
 		font-size: 16px;
 	}
-	button:active {
+	.keypad button:active {
 		background-color: var(--agray-400) !important;
+	}
+
+	/* ===== Radio Buttons Style for Income, Expense, Transfer =====*/
+	.radio-group {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.radio-group input[type='radio'] {
+		display: none;
+	}
+
+	.radio-group label {
+		display: inline-block;
+		flex-grow: 1;
+		text-align: center;
+		padding: 5px 0;
+		background-color: #f2f2f2;
+		color: #666;
+		font-size: 16px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.radio-group input[type='radio']:checked + label {
+		background-color: var(--primary);
+		color: #fff;
 	}
 </style>
