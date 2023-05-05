@@ -2,12 +2,12 @@
 	// @ts-nocheck
 	import { logOut } from '../../../server/routes/usersAPI';
 	import { db, auth } from '../../../server/routes/firebase';
-	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
 	import { getDashboardRecords, getMonthlySummary, getWallets } from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore, isLoading, isLoggingOut } from '../../../server/stores/stores';
+	import { authStore } from '../../../server/stores/stores';
+	import { goto } from '$app/navigation';
 
 	let monthlySummary = [0, 0];
 	let records = [];
@@ -18,18 +18,11 @@
 	let user = null;
 
 	async function handleLogout() {
-		isLoggingOut.set(true);
-
 		const success = await logOut();
 		if (success) {
-			console.log('Succesfully logged out');
-			isLoading.set(false);
-			console.log('IS LOADING VALUE');
-			console.log($isLoading);
-			window.location.href = '/login';
+			goto('/login');
 		} else {
 			console.log('Log out failed');
-			isLoggingOut.set(false);
 		}
 	}
 </script>
@@ -84,6 +77,5 @@
 		</div>
 	</div>
 {:else}
-	<div>{$authStore}</div>
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}

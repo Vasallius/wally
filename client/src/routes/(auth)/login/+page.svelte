@@ -3,18 +3,11 @@
 
 	import Textfield from '../../../components/Textfield.svelte';
 	import { logIn } from '../../../server';
-	import { authStore, isLoading } from '../../../server/stores/stores';
-	let username = '';
-	let fullname = '';
-	let email = '';
-	let password = '';
 
 	const login = async () => {
 		try {
-			isLoading.set(true);
 			let x = document.querySelector('.login').email.value;
 			let y = document.querySelector('.login').password.value;
-			console.log(x, y);
 
 			const errorMessage = await logIn(x, y); // Add 'await' here
 			if (errorMessage === '') {

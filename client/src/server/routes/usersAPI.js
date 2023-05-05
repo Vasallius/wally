@@ -1,8 +1,8 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { db, auth } from './firebase'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { authStore, isLoading } from '../stores/stores'
+import { auth } from './firebase'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { authStore } from '../stores/stores'
 import { goto } from '$app/navigation';
 
 export const signUp = async (email, password) => {
@@ -32,19 +32,12 @@ export const logIn = (email, password) => {
 
 
 export const logOut = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      signOut(auth)
-        .then(() => {
-          resolve(true);
-          ; // redirect to dashboard
-        })
-        .catch((err) => {
-          console.log(err.message);
-          reject(false);
-        });
-    } catch (error) {
-      reject(false);
-    }
-  });
-}
+  return signOut(auth)
+    .then(() => {
+      goto('/login')
+      // redirect to dashboard
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+};
