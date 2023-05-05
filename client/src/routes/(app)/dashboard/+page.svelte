@@ -18,6 +18,7 @@
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore } from '../../../server/stores/stores';
 	import { goto } from '$app/navigation';
+	import Records from '../../../components/Records.svelte';
 
 	let monthlySummary = [0, 0];
 	let records = [];
@@ -68,11 +69,12 @@
 		<DashboardSummary user={$authStore.user} />
 		<Wallet user={$authStore.user} />
 		<RecordBar />
-		<div class="flex flex-col">
+		<Records user={$authStore.user} />
+		<!-- <div class="flex flex-col">
 			<RecordCard category="Foods & Drinks" wallet="Cash" />
 			<RecordCard category="Income" wallet="Bank" />
 			<RecordCard category="Foods & Drinks" wallet="Gcash" />
-		</div>
+		</div> -->
 	</div>
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>

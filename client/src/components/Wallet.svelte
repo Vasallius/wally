@@ -3,9 +3,7 @@
 
 	import WalletItem from './WalletItem.svelte';
 
-	import { getDashboardRecords, getMonthlySummary, getWallets } from '../server';
-	let monthlySummary, records;
-	let wallets = [];
+	import { getDashboardRecords, getWallets } from '../server';
 	export let user;
 
 	// Retrieve the user's wallets from the server
