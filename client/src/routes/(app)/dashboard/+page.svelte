@@ -17,32 +17,6 @@
 	];
 	let user = null;
 
-	onAuthStateChanged(auth, async (currentUser) => {
-		isLoading.set(true); // Set isLoading to true
-
-		console.log('Authentication state changed');
-		user = currentUser;
-		if (user !== null) {
-			console.log('User is not null. Wil proceed to get data.');
-			monthlySummary = await getMonthlySummary(user.uid).then((val) => {
-				return val;
-			});
-			records = await getDashboardRecords(user.uid).then((val) => {
-				return val;
-			});
-			wallets = await getWallets(user.uid).then((val) => {
-				return val;
-			});
-		} else {
-			console.log('User is null.');
-		}
-		// console.log(isLoading);
-
-		// console.log('Current user:', user);
-	});
-
-	console.log(auth);
-
 	async function handleLogout() {
 		isLoggingOut.set(true);
 
@@ -60,10 +34,7 @@
 	}
 </script>
 
-{#if $isLoading && $authStore == null}
-	<div>LOADING!!!</div>
-{:else if $authStore}
-	<div>{user.auth.currentUser.email}</div>
+{#if $authStore}
 	<button on:click={handleLogout}>Logout</button>
 	<div>
 		<div class="flex mx-3 mt-4 db-nav">
@@ -104,7 +75,7 @@
 				</div>
 			</div>
 		</div>
-		<Wallet {user} />
+		<Wallet user={$authStore.user} />
 		<RecordBar />
 		<div class="flex flex-col">
 			<RecordCard category="Foods & Drinks" wallet="Cash" />
@@ -112,8 +83,7 @@
 			<RecordCard category="Foods & Drinks" wallet="Gcash" />
 		</div>
 	</div>
-{:else if $isLoggingOut}
-	<div>Logging out...</div>
 {:else}
+	<div>{$authStore}</div>
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}

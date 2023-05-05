@@ -6,7 +6,3 @@ export const authStore = writable(null);
 export const isLoading = writable(true);
 export const isLoggingOut = writable(false);
 
-auth.onAuthStateChanged(user => {
-    console.log("stores setting user")
-    authStore.set(user);
-});
