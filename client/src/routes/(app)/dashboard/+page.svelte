@@ -3,7 +3,15 @@
 	import { logOut } from '../../../server/routes/usersAPI';
 	import { db, auth } from '../../../server/routes/firebase';
 	import RecordCard from '../../../components/RecordCard.svelte';
-	import { getDashboardRecords, getMonthlySummary, getWallets, addRecord, getRecord, deleteRecord, editRecord } from '../../../server';
+	import {
+		getDashboardRecords,
+		getMonthlySummary,
+		getWallets,
+		addRecord,
+		getRecord,
+		deleteRecord,
+		editRecord
+	} from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore } from '../../../server/stores/stores';
@@ -20,48 +28,38 @@
 	async function handleLogout() {
 		const success = await logOut();
 	}
-	onAuthStateChanged(auth, async (currentUser) => {
-		console.log('state changed');
-		user = currentUser;
-		if(user !== null){
-			monthlySummary = await getMonthlySummary(user.uid)
-			.then((val) => {
-				return val
-			});
-			records = await getDashboardRecords(user.uid)
-			.then((val) => {
-				return val;
-			});
-			wallets = await getWallets(user.uid)
-			.then((val) => {
-				return val
-			});
-			let record = {
-				balance: 2500,
-				category: "Others",
-				dateIssued: "something",
-				name: "House fix",
-				recordType: "Expense",
-				subcategory: ""
-			};
-			// let v = await addRecord(user.uid, record)
-			// let v = await editRecord("p9icAjw87yZEpmoCqI6faCofcrC3", 0, {balance: 3000});
-			// console.log(v);
-		}
-		console.log('Current user:', user);
-	});
-
-	
-	console.log(auth);
-
-	// function handleLogout() {
-	// 	const success = logOut();
-	// 	if (success) {
-	// 		goto('/login');
-	// 	} else {
-	// 		console.log('Log out failed');
+	// onAuthStateChanged(auth, async (currentUser) => {
+	// 	console.log('state changed');
+	// 	user = currentUser;
+	// 	if(user !== null){
+	// 		monthlySummary = await getMonthlySummary(user.uid)
+	// 		.then((val) => {
+	// 			return val
+	// 		});
+	// 		records = await getDashboardRecords(user.uid)
+	// 		.then((val) => {
+	// 			return val;
+	// 		});
+	// 		wallets = await getWallets(user.uid)
+	// 		.then((val) => {
+	// 			return val
+	// 		});
+	// 		let record = {
+	// 			balance: 2500,
+	// 			category: "Others",
+	// 			dateIssued: "something",
+	// 			name: "House fix",
+	// 			recordType: "Expense",
+	// 			subcategory: ""
+	// 		};
+	// 		// let v = await addRecord(user.uid, record)
+	// 		// let v = await editRecord("p9icAjw87yZEpmoCqI6faCofcrC3", 0, {balance: 3000});
+	// 		// console.log(v);
 	// 	}
-	// }
+	// 	console.log('Current user:', user);
+	// });
+
+	console.log(auth);
 </script>
 
 {#if $authStore}
