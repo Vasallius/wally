@@ -5,8 +5,6 @@
 
 	export let user;
 
-	// let monthlySummary = [2500, 300];
-
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 
