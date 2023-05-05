@@ -4,6 +4,9 @@
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import RecordCard from '../../../components/RecordCard.svelte';
+	import Tabs from '../../../components/Tabs.svelte';
+	import TabPanel from '../../../components/TabPanel.svelte';
+	import Tab from '../../../components/Tab.svelte';
 	let val = [];
 	let user = null;
 
@@ -85,21 +88,75 @@
 				<div class="text-agray-200 font-primary font-semibold text-header5">₱2,500</div>
 			</div>
 		</div>
-		<div class="flex mx-3 mt-5 mb-4">
+		<div class="flex mx-3 mt-3 mb-3">
 			<div class="text-header5 font-primary font-semibold">Records</div>
 		</div>
-		<div class="flex mx-3 space-x-1.5">
-			<div class="bg-agray-200 text-xs py-2.5 rounded-lg font-medium px-3">All</div>
-			<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Income</div>
-			<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Expense</div>
-			<div class="bg-agray-200 text-xs py-2.5 rounded-lg px-3">Transfer</div>
-		</div>
-		<div class="flex flex-col">
-			<RecordCard category="Foods & Drinks" wallet="Cash" />
-			<RecordCard category="Income" wallet="Bank" />
-			<RecordCard category="Foods & Drinks" wallet="Gcash" />
-		</div>
+		
+		<Tabs>
+			<div class="flex mx-3 space-x-1.5">
+				<Tab>All</Tab>
+				<Tab>Income</Tab>
+				<Tab>Expense</Tab>
+				<Tab>Transfer</Tab>
+			</div>
+
+			<TabPanel>
+				<div class="max-h-80 flex flex-col overflow-y-scroll scrollbar-thin">
+					<RecordCard category="All Panel" wallet="Cash" />
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Foods & Drinks" wallet="Gcash" />
+					<RecordCard category="All Panel" wallet="Cash" />
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Foods & Drinks" wallet="Gcash" />
+					<RecordCard category="All Panel" wallet="Cash" />
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Foods & Drinks" wallet="Gcash" />
+					<RecordCard category="All Panel" wallet="Cash" />
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Foods & Drinks" wallet="Gcash" />
+				</div>
+			</TabPanel>
+
+			<TabPanel>
+				<div class="max-h-80 flex flex-col overflow-y-auto">
+					<RecordCard category="Income Panel" wallet="Cash" />					
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Income Panel" wallet="Cash" />					
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Salary" wallet="Bank" />
+					<RecordCard category="Salary" wallet="Bank" />
+				</div>
+			</TabPanel>
+
+			<TabPanel>
+				<div class="max-h-80 flex flex-col overflow-y-auto">
+					<RecordCard category="Expense Panel" wallet="Cash" />
+					<RecordCard category="Foods & Drinks" wallet="Gcash" />
+				</div>
+			</TabPanel>
+			<TabPanel>
+				<div class="max-h-80 flex flex-col overflow-y-auto">
+					<RecordCard category="Transfer Panel" wallet="Cash" />
+				</div>
+			</TabPanel>
+		</Tabs>
 	</div>
+
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
+
+<style>
+	::-webkit-scrollbar {
+  		width: 4px;
+	}
+
+	::-webkit-scrollbar-track { 
+  		background: #ffffff00;
+	}
+
+	::-webkit-scrollbar-thumb { 
+  		background: #E3E3E3;
+		border-radius:10px;
+	}
+</style>
