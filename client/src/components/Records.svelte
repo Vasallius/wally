@@ -21,7 +21,7 @@
 	console.log(promise);
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col mx-3">
 	{#await promise then records}
 		{#each records as record}
 			<RecordCard

@@ -70,11 +70,6 @@
 		<Wallet user={$authStore.user} />
 		<RecordBar />
 		<Records user={$authStore.user} />
-		<!-- <div class="flex flex-col">
-			<RecordCard category="Foods & Drinks" wallet="Cash" />
-			<RecordCard category="Income" wallet="Bank" />
-			<RecordCard category="Foods & Drinks" wallet="Gcash" />
-		</div> -->
 	</div>
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
