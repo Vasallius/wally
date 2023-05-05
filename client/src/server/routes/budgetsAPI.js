@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { collection, getDocs, addDoc, deleteDoc, doc, query, where } from 'firebase/firestore'
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where } from 'firebase/firestore'
 import { db, auth} from './firebase'
 
 
@@ -20,20 +20,46 @@ export const getAllBudgets = async () => {
   return await getDocsUtility(snapQuery);
 };
 
-export const addBudget = (budget) => {
-  const collectionReference = collection(db, 'budgets');
-  
-  addDoc(collectionReference, budget)
-};
+export const addBudget = async (userID, budget) => {
+  try {
+    const collectionReference = collection(db, 'budgets');
+    const recordsReference = query(collectionReference,
+      where('userID', '==', userID)
+    );
+    const budgets = await getDocsUtility(recordsReference)
+    .then((val) => {
+      return val;
+    });
+    budgets[0].budgets.push(budget);
+    const documentReference = doc(db, 'budgets', budgets[0].id);
+    updateDoc(documentReference, {budgets: budgets[0].budgets});
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
-
-/**
- * 
- * documentID: Refers to the document ID of the budget document to be deleted. 
- * formReference: Refers to the form submitted.
- */
-export const deleteBudget = (documentID) => {
-  const documentReference = doc(db, 'budgets', documentID);
-
-  deleteDoc(documentReference)
+export const deleteBudget = async (userID, index) => {
+  try {
+    const collectionReference = collection(db, 'budgets');
+    const recordsReference = query(collectionReference,
+      where('userID', '==', userID)
+    );
+    const budgets = await getDocsUtility(recordsReference)
+    .then((val) => {
+      return val;
+    });
+    if(budgets[0].budgets.length > index){
+      budgets[0].budgets.filter((val, ind) => {
+        return ind != index;
+      })
+      const documentReference = doc(db, 'budgets', budgets[0].id);
+      updateDoc(documentReference, {budgets: budgets[0].budgets});
+      return true;
+    }else{
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
 };

@@ -25,3 +25,17 @@ dashboardCardsAPI
 - findFunction
 - getDashboardRecords
 - getDocsUtility
+recordManipulationsAPI
+- addRecord
+- getRecord
+- deleteRecord
+- editRecord
+budgetsAPI
+- addBudget
+- deleteBudget
+usersAPI
+- login
+- signup
+- logout
+categoriesAPI
+- 
