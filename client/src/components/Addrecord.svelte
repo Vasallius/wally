@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
-	import Textfield from './Textfield.svelte';
+	import DropdownWallet from './DropdownWallet.svelte';
+	import DropdownCategory from './DropdownCategory.svelte';
+
 	// <<START: Modal Pop Up>>
 	export let isOpen = false;
 	const closeModal = () => {
@@ -8,8 +10,38 @@
 	};
 	// <<END: Modal Pop Up>>
 
+	// <<START: Handling Different Transactions>>
+
+	let transactionType = 'income';
+	let sign = '+';
+	let color = 'primary';
+	let labelName = 'account';
+
+	function changeTransactionType(event: Event) {
+		const target = event.currentTarget as HTMLInputElement;
+		transactionType = target.value;
+
+		if (transactionType === 'expense') {
+			sign = '-';
+			color = 'secondary';
+			labelName = 'account';
+		} else if (transactionType === 'transfer') {
+			sign = '';
+			labelName = 'from account';
+		} else {
+			sign = '+';
+			color = 'primary';
+			labelName = 'account';
+		}
+	}
+
+	// <<END: Handling Different Transaction>>
+
+	// <<START: Handling the calculator>>
+
 	let numberInput = '';
 	let total = 0;
+
 	const allowedKeys = [
 		'1',
 		'2',
@@ -98,58 +130,68 @@
 					<Check fill="var(--agray-600)" width={32} height={32} /></button
 				>
 			</div>
-			<div class="radio-group mb-4">
-				<input type="radio" id="income" name="transaction-type" value="income" checked />
-				<label for="income" class="rounded-l-lg">Income</label>
 
-				<input type="radio" id="expense" name="transaction-type" value="expense" />
-				<label for="expense">Expense</label>
-
-				<input type="radio" id="transfer" name="transaction-type" value="transfer" />
-				<label for="transfer" class="rounded-r-lg">Transfer</label>
-			</div>
-
-			<!-- START OF CODE TO BE REVISED -->
-
-			<div class="flex flex-row mb-4 mx-auto gap-2">
-				<div class="flex grow rounded-lg border-2 border-sky-500">
-					<img class="ml-4 mr-8" src="/WalletFill.svg" alt="background" />
-					<div class="flex flex-col">
-						<div class="text-super-sm font-primary font-semibold text-center ">Account</div>
-						<div class="text-sm font-primary font-bold">WALLET</div>
-					</div>
-				</div>
-				<div class="flex grow rounded-lg border-2 border-sky-500">
-					<img class="ml-4 mr-2" src="/TagFill.svg" alt="background" />
-					<div class="flex flex-col">
-						<div class="text-super-sm font-primary font-semibold text-center ">Category</div>
-						<div class="text-sm font-primary font-bold">Food & Drinks</div>
-					</div>
-				</div>
-			</div>
-			<!-- ====== REVISION ===== -->
-			<div class="flex flex-row mb-4 mx-auto gap-2">
-				<select
-					class="flex grow rounded-lg border-2 border-primary py-2"
-					placeholder=" "
-					id="intervals-select"
+			<div class="radio-group mb-1">
+				<input
+					type="radio"
+					id="income"
+					name="transaction-type"
+					value="income"
+					class="peer/income"
+					checked={transactionType === 'income'}
+					on:change={changeTransactionType}
+				/>
+				<label
+					class="bg-agray-300 text-agray-600 peer-checked/income:bg-primary peer-checked/income:text-white rounded-l-lg"
+					for="income">Income</label
 				>
-					<option value="Daily">Wallet</option>
-					<option value="Daily">Wallet</option>
-					<option value="Daily">Wallet</option>
-				</select>
-				<label for="intervals-select" class="text-super-sm font-primary font-semibold text-center">
-					Account
-				</label>
+
+				<input
+					type="radio"
+					id="expense"
+					name="transaction-type"
+					value="expense"
+					class="peer/expense"
+					checked={transactionType === 'expense'}
+					on:change={changeTransactionType}
+				/>
+				<label
+					class="bg-agray-300 text-agray-600 peer-checked/expense:bg-secondary peer-checked/expense:text-white"
+					for="expense">Expense</label
+				>
+
+				<input
+					type="radio"
+					id="transfer"
+					name="transaction-type"
+					value="transfer"
+					class="peer/transfer"
+					checked={transactionType === 'transfer'}
+					on:change={changeTransactionType}
+				/>
+				<label
+					class="bg-agray-300 text-agray-600 peer-checked/transfer:bg-tertiary peer-checked/transfer:text-white rounded-r-lg"
+					for="transfer">Transfer</label
+				>
+			</div>
+			<div class="flex flex-row gap-2 mb-10">
+				<DropdownWallet {labelName} />
+				{#if transactionType === 'transfer'}
+					<DropdownWallet labelName="to account" />
+				{/if}
+				{#if !(transactionType === 'transfer')}
+					<DropdownCategory />
+				{/if}
 			</div>
 
-			<!-- END OF CODE TO BE REVISED -->
 			<div class="flex justify-between mx-auto border-b-2 pb-6">
-				<div class="font-primary text-primary font-normal text-6xl">+</div>
+				<div class="font-primary font-normal text-4xl text-{color}">
+					{sign}
+				</div>
 				<div class="flex">
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
-						class="font-primary font-normal text-5xl self-end focus:outline-none text-right w-full "
+						class="font-primary font-normal text-4xl self-end focus:outline-none text-right w-full "
 						bind:value={numberInput}
 						on:blur={onBlur}
 						autofocus
@@ -165,7 +207,7 @@
 							}
 						}}
 					/>
-					<div class="self-end p-[6px]">PHP</div>
+					<div class="self-end p-[6px] text-sm">PHP</div>
 				</div>
 			</div>
 
@@ -238,15 +280,8 @@
 		flex-grow: 1;
 		text-align: center;
 		padding: 5px 0;
-		background-color: #f2f2f2;
-		color: #666;
 		font-size: 16px;
 		font-weight: bold;
 		cursor: pointer;
-	}
-
-	.radio-group input[type='radio']:checked + label {
-		background-color: var(--primary);
-		color: #fff;
 	}
 </style>
