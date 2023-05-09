@@ -12,6 +12,7 @@ import {
 import {
   getMonthlySummary,
   getWallets,
+  getDashboardRecords,
   getIncomeRecords,
   getExpenseRecords,
   getTransferRecords,
@@ -26,6 +27,7 @@ export {
   deleteSubcategory,
   getMonthlySummary,
   getWallets,
+  getDashboardRecords,
   getIncomeRecords,
   getExpenseRecords,
   getTransferRecords,

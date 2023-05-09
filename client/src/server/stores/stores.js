@@ -1,3 +1,5 @@
-import { writable } from "svelte/store";
+// @ts-nocheck
+// stores.js
+import { writable } from 'svelte/store';
+export const authStore = writable(null);
 
-export const authUser1 = writable();

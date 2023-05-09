@@ -1,27 +1,22 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth';
+import { collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
+import { db, auth} from './firebase'
 
-const firebaseConfig = {
-  apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
-  authDomain: "wally-55432.firebaseapp.com",
-  projectId: "wally-55432",
-  storageBucket: "wally-55432.appspot.com",
-  messagingSenderId: "116738427703",
-  appId: "1:116738427703:web:6f072f98620c5ce4d668b2"
-};
 
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
-const auth = getAuth()
-
-export const addRecord = (record) => {
+export const addRecord = async (userID, record) => {
   const collectionReference = collection(db, 'records');
-  
-  addDoc(collectionReference, record)
+  const recordsReference = query(collectionReference,
+    where('userID', '==', userID)
+  );
+  const records = await getDocsUtility(recordsReference)
+  .then((val) => {
+    return val;
+  });
+  console.log(records);
+  records[0].records.push(record);
+  const documentReference = doc(db, 'records', records[0].id);
+  updateDoc(documentReference, {records: records[0].records});
 }
 
 const getDocsUtility = async (collectionReference) => {
@@ -44,33 +39,71 @@ export const getAllRecords = async () => {
   }
 }
 
-export const getRecord = (recordID) => {
-  const documentReference = doc(db, 'records', recordID);
-
-  onSnapshot(documentReference, (doc) => {
-    return {...doc.data, id: doc.id};
-  })
+export const getRecord = async (userID, index) => {
+  const collectionReference = collection(db, 'records');
+  const recordsReference = query(collectionReference, where('userID', '==', userID));
+  let record = [];
+  const querySnap = await getDocs(recordsReference)
+  .then((val) => {
+    val.forEach((doc) => {
+      record.push({...doc.data(), id: doc.id});
+    })
+  });
+  if(index >= record[0].records.length){
+    return null;
+  } else{
+    return record[0].records[index];
+  }
 }
 
-export const deleteRecord = (recordID) => {
-  try {
-    const documentReference = doc(db, 'records', recordID);
-
-    deleteDoc(documentReference)
+export const deleteRecord = async (userID, index) => {
+  const collectionReference = collection(db, 'records');
+  const recordsReference = query(collectionReference, where('userID', '==', userID));
+  let record = [];
+  const querySnap = await getDocs(recordsReference)
+  .then((val) => {
+    val.forEach((doc) => {
+      record.push({...doc.data(), id: doc.id});
+    })
+  });
+  if(index < record[0].records.length){
+    record[0].records = record[0].records.filter((val, ind) => {
+      return ind != index;
+    })
+    const documentReference = doc(db, 'records', record[0].id)
+  
+    updateDoc(documentReference, {records: record[0].records});
     return true;
-  } catch (error) {
+  } else {
     return false;
   }
 }
 
-export const editRecord = (recordID, updateValues) => {
-  try {
-    const documentReference = doc(db, 'records', recordID)
-
-    updateDoc(documentReference, updateValues)
-
+export const editRecord = async (userID, index, updateValues) => {
+  const collectionReference = collection(db, 'records');
+  const recordsReference = query(collectionReference, where('userID', '==', userID));
+  let record = [];
+  const querySnap = await getDocs(recordsReference)
+  .then((val) => {
+    val.forEach((doc) => {
+      record.push({...doc.data(), id: doc.id});
+    })
+  });
+  if(index < record[0].records.length){
+    for(const [key, values] of Object.entries(record[0].records[index])){
+      for(const [key2, values2] of Object.entries(updateValues)){
+        if(key == key2){
+          record[0].records[index][key] = values2;
+          break;
+        }
+      }
+    }
+    
+    const documentReference = doc(db, 'records', record[0].id)
+  
+    updateDoc(documentReference, {records: record[0].records});
     return true;
-  } catch (error) {
+  } else {
     return false;
   }
 }

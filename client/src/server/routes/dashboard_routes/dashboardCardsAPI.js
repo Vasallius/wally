@@ -2,9 +2,6 @@
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, getDocs, onSnapshot, query, where, and } from 'firebase/firestore'
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { authUser1 } from '../../stores/stores';
-import { get } from 'svelte/store';
 const firebaseConfig = {
   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
   authDomain: "wally-55432.firebaseapp.com",
@@ -17,34 +14,28 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const db = getFirestore()
-const auth = getAuth();
-console.log(auth);
 
-let newval = "";
-
-const findFunction = async (recordType) => {
+const findFunction = async (recordType, userID) => {
   const coll = collection(db, 'records')
   // eslint-disable-next-line no-undef
-  console.log(auth.currentUser, newval);
   const incomeRecordsReference = query(coll,
-    where('recordType', '==', recordType),
-    where('userID', '==', get(authUser1))
+    where('userID', '==', userID)
   );
   let records = []
   const querySnap = await getDocs(incomeRecordsReference);
-  console.log('here4');
   querySnap.forEach((doc) => {
     records.push({...doc.data(), id: doc.id});
   });
-  return records;
+  let specificRecords = records[0].records.filter((currentRecord) => {
+    return currentRecord.recordType == recordType;
+  })
+  return specificRecords;
 }
 
-export const getMonthlySummary = async () => {
+export const getMonthlySummary = async (userID) => {
   try {
-    const expense = await findFunction('Expense');
-    console.log('here1');
-    const income = await findFunction('Income');
-    console.log('here2');
+    const expense = await findFunction('Expense', userID);
+    const income = await findFunction('Income', userID);
     const totalExpense = expense.reduce((total, val) => {
       return total+val.balance;
     }, 0);
@@ -66,21 +57,48 @@ const getDocsUtility = async (collectionReference) => {
   return wallets;
 }
 
-export const getWallets = async () => {
-  // const collectionReference = collection(db, 'wallets');
-  // const querySnap = query(collectionReference, where('userID', '==', auth.currentUser.uid))
-  // const wallets = await getDocsUtility(querySnap);
-  // return wallets;
+export const getWallets = async (userID) => {
+  const coll = collection(db, 'wallets')
+  // eslint-disable-next-line no-undef
+  const incomeRecordsReference = query(coll,
+    where('userID', '==', userID)
+  );
+  let wallets = []
+  const querySnap = await getDocs(incomeRecordsReference)
+  .then((val) => {
+    val.forEach((doc) => {
+      wallets.push({...doc.data(), id: doc.id});
+    })
+  });
+  // console.log(records[0].records, "smth");
+  return wallets[0].wallets;
 };
 
-export const getIncomeRecords = async () => {
-  return await findFunction('Income');
+export const getDashboardRecords = async (userID) => {
+  const coll = collection(db, 'records')
+  // eslint-disable-next-line no-undef
+  const incomeRecordsReference = query(coll,
+    where('userID', '==', userID)
+  );
+  let records = []
+  const querySnap = await getDocs(incomeRecordsReference)
+  .then((val) => {
+    val.forEach((doc) => {
+      records.push({...doc.data(), id: doc.id});
+    })
+  });
+  // console.log(records[0].records, "smth");
+  return records[0].records;
+}
+
+export const getIncomeRecords = async (userID) => {
+  return await findFunction('Income', userID);
 };
 
-export const getExpenseRecords = async () => {
-  return await findFunction('Expense');
+export const getExpenseRecords = async (userID) => {
+  return await findFunction('Expense', userID);
 };
 
-export const getTransferRecords = async () => {
-  return await findFunction('Transfer');
+export const getTransferRecords = async (userID) => {
+  return await findFunction('Transfer', userID);
 };
