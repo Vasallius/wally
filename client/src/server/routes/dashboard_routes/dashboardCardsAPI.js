@@ -60,20 +60,15 @@ const getDocsUtility = async (collectionReference) => {
 }
 
 export const getWallets = async (userID) => {
-  const coll = collection(db, 'wallets')
-  // eslint-disable-next-line no-undef
-  const incomeRecordsReference = query(coll,
-    where('userID', '==', userID)
-  );
-  let wallets = []
-  const querySnap = await getDocs(incomeRecordsReference)
-    .then((val) => {
-      val.forEach((doc) => {
-        wallets.push({ ...doc.data(), id: doc.id });
-      })
-    });
-  // console.log(records[0].records, "smth");
-  return wallets[0].wallets;
+  const docRef = doc(db, 'wallets', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().wallets;
+    return data
+  } else {
+    return "NO WALLETS"
+  }
 };
 
 export const addWallet = async (userID, wallet) => {
@@ -81,10 +76,8 @@ export const addWallet = async (userID, wallet) => {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const data = docSnap.data().wallets;
-    console.log("Document data:", data);
     const oldwallets = [...data];
     const newwallets = oldwallets.concat(wallet);
-    console.log(newwallets);
     await updateDoc(docRef, {
       wallets: newwallets
     });
