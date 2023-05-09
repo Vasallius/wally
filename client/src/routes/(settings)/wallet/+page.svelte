@@ -1,7 +1,10 @@
 <script>
+	// @ts-nocheck
+
 	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import WalletRecord from '../../../components/WalletRecord.svelte';
+	import WalletRecordList from '../../../components/WalletRecordList.svelte';
 	import PopUpWallet from '../../../components/PopUpWallet.svelte';
+	import { authStore } from '../../../server/stores/stores';
 
 	export const name = 'wallet';
 	let isModalOpen = false;
@@ -18,21 +21,26 @@
 	};
 </script>
 
-<SettingsNav>Wallet</SettingsNav>
+{#if $authStore}
+	<SettingsNav>Wallet</SettingsNav>
+	<WalletRecordList user={$authStore.user} />
+	<!-- {#each WalletRecords as item}
+		<WalletRecord title={item.title} balance={item.balance} />
+	{/each} -->
 
-{#each WalletRecords as item}
-	<WalletRecord title={item.title} balance={item.balance} />
-{/each}
+	<div class="flex flex-col mt-auto relative">
+		<button
+			on:click={openPopUp}
+			class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"
+		>
+			+
+		</button>
+	</div>
 
-<div class="flex flex-col mt-auto relative">
-	<button
-		on:click={openPopUp}
-		class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"
-	>
-		+
-	</button>
-</div>
-
-<div class="absolute z-50 h-full m-auto ">
-	<PopUpWallet bind:isOpen={isModalOpen} {label} {amount} />
-</div>
+	<div class="absolute z-50 h-full m-auto ">
+		<PopUpWallet bind:isOpen={isModalOpen} {label} {amount} />
+	</div>
+	<div>{$authStore.user.email}</div>
+{:else}
+	<div>You must be authenticated to access the dashboard.</div>
+{/if}
