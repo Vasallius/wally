@@ -1,18 +1,24 @@
 <script>
 	// @ts-nocheck
 
+	import Loader from '../../../components/Loader.svelte';
 	import Textfield from '../../../components/Textfield.svelte';
 	import { logIn } from '../../../server';
 	let message = '';
+	let isLoading = false;
 
 	const login = async () => {
+		isLoading = true;
+
 		try {
 			let x = document.querySelector('.login').email.value;
 			let y = document.querySelector('.login').password.value;
 
 			const errorMessage = await logIn(x, y); // Add 'await' here
+
 			if (errorMessage === '') {
 				console.log('Log in succesful.');
+				message = '';
 			} else {
 				console.log('error:', errorMessage);
 				message = errorMessage;
@@ -20,6 +26,7 @@
 		} catch (error) {
 			console.log('error');
 		}
+		isLoading = false;
 	};
 </script>
 
@@ -48,7 +55,11 @@
 				on:click={login}
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
-				Log in
+				{#if isLoading}
+					<Loader />
+				{:else}
+					Log in
+				{/if}
 			</button>
 		</div>
 	</form>

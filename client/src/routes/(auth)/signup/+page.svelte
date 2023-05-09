@@ -4,8 +4,11 @@
 	import Textfield from '../../../components/Textfield.svelte';
 	import { signUp } from '../../../server/index.js';
 	import { goto } from '$app/navigation';
+	import Loader from '../../../components/Loader.svelte';
+	let isLoading = false;
 
 	const submit = () => {
+		isLoading = true;
 		try {
 			// @ts-ignore
 			signUp(
@@ -17,6 +20,7 @@
 		} catch (error) {
 			console.log('Signup process faield.');
 		}
+		isLoading = false;
 	};
 </script>
 
@@ -46,7 +50,11 @@
 				on:click={submit}
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
-				Create Account
+				{#if isLoading}
+					<Loader />
+				{:else}
+					Create Account
+				{/if}
 			</button>
 		</div>
 	</form>
