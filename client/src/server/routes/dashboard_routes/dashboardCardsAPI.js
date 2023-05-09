@@ -37,10 +37,10 @@ export const getMonthlySummary = async (userID) => {
     const expense = await findFunction('Expense', userID);
     const income = await findFunction('Income', userID);
     const totalExpense = expense.reduce((total, val) => {
-      return total+val.balance;
+      return total+val.amount;
     }, 0);
     const totalIncome = income.reduce((total, val) => {
-      return total+val.balance;
+      return total+val.amount;
     }, 0);
     return [totalIncome, totalExpense];
   } catch (error) {

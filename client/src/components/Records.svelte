@@ -27,7 +27,7 @@
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}
-				amount={record.balance}
+				amount={record.amount}
 				date={record.dateIssued}
 			/>
 		{/each}
