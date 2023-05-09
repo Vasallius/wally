@@ -5,6 +5,21 @@
 	// @ts-ignore
 	export let user;
 
+	const months = [
+			'Jan',
+			'Feb',
+			'Mar',
+			'Apr',
+			'May',
+			'Jun',
+			'Jul',
+			'Aug',
+			'Sep',
+			'Oct',
+			'Nov',
+			'Dec'
+	];
+
 	async function fetchRecords() {
 		// @ts-ignore
 		return getDashboardRecords(user.uid);
@@ -22,7 +37,7 @@
 				category={record.category}
 				wallet={record.wallet}
 				amount={record.amount}
-				date={record.dateIssued}
+				date={`${months[new Date(record.date).getMonth()]} ${new Date(record.date).getDate()}, ${new Date(record.date).getFullYear()}`}
 			/>
 		{/each}
 	{/await}

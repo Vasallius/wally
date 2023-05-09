@@ -90,6 +90,10 @@ export const getDashboardRecords = async (userID) => {
       })
     });
   // console.log(records[0].records, "smth");
+  records[0].records = records[0].records.sort(
+    (firstDate, secondDate) => Number(new Date(secondDate.date)) - Number(new Date(firstDate.date))
+  );
+  console.log(records[0].records, "yah");
   return records[0].records;
 }
 

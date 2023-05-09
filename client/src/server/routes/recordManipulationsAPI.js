@@ -13,7 +13,7 @@ export const addRecord = async (userID, record) => {
   .then((val) => {
     return val;
   });
-  console.log(records);
+  record["date"] = new Date();
   records[0].records.push(record);
   const documentReference = doc(db, 'records', records[0].id);
   updateDoc(documentReference, {records: records[0].records});
