@@ -1,13 +1,12 @@
 <script lang="ts">
+	import { authStore } from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
+	import { addRecord } from '../server';
 
 	// <<START: Modal Pop Up>>
-	export let isOpen = false;
-	const closeModal = () => {
-		isOpen = false;
-	};
+
 	// <<END: Modal Pop Up>>
 
 	// <<START: Handling Different Transactions>>
@@ -16,6 +15,8 @@
 	let sign = '+';
 	let color = 'primary';
 	let labelName = 'account';
+	let selectedWallet = '';
+	let selectedCategory = '';
 
 	function changeTransactionType(event: Event) {
 		const target = event.currentTarget as HTMLInputElement;
@@ -65,6 +66,50 @@
 	];
 
 	const operators = ['*', '+', '-', '^', '.', '%', '^', '/'];
+
+	export let isOpen = false;
+	const closeModal = () => {
+		isOpen = false;
+	};
+
+	function getCurrentDate() {
+		const months = [
+			'Jan',
+			'Feb',
+			'Mar',
+			'Apr',
+			'May',
+			'Jun',
+			'Jul',
+			'Aug',
+			'Sep',
+			'Oct',
+			'Nov',
+			'Dec'
+		];
+		const today = new Date();
+		const monthIndex = today.getMonth();
+		const month = months[monthIndex];
+		const day = today.getDate();
+		return `${month} ${day}`;
+	}
+
+	const handleSubmit = () => {
+		isOpen = false;
+		let currentDate = getCurrentDate();
+		let record = {
+			balance: parseInt(numberInput),
+			category: selectedCategory,
+			date: currentDate,
+			name: 'magic',
+			recordType: transactionType,
+			wallet: selectedWallet
+		};
+		console.log(record);
+		addRecord($authStore.user.uid, record);
+
+		numberInput = ''; // Clears the calculator upon modal close
+	};
 
 	function isDuplicate(value: string | number) {
 		if (operators.includes(numberInput.slice(-1)) && operators.includes(value.toString())) {
@@ -122,14 +167,18 @@
 {#if isOpen}
 	<form class="bg-black/40 flex flex-co h-screen m-auto max-w-md">
 		<div class="bg-white rounded-lg h-fit w-11/12 m-auto p-6">
+			<!-- Modal header with close and submit buttons -->
+
 			<div class="flex justify-between m-auto mb-4">
 				<button on:click={closeModal} class=""
 					><X fill="var(--agray-600)" width={32} height={32} /></button
 				>
-				<button type="submit" on:click={closeModal} class="">
+				<button type="submit" on:click={handleSubmit} class="">
 					<Check fill="var(--agray-600)" width={32} height={32} /></button
 				>
 			</div>
+
+			<!-- Radio group for selecting transaction type (Income, Expense, Transfer) -->
 
 			<div class="radio-group mb-1">
 				<input
@@ -174,13 +223,16 @@
 					for="transfer">Transfer</label
 				>
 			</div>
+
+			<!-- Group of dropdown menus for selecting a wallet and transaction type -->
+
 			<div class="flex flex-row gap-2 mb-10">
-				<DropdownWallet {labelName} />
+				<DropdownWallet {labelName} bind:selectedWallet />
 				{#if transactionType === 'transfer'}
-					<DropdownWallet labelName="to account" />
+					<DropdownWallet labelName="to account" bind:selectedWallet />
 				{/if}
 				{#if !(transactionType === 'transfer')}
-					<DropdownCategory />
+					<DropdownCategory bind:selectedCategory />
 				{/if}
 			</div>
 
@@ -210,6 +262,8 @@
 					<div class="self-end p-[6px] text-sm">PHP</div>
 				</div>
 			</div>
+
+			<!-- Keypad for inputting transaction amount -->
 
 			<div class="keypad mx-auto py-6">
 				<button on:click={clear}>C</button>

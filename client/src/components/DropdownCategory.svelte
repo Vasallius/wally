@@ -1,8 +1,16 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
+
 	export let CategoryRecords = [
 		{ id: 0, category: 'Shopping' },
 		{ id: 1, category: 'Essentials' }
 	];
+
+	export let selectedCategory: string;
+
+	onMount(() => {
+		selectedCategory = CategoryRecords[0].category;
+	});
 </script>
 
 <div class="w-full mx-auto form-inline flex flex-col items-center">
