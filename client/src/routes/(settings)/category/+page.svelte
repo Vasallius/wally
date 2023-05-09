@@ -16,8 +16,9 @@
 
 <SettingsNav>Category</SettingsNav>
 
-<CategoryRecordList user={$authStore.user} />
-
+<div class="max-h-full flex flex-col overflow-y-scroll">
+	<CategoryRecordList user={$authStore.user} />
+</div>
 <!-- {#each CategoryRecords as item}
 	<CategoryRecord category={item.category} />
 {/each} -->
@@ -34,3 +35,18 @@
 <div class="absolute z-50 h-full m-auto ">
 	<PopUpCategory bind:isOpen={isModalOpen} {label} />
 </div>
+
+<style>
+	::-webkit-scrollbar {
+  		width: 4px;
+	}
+
+	::-webkit-scrollbar-track { 
+  		background: #ffffff00;
+	}
+
+	::-webkit-scrollbar-thumb { 
+  		background: #E3E3E3;
+		border-radius:10px;
+	}
+</style>

@@ -30,17 +30,16 @@
 	console.log(promise);
 </script>
 
-<div class="flex flex-col mx-3">
-	{#await promise then records}
-		{#each records as record}
-			<RecordCard
-				category={record.category}
-				wallet={record.wallet}
-				amount={record.amount}
-				date={`${months[new Date(record.date).getMonth()]} ${new Date(
-					record.date
-				).getDate()}, ${new Date(record.date).getFullYear()}`}
-			/>
-		{/each}
-	{/await}
-</div>
+{#await promise then records}
+	{#each records as record}
+		<RecordCard
+			category={record.category}
+			wallet={record.wallet}
+			amount={record.amount}
+			date={`${months[new Date(record.date).getMonth()]} ${new Date(
+				record.date
+			).getDate()}, ${new Date(record.date).getFullYear()}`}
+		/>
+	{/each}
+{/await}
+

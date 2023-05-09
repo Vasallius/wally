@@ -27,8 +27,7 @@
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary user={$authStore.user} />
 		<Wallet user={$authStore.user} />
-		<RecordBar />
-		<Records user={$authStore.user} />
+		<RecordBar user={$authStore.user} />		
 	</div>
 
 	<!-- Button is used to add records -->
