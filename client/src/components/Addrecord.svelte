@@ -1,128 +1,12 @@
-<script lang="ts">
-	import { authStore } from '../server/stores/stores.js';
-	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
-	import DropdownWallet from './DropdownWallet.svelte';
-	import DropdownCategory from './DropdownCategory.svelte';
-	import { addRecord } from '../server';
-
-	// <<START: Modal Pop Up>>
-
-	// <<END: Modal Pop Up>>
-
-	// <<START: Handling Different Transactions>>
-
-	let transactionType = 'income';
-	let sign = '+';
-	let color = 'primary';
-	let labelName = 'account';
-	let selectedWallet = '';
-	let selectedCategory = '';
-
-	function changeTransactionType(event: Event) {
-		const target = event.currentTarget as HTMLInputElement;
-		transactionType = target.value;
-
-		if (transactionType === 'expense') {
-			sign = '-';
-			color = 'secondary';
-			labelName = 'account';
-		} else if (transactionType === 'transfer') {
-			sign = '';
-			labelName = 'from account';
-		} else {
-			sign = '+';
-			color = 'primary';
-			labelName = 'account';
-		}
-	}
-
-	// <<END: Handling Different Transaction>>
-
-	// <<START: Handling the calculator>>
+<script>
+	import { fly } from 'svelte/transition';
 
 	let numberInput = '';
 	let total = 0;
 
-	const allowedKeys = [
-		'1',
-		'2',
-		'3',
-		'4',
-		'5',
-		'6',
-		'7',
-		'8',
-		'9',
-		'0',
-		'*',
-		'+',
-		'-',
-		'^',
-		'.',
-		'%',
-		'^',
-		'/',
-		'Backspace'
-	];
-
-	const operators = ['*', '+', '-', '^', '.', '%', '^', '/'];
-
-	export let isOpen = false;
-	const closeModal = () => {
-		isOpen = false;
-	};
-
-	function getCurrentDate() {
-		const months = [
-			'Jan',
-			'Feb',
-			'Mar',
-			'Apr',
-			'May',
-			'Jun',
-			'Jul',
-			'Aug',
-			'Sep',
-			'Oct',
-			'Nov',
-			'Dec'
-		];
-		const today = new Date();
-		const monthIndex = today.getMonth();
-		const month = months[monthIndex];
-		const day = today.getDate();
-		return `${month} ${day}`;
-	}
-
-	const handleSubmit = () => {
-		isOpen = false;
-		let currentDate = getCurrentDate();
-		let record = {
-			balance: parseInt(numberInput),
-			category: selectedCategory,
-			name: 'magic',
-			recordType: transactionType,
-			wallet: selectedWallet
-		};
-		console.log(record);
-		addRecord($authStore.user.uid, record);
-
-		numberInput = ''; // Clears the calculator upon modal close
-	};
-
-	function isDuplicate(value: string | number) {
-		if (operators.includes(numberInput.slice(-1)) && operators.includes(value.toString())) {
-			return true; // Return true if last character is already an operator and new value is also an operator
-		}
-		return false; // For all other cases, return false to allow the input
-	}
-
-	function addToEquation(value: string | number) {
-		if (value === 'backspace') {
-			numberInput = numberInput.slice(0, -1);
-		} else if (!isDuplicate(value)) {
-			numberInput += value;
-		}
+	// private function
+	function addToEquation(value) {
+		numberInput += value;
 	}
 
 	const clear = () => {
@@ -132,209 +16,106 @@
 
 	function calculate() {
 		if (numberInput !== '') {
-			const resultValue = result();
-			const roundedResult = resultValue.toFixed(2);
-			const formattedResult = parseFloat(roundedResult).toString();
-			numberInput = formattedResult;
+			numberInput = result().toString();
 		}
+	}
+
+	function replaceAll(string, search, replace) {
+		return string.split(search).join(replace);
+	}
+
+	function formatString(value) {
+		return replaceAll(replaceAll(value, '*', 'x'), '/', '÷');
 	}
 
 	// computed
 	let result = () => {
-		if (!isNaN(Number(numberInput.slice(-1)))) {
-			let expr = numberInput;
-			if (expr.includes('%')) {
-				let exprParts = expr.split('%');
-				let percentValue = parseFloat(exprParts[0]) / 100;
-				expr = percentValue.toString() + exprParts.slice(1).join('');
-			}
-			return eval(expr);
+		if (!isNaN(numberInput.slice(-1))) {
+			return eval(numberInput);
 		}
 		return eval(numberInput.slice(0, -1));
 	};
 
 	// reactive values
-	$: if (numberInput !== '' && !isNaN(Number(numberInput.slice(-1))) && numberInput != result()) {
+	$: if (numberInput !== '' && !isNaN(numberInput.slice(-1)) && numberInput != result()) {
 		total = result().toString();
-	}
-
-	function onBlur(this: HTMLInputElement) {
-		this.focus();
 	}
 </script>
 
-{#if isOpen}
-	<form class="bg-black/40 flex flex-co h-screen m-auto max-w-md fixed overflow-hidden">
-		<div class="bg-white rounded-lg h-fit w-11/12 m-auto p-6">
-			<!-- Modal header with close and submit buttons -->
+<section class="app">
+	<div class="results">
+		<div class="calculations">{numberInput}</div>
+		{#if total !== 0}
+			<input transition:fly={{ x: 10, duration: 800 }} type="text" class="total" value={total} />
+		{/if}
+	</div>
 
-			<div class="flex justify-between m-auto mb-4">
-				<button on:click={closeModal} class=""
-					><X fill="var(--agray-600)" width={32} height={32} /></button
-				>
-				<button type="submit" on:click={handleSubmit} class="">
-					<Check fill="var(--agray-600)" width={32} height={32} /></button
-				>
-			</div>
+	<div class="input-pad">
+		<button expand="3" type="clear" clicked={clear} />
+		<button type="operator" clicked={() => addToEquation('/')}>÷</button>
 
-			<!-- Radio group for selecting transaction type (Income, Expense, Transfer) -->
+		<button clicked={() => addToEquation(9)}>9</button>
+		<button clicked={() => addToEquation(8)}>8</button>
+		<button clicked={() => addToEquation(7)}>7</button>
 
-			<div class="radio-group mb-1">
-				<input
-					type="radio"
-					id="income"
-					name="transaction-type"
-					value="income"
-					class="peer/income"
-					checked={transactionType === 'income'}
-					on:change={changeTransactionType}
-				/>
-				<label
-					class="bg-agray-300 text-agray-600 peer-checked/income:bg-primary peer-checked/income:text-white rounded-l-lg"
-					for="income">Income</label
-				>
+		<button type="operator" clicked={() => addToEquation('*')}>x</button>
+		<button clicked={() => addToEquation(6)}>6</button>
+		<button clicked={() => addToEquation(5)}>5</button>
+		<button clicked={() => addToEquation(4)}>4</button>
 
-				<input
-					type="radio"
-					id="expense"
-					name="transaction-type"
-					value="expense"
-					class="peer/expense"
-					checked={transactionType === 'expense'}
-					on:change={changeTransactionType}
-				/>
-				<label
-					class="bg-agray-300 text-agray-600 peer-checked/expense:bg-secondary peer-checked/expense:text-white"
-					for="expense">Expense</label
-				>
+		<button type="operator" clicked={() => addToEquation('-')}>-</button>
+		<button clicked={() => addToEquation(3)}>3</button>
+		<button clicked={() => addToEquation(2)}>2</button>
+		<button clicked={() => addToEquation(1)}>1</button>
 
-				<input
-					type="radio"
-					id="transfer"
-					name="transaction-type"
-					value="transfer"
-					class="peer/transfer"
-					checked={transactionType === 'transfer'}
-					on:change={changeTransactionType}
-				/>
-				<label
-					class="bg-agray-300 text-agray-600 peer-checked/transfer:bg-tertiary peer-checked/transfer:text-white rounded-r-lg"
-					for="transfer">Transfer</label
-				>
-			</div>
+		<button type="operator" clicked={() => addToEquation('+')}>+</button>
+		<button expand="3" clicked={() => addToEquation(0)}>0</button>
 
-			<!-- Group of dropdown menus for selecting a wallet and transaction type -->
-
-			<div class="flex flex-row gap-2 mb-10">
-				<DropdownWallet {labelName} bind:selectedWallet />
-				{#if transactionType === 'transfer'}
-					<DropdownWallet labelName="to account" bind:selectedWallet />
-				{/if}
-				{#if !(transactionType === 'transfer')}
-					<DropdownCategory bind:selectedCategory />
-				{/if}
-			</div>
-
-			<div class="flex justify-between mx-auto border-b-2 pb-6">
-				<div class="font-primary font-normal text-4xl text-{color}">
-					{sign}
-				</div>
-				<div class="flex">
-					<!-- svelte-ignore a11y-autofocus -->
-					<input
-						class="font-primary font-normal text-4xl self-end focus:outline-none text-right w-full "
-						bind:value={numberInput}
-						on:blur={onBlur}
-						autofocus
-						on:keydown={(event) => {
-							if (event.key === 'Enter') {
-								calculate();
-							} else if (!allowedKeys.includes(event.key)) {
-								event.preventDefault();
-							} else {
-								if (isDuplicate(event.key)) {
-									event.preventDefault();
-								}
-							}
-						}}
-					/>
-					<div class="self-end p-[6px] text-sm">PHP</div>
-				</div>
-			</div>
-
-			<!-- Keypad for inputting transaction amount -->
-
-			<div class="keypad mx-auto py-6">
-				<button on:click={clear}>C</button>
-				<button on:click={() => addToEquation('**')}>x<sup>□</sup></button>
-				<button on:click={() => addToEquation('%')}>%</button>
-				<button on:click={() => addToEquation('/')}>÷</button>
-
-				<button on:click={() => addToEquation(7)}>7</button>
-				<button on:click={() => addToEquation(8)}>8</button>
-				<button on:click={() => addToEquation(9)}>9</button>
-				<button on:click={() => addToEquation('*')}>x</button>
-
-				<button on:click={() => addToEquation(4)}>4</button>
-				<button on:click={() => addToEquation(5)}>5</button>
-				<button on:click={() => addToEquation(6)}>6</button>
-				<button on:click={() => addToEquation('-')}>-</button>
-
-				<button on:click={() => addToEquation(1)}>1</button>
-				<button on:click={() => addToEquation(2)}>2</button>
-				<button on:click={() => addToEquation(3)}>3</button>
-				<button on:click={() => addToEquation('+')}>+</button>
-
-				<button on:click={() => addToEquation('.')}>.</button>
-				<button on:click={() => addToEquation(0)}>0</button>
-				<button on:click={() => addToEquation('backspace')}
-					><BackspaceFill fill="var(--agray-600)" width={20} height={20} class="m-auto" /></button
-				>
-
-				<button on:click={() => calculate()}>=</button>
-			</div>
-		</div>
-	</form>
-{/if}
+		<button type="equal" clicked={() => calculate()}>=</button>
+	</div>
+</section>
 
 <style>
-	/* ===== Keypad Styles 	=====*/
-	.keypad {
+	:global(body) {
+		color: #333;
+		margin: 0;
+		padding: 20px;
+		box-sizing: border-box;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+			Cantarell, 'Helvetica Neue', sans-serif;
+	}
+
+	.app {
+		max-width: 300px;
+	}
+
+	.input-pad {
 		display: grid;
 		grid-template-columns: repeat(4, 25%);
 		grid-template-rows: repeat(5, 20%);
+		grid-column-gap: 0;
+		grid-row-gap: 0;
 	}
 
-	.keypad button {
-		grid-column: span 1;
-		padding: 1.3rem 1rem;
-		background-color: var(--agray-100);
-		border-radius: 10px;
-		margin: 5px;
-		font-size: 16px;
-	}
-	.keypad button:active {
-		background-color: var(--agray-400) !important;
-	}
-
-	/* ===== Radio Buttons Style for Income, Expense, Transfer =====*/
-	.radio-group {
+	.results {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		height: 94px;
+		flex-direction: column;
+		text-align: right;
 	}
 
-	.radio-group input[type='radio'] {
-		display: none;
+	.calculations {
+		height: 20px;
+		color: #828282;
+		padding: 0 10px;
 	}
 
-	.radio-group label {
-		display: inline-block;
-		flex-grow: 1;
-		text-align: center;
-		padding: 5px 0;
-		font-size: 16px;
-		font-weight: bold;
-		cursor: pointer;
+	.total {
+		color: #333;
+		text-align: right;
+		padding: 10px;
+		font-size: 44px;
+		margin: 0;
+		border: none;
 	}
 </style>

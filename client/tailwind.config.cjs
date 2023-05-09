@@ -20,7 +20,6 @@ module.exports = {
 				'agray-50': 'var(--agray-50)',
 				primary: 'var(--primary)',
 				secondary: 'var(--secondary)',
-				tertiary: 'var(--tertiary)',
 				gdark: 'var(--gdark)',
 				'light-green': 'rgba(0, 192, 159, 0.15)',
 				'accent-green': 'var(--accent-green)',

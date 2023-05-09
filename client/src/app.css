@@ -5,8 +5,8 @@
 
 :root {
     --primary: #00C09F;
-    --secondary: #e32544;
-    --tertiary: #e4950e;
+    --secondary: #F12848;
+    --tertiary: #FFA200;
     --accent-pink: #FF7AB0;
     --accent-blue: #4F8CE2;
     --accent-green: #3BCB86;
@@ -21,10 +21,4 @@
     --agray-100: #F8F8F8;
     --agray-50: #FAFAFA;
     --gdark: #080808;
-}
-
-
-/* Locks scroll */
-.scroll-lock {
-    overflow-y: hidden;
 }

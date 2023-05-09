@@ -18,24 +18,3 @@ Working APIs
 -skip these two-
 [ ] - settingsAPI not sure dito
 [ ] - notifcationsAndAlertsAPI not sure dito
-
-Redo:
-dashboardCardsAPI
-- getMonthlySummary
-- findFunction
-- getDashboardRecords
-- getDocsUtility
-recordManipulationsAPI
-- addRecord
-- getRecord
-- deleteRecord
-- editRecord
-budgetsAPI
-- addBudget
-- deleteBudget
-usersAPI
-- login
-- signup
-- logout
-categoriesAPI
-- 

@@ -1,26 +1,23 @@
 <script>
-	// @ts-nocheck
+// @ts-nocheck
 
 	import Textfield from '../../../components/Textfield.svelte';
 	import { signUp } from '../../../server/index.js';
-	import { goto } from '$app/navigation';
-	import Loader from '../../../components/Loader.svelte';
-	let isLoading = false;
+	// @ts-ignore
+	let fullname = '';
+	// @ts-ignore
+	let email = '';
+	// @ts-ignore
+	let password = '';
 
 	const submit = () => {
-		isLoading = true;
 		try {
 			// @ts-ignore
-			signUp(
-				document.querySelector('.signup').name.value,
-				document.querySelector('.signup').email.value,
-				document.querySelector('.signup').password.value
-			);
-			console.log('User succesfully created.');
+			signUp(document.querySelector('.signup').email.value, document.querySelector('.signup').password.value);
+			console.log("goods");
 		} catch (error) {
-			console.log('Signup process faield.');
+			console.log("error");
 		}
-		isLoading = false;
 	};
 </script>
 
@@ -50,11 +47,7 @@
 				on:click={submit}
 				class="text-header5 bg-primary w-11/12 text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
-				{#if isLoading}
-					<Loader />
-				{:else}
-					Create Account
-				{/if}
+				Create Account
 			</button>
 		</div>
 	</form>
