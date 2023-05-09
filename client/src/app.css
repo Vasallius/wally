@@ -22,3 +22,9 @@
     --agray-50: #FAFAFA;
     --gdark: #080808;
 }
+
+
+/* Locks scroll */
+.scroll-lock {
+    overflow-y: hidden;
+}

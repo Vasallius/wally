@@ -24,7 +24,7 @@
 
 {#if $authStore}
 	<button on:click={handleLogout}>Logout</button>
-	<div>
+	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary user={$authStore.user} />
 		<Wallet user={$authStore.user} />
 		<RecordBar />
@@ -33,14 +33,12 @@
 
 	<!-- Button is used to add records -->
 
-	<div class="flex flex-col mt-auto relative">
-		<button
-			on:click={openPopUp}
-			class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"
-		>
-			+
-		</button>
-	</div>
+	<button
+		on:click={openPopUp}
+		class="w-14 h-14 bottom-8 right-9 sm:left-[calc(50%+135px)] rounded-full bg-primary text-3xl text-center text-white font-primary hover:bg-[#01b99a] pb-1 fixed"
+	>
+		+
+	</button>
 
 	<div class="absolute z-50 h-full m-auto ">
 		<Addrecord bind:isOpen={isModalOpen} />

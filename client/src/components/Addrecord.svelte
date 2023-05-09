@@ -164,7 +164,7 @@
 </script>
 
 {#if isOpen}
-	<form class="bg-black/40 flex flex-co h-screen m-auto max-w-md">
+	<form class="bg-black/40 flex flex-co h-screen m-auto max-w-md fixed overflow-hidden">
 		<div class="bg-white rounded-lg h-fit w-11/12 m-auto p-6">
 			<!-- Modal header with close and submit buttons -->
 
