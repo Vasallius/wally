@@ -3,8 +3,8 @@
 import { authStore } from '../stores/stores'
 import { goto } from '$app/navigation';
 import { db, auth } from './firebase'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
 
 export const signUp = async (name, email, password) => {
   await createUserWithEmailAndPassword(auth, email, password)
@@ -12,12 +12,10 @@ export const signUp = async (name, email, password) => {
       goto('/login')
 
       const records = {
-        userID: cred.user.uid,
         records: []
       };
 
       const wallets = {
-        userID: cred.user.uid,
         wallets: [
           {
             name: "Cash",
@@ -30,34 +28,24 @@ export const signUp = async (name, email, password) => {
       };
 
       const categories = {
-        userID: cred.user.uid,
-        categories: []
+        categories: ['Food & Drinks', 'Shopping', 'Housing', 'Transportation', 'Vehicle', 'Life & Entertainment', 'Communication, PC', 'Financial expenses', 'Investments', 'Income', 'Others', 'Unknown']
       };
 
       const budgets = {
-        userID: cred.user.uid,
         budgets: []
       };
 
       const users = {
-        userID: cred.user.uid,
         name
       };
+      console.log("Reached here")
 
-      const recordsReference = collection(db, 'records');
-      addDoc(recordsReference, records);
 
-      const walletsReference = collection(db, 'wallets');
-      addDoc(walletsReference, wallets);
-
-      const categoryReference = collection(db, 'categories');
-      addDoc(categoryReference, categories);
-
-      const budgetsReference = collection(db, 'budgets');
-      addDoc(budgetsReference, budgets);
-
-      const usersReference = collection(db, 'users');
-      addDoc(usersReference, users);
+      setDoc(doc(db, "records", cred.user.uid), records);
+      setDoc(doc(db, "wallets", cred.user.uid), wallets);
+      setDoc(doc(db, "categories", cred.user.uid), categories);
+      setDoc(doc(db, "users", cred.user.uid), users);
+      setDoc(doc(db, "budgets", cred.user.uid), budgets);
 
       return true;
     })
