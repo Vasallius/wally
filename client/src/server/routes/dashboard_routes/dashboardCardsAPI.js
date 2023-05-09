@@ -59,6 +59,19 @@ const getDocsUtility = async (collectionReference) => {
   return wallets;
 }
 
+export const getCategories = async (userID) => {
+  const docRef = doc(db, 'categories', userID)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+    const data = docSnap.data().categories;
+    console.log(data)
+    return data
+  } else {
+    console.log("ERROR")
+    return "No Categories"
+  }
+}
+
 export const getWallets = async (userID) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
