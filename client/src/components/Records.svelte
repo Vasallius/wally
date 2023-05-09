@@ -22,7 +22,7 @@
 
 	async function fetchRecords() {
 		// @ts-ignore
-		return getDashboardRecords(user.uid);
+		return getDashboardRecords(user.uid, "Cash");
 	}
 
 	// @ts-ignore

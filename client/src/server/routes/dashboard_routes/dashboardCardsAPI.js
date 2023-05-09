@@ -76,7 +76,7 @@ export const getWallets = async (userID) => {
   return wallets[0].wallets;
 };
 
-export const getDashboardRecords = async (userID) => {
+export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const coll = collection(db, 'records')
   // eslint-disable-next-line no-undef
   const incomeRecordsReference = query(coll,
@@ -90,6 +90,9 @@ export const getDashboardRecords = async (userID) => {
       })
     });
   // console.log(records[0].records, "smth");
+  records[0].records = records[0].records.filter((currentDoc) => {
+    return currentDoc.wallet == currentActiveWallet;
+  });
   records[0].records = records[0].records.sort(
     (firstDate, secondDate) => Number(new Date(secondDate.date)) - Number(new Date(firstDate.date))
   );

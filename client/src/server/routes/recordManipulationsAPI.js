@@ -28,16 +28,19 @@ const getDocsUtility = async (collectionReference) => {
   return records;
 };
 
-export const getAllRecords = async () => {
-  try {
-    const collectionReference = collection(db, 'records');
-    const snapQuery = query(collectionReference, where('userID', '==', auth.currentUser.uid));
-    const records = await getDocsUtility(snapQuery);
-    return records;
-  } catch (error) {
-    return [];
-  }
-}
+// export const getAllRecords = async (currentActiveWallet) => {
+//   try {
+//     const collectionReference = collection(db, 'records');
+//     const snapQuery = query(collectionReference,
+//       where('userID', '==', auth.currentUser.uid),
+//       where('wallet', '==', currentActiveWallet)
+//     );
+//     const records = await getDocsUtility(snapQuery);
+//     return records;
+//   } catch (error) {
+//     return [];
+//   }
+// }
 
 export const getRecord = async (userID, index) => {
   const collectionReference = collection(db, 'records');

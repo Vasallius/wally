@@ -18,7 +18,6 @@ import {
 } from './routes/dashboardsAPI';
 import {
   addRecord,
-  getAllRecords,
   getRecord,
   deleteRecord,
   editRecord,
@@ -42,7 +41,6 @@ export {
   getExpenseRecords,
   getTransferRecords,
   addRecord,
-  getAllRecords,
   getRecord,
   deleteRecord,
   editRecord,
