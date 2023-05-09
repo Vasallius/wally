@@ -18,7 +18,7 @@
 <div class="flex mx-3 mt-3.5 mb-1.5">
 	<div class="text-header5 font-primary font-semibold">Wallets</div>
 </div>
-<div class="flex carousel mx-3">
+<div class="grid grid-cols-3 carousel mx-3">
 	{#await promise then wallets}
 		{#each wallets as wallet}
 			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} />
