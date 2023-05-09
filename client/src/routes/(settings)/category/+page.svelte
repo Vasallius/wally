@@ -2,16 +2,12 @@
 	import CategoryRecord from '../../../components/CategoryRecord.svelte';
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import PopUpCategory from '../../../components/PopUpCategory.svelte';
-
+	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';
+	import { authStore } from '../../../server/stores/stores';
 	export const name = 'wallet';
 	let isModalOpen = false;
 	let label = '';
 	let edit = '';
-
-	export let CategoryRecords = [
-		{ id: 0, category: 'Shopping' },
-		{ id: 1, category: 'Essentials' }
-	];
 
 	const openPopUp = () => {
 		isModalOpen = true;
@@ -20,9 +16,11 @@
 
 <SettingsNav>Category</SettingsNav>
 
-{#each CategoryRecords as item}
+<CategoryRecordList user={$authStore.user} />
+
+<!-- {#each CategoryRecords as item}
 	<CategoryRecord category={item.category} />
-{/each}
+{/each} -->
 
 <div class="flex flex-col mt-auto relative">
 	<button
