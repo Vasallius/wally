@@ -1,5 +1,6 @@
 <script>
 	// @ts-nocheck
+	import { Bell } from 'svelte-bootstrap-icons';
 
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
@@ -9,19 +10,23 @@
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 
 	async function fetchMonthlySummary() {
-		return getMonthlySummary(user.uid, "Cash");
+		return getMonthlySummary(user.uid, 'Cash');
 	}
 
 	let promise = fetchMonthlySummary();
 </script>
 
-<div class="flex mx-3 mt-4 db-nav">
-	<div class="flex justify-center items-center">
-		<a href="/menu"><div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" /></a>
+<div class="flex justify-between mx-3 my-4 db-nav">
+	<div class="flex">
+		<div class="flex items-center">
+			<a href="/menu"><div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" /></a>
+		</div>
+		<div class="font-primary font-semibold text-header5 text-black">Dashboard</div>
 	</div>
-	<div class="font-primary font-semibold mr-56 text-header5 text-black">Dashboard</div>
-	<div class="flex justify-center items-center">
-		<img class="w-4 h-4 my-auto" src="/Bell.svg" alt="background" />
+	<div class="flex items-center">
+		<a href="/notification">
+			<Bell fill="var(--agray-600)" width={20} height={20} />
+		</a>
 	</div>
 </div>
 <div class="db-summary mx-3">
