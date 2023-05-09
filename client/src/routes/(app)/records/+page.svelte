@@ -17,5 +17,5 @@
 </div>
 
 <div class="absolute z-50 h-full m-auto ">
-	<Addrecord isOpen={isModalOpen} />
+	<Addrecord bind:isOpen={isModalOpen} />
 </div>
