@@ -1,14 +1,9 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import Textfield from '../../../components/Textfield.svelte';
 	import { signUp } from '../../../server/index.js';
-	// @ts-ignore
-	let fullname = '';
-	// @ts-ignore
-	let email = '';
-	// @ts-ignore
-	let password = '';
+	import { goto } from '$app/navigation';
 
 	const submit = () => {
 		try {
@@ -18,9 +13,9 @@
 				document.querySelector('.signup').email.value,
 				document.querySelector('.signup').password.value
 			);
-			console.log("goods");
+			console.log('User succesfully created.');
 		} catch (error) {
-			console.log("error");
+			console.log('Signup process faield.');
 		}
 	};
 </script>

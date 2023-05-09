@@ -9,7 +9,7 @@ import { getFirestore, collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, 
 export const signUp = async (name, email, password) => {
   await createUserWithEmailAndPassword(auth, email, password)
     .then(cred => {
-      console.log('user created:', cred.user);
+      goto('/login')
 
       const records = {
         userID: cred.user.uid,
