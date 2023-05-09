@@ -6,7 +6,7 @@ import { db, auth } from './firebase'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
 
-export const signUp = async (email, password) => {
+export const signUp = async (name, email, password) => {
   await createUserWithEmailAndPassword(auth, email, password)
     .then(cred => {
       console.log('user created:', cred.user);
@@ -39,6 +39,11 @@ export const signUp = async (email, password) => {
         budgets: []
       };
 
+      const users = {
+        userID: cred.user.uid,
+        name
+      };
+
       const recordsReference = collection(db, 'records');
       addDoc(recordsReference, records);
 
@@ -50,6 +55,9 @@ export const signUp = async (email, password) => {
 
       const budgetsReference = collection(db, 'budgets');
       addDoc(budgetsReference, budgets);
+
+      const usersReference = collection(db, 'users');
+      addDoc(usersReference, users);
 
       return true;
     })

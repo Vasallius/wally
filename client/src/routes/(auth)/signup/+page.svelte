@@ -13,7 +13,11 @@
 	const submit = () => {
 		try {
 			// @ts-ignore
-			signUp(document.querySelector('.signup').email.value, document.querySelector('.signup').password.value);
+			signUp(
+				document.querySelector('.signup').name.value,
+				document.querySelector('.signup').email.value,
+				document.querySelector('.signup').password.value
+			);
 			console.log("goods");
 		} catch (error) {
 			console.log("error");
