@@ -100,7 +100,6 @@
 		let record = {
 			balance: parseInt(numberInput),
 			category: selectedCategory,
-			date: currentDate,
 			name: 'magic',
 			recordType: transactionType,
 			wallet: selectedWallet
