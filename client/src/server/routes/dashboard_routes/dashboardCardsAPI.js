@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs, onSnapshot, query, where, and } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, doc, updateDoc, onSnapshot, query, where, and, getDoc } from 'firebase/firestore'
 const firebaseConfig = {
   apiKey: "AIzaSyATQg28EQd-b_C_98EgVFbIwjI-vr9IbFs",
   authDomain: "wally-55432.firebaseapp.com",
@@ -75,6 +75,23 @@ export const getWallets = async (userID) => {
   // console.log(records[0].records, "smth");
   return wallets[0].wallets;
 };
+
+export const addWallet = async (userID, wallet) => {
+  const docRef = doc(db, 'wallets', userID);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data().wallets;
+    console.log("Document data:", data);
+    const oldwallets = [...data];
+    const newwallets = oldwallets.concat(wallet);
+    console.log(newwallets);
+    await updateDoc(docRef, {
+      wallets: newwallets
+    });
+  } else {
+    console.log("No such document!");
+  }
+}
 
 export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const coll = collection(db, 'records')
