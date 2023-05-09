@@ -10,11 +10,6 @@
 	let isModalOpen = false;
 	let label = '';
 	let amount = 0;
-	let WalletRecords = [
-		{ id: 0, title: 'Cash', balance: 600 },
-		{ id: 1, title: 'Maya', balance: 1200 },
-		{ id: 2, title: 'Bank (BPI)', balance: 20000 }
-	];
 
 	const openPopUp = () => {
 		isModalOpen = true;
@@ -24,9 +19,6 @@
 {#if $authStore}
 	<SettingsNav>Wallet</SettingsNav>
 	<WalletRecordList user={$authStore.user} />
-	<!-- {#each WalletRecords as item}
-		<WalletRecord title={item.title} balance={item.balance} />
-	{/each} -->
 
 	<div class="flex flex-col mt-auto relative">
 		<button
