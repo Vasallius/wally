@@ -3,40 +3,14 @@
 
 	import DashboardSummary from './../../../components/DashboardSummary.svelte';
 	import { logOut } from '../../../server/routes/usersAPI';
-	import {
-		getDashboardRecords,
-		getMonthlySummary,
-		getWallets,
-		addRecord,
-		getRecord,
-		deleteRecord,
-		editRecord,
-		deleteCategory,
-		editCategory
-	} from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore } from '../../../server/stores/stores';
-	import { goto } from '$app/navigation';
 	import Records from '../../../components/Records.svelte';
 	import Addrecord from '../../../components/Addrecord.svelte';
 
-	let monthlySummary = [0, 0];
-	let records = [];
-	let wallets = [
-		{ name: 'wah', balance: -1 },
-		{ name: 'wah', balance: -1 }
-	];
-
-	(
-		async () => {
-			// let ret = await editCategory($authStore.user.uid, 2, "Sample Category").then(val => val);
-			// console.log(ret)
-		}
-	)();
-
 	async function handleLogout() {
-		const success = await logOut();
+		await logOut();
 	}
 
 	let isModalOpen = false;
@@ -46,6 +20,8 @@
 	};
 </script>
 
+<!-- Check if the user is authenticated using the $authStore variable -->
+
 {#if $authStore}
 	<button on:click={handleLogout}>Logout</button>
 	<div>
@@ -54,6 +30,8 @@
 		<RecordBar />
 		<Records user={$authStore.user} />
 	</div>
+
+	<!-- Button is used to add records -->
 
 	<div class="flex flex-col mt-auto relative">
 		<button
