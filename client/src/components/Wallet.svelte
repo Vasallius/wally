@@ -3,7 +3,7 @@
 
 	import WalletItem from './WalletItem.svelte';
 
-	import { getDashboardRecords, getWallets } from '../server';
+	import { getWallets } from '../server';
 	export let user;
 
 	// Retrieve the user's wallets from the server
@@ -11,7 +11,6 @@
 		return getWallets(user.uid);
 	}
 
-	// Set the `promise` variable to the result of calling `fetchWallets()`
 	let promise = fetchWallets();
 </script>
 
