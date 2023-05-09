@@ -3,6 +3,7 @@
 
 	import Textfield from '../../../components/Textfield.svelte';
 	import { logIn } from '../../../server';
+	let message = '';
 
 	const login = async () => {
 		try {
@@ -14,6 +15,7 @@
 				console.log('Log in succesful.');
 			} else {
 				console.log('error:', errorMessage);
+				message = errorMessage;
 			}
 		} catch (error) {
 			console.log('error');
@@ -38,7 +40,9 @@
 		</div>
 		<div class="mx-7 mb-64">
 			<Textfield type="password" id="password">Password</Textfield>
+			<span class="text-xs text-secondary font-semibold">{message}</span>
 		</div>
+
 		<div class="flex flex-col items-center mb-5">
 			<button
 				on:click={login}
