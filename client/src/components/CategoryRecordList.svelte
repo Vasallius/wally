@@ -3,7 +3,6 @@
 	import { getWallets } from '../server';
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import CategoryRecord from './CategoryRecord.svelte';
-	import WalletRecord from './WalletRecord.svelte';
 	export let user;
 
 	// Retrieve the user's wallets from the server
