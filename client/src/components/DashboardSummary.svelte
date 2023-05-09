@@ -9,7 +9,7 @@
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 
 	async function fetchMonthlySummary() {
-		return getMonthlySummary(user.uid);
+		return getMonthlySummary(user.uid, "Cash");
 	}
 
 	let promise = fetchMonthlySummary();

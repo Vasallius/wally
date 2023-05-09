@@ -15,7 +15,7 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
-const findFunction = async (recordType, userID) => {
+const findFunction = async (recordType, userID, currentActiveWallet) => {
   const coll = collection(db, 'records')
   // eslint-disable-next-line no-undef
   const incomeRecordsReference = query(coll,
@@ -27,16 +27,16 @@ const findFunction = async (recordType, userID) => {
     records.push({ ...doc.data(), id: doc.id });
   });
   let specificRecords = records[0].records.filter((currentRecord) => {
-    return currentRecord.recordType == recordType;
+    return currentRecord.recordType == recordType && currentRecord.wallet == currentActiveWallet;
   })
   return specificRecords;
 }
 
-export const getMonthlySummary = async (userID) => {
+export const getMonthlySummary = async (userID, currentActiveWallet) => {
   console.log("Getting monthly Summary")
   try {
-    const expense = await findFunction('Expense', userID);
-    const income = await findFunction('Income', userID);
+    const expense = await findFunction('Expense', userID, currentActiveWallet);
+    const income = await findFunction('Income', userID, currentActiveWallet);
     const totalExpense = expense.reduce((total, val) => {
       return total + val.amount;
     }, 0);
@@ -100,14 +100,14 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
   return records[0].records;
 }
 
-export const getIncomeRecords = async (userID) => {
-  return await findFunction('Income', userID);
+export const getIncomeRecords = async (userID, currentActiveWallet) => {
+  return await findFunction('Income', userID, currentActiveWallet);
 };
 
-export const getExpenseRecords = async (userID) => {
-  return await findFunction('Expense', userID);
+export const getExpenseRecords = async (userID, currentActiveWallet) => {
+  return await findFunction('Expense', userID, currentActiveWallet);
 };
 
-export const getTransferRecords = async (userID) => {
-  return await findFunction('Transfer', userID);
+export const getTransferRecords = async (userID, currentActiveWallet) => {
+  return await findFunction('Transfer', userID, currentActiveWallet);
 };
