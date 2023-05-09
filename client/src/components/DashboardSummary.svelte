@@ -17,7 +17,7 @@
 
 <div class="flex mx-3 mt-4 db-nav">
 	<div class="flex justify-center items-center">
-		<div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" />
+		<a href="/menu"><div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" /></a>
 	</div>
 	<div class="font-primary font-semibold mr-56 text-header5 text-black">Dashboard</div>
 	<div class="flex justify-center items-center">
