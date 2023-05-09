@@ -18,24 +18,6 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 const auth = getAuth()
 
-export const addCategory = (category) => {
-  const collectionReference = collection(db, 'categories');
-  
-  addDoc(collectionReference, category)
-}
-
-export const editCategory = (categoryID, updateValues) => {
-  try {
-    const documentReference = doc(db, 'categories', categoryID)
-
-    updateDoc(documentReference, updateValues)
-
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
 const getDocsUtility = async (collectionReference) => {
   let categories = []
   const querySnap = await getDocs(collectionReference);
@@ -56,41 +38,68 @@ export const getAllCategories = async () => {
   }
 }
 
-export const deleteCategory = (categoryID) => {
+export const addCategory = async (userID, category) => {
   try {
-    const documentReference = doc(db, 'categories', categoryID);
-
-    deleteDoc(documentReference)
-
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-export const addSubcategory = async (categoryID, subcategory) => {
-  try {
-    const docReference = doc(db, "categories", categoryID);
-    let snap = await getDoc(docReference);
-    let updatedSubcategory = snap.data().subcategories;
-    updatedSubcategory.push(subcategory);
-    await updateDoc(docReference, { subcategories: updatedSubcategory });
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-export const deleteSubcategory = async (categoryID, subcategory) => {
-  try {
-    const docReference = doc(db, "categories", categoryID);
-    let snap = await getDoc(docReference);
-    let updatedSubcategory = snap.data().subcategories;
-    updatedSubcategory = updatedSubcategory.filter((val) => {
-      return val != subcategory;
+    const collectionReference = collection(db, 'categories');
+    const recordsReference = query(collectionReference,
+      where('userID', '==', userID)
+    );
+    const categories = await getDocsUtility(recordsReference)
+    .then((val) => {
+      return val;
     });
-    await updateDoc(docReference, { subcategories: updatedSubcategory });
+    categories[0].categories.push(category.name);
+    const documentReference = doc(db, 'categories', categories[0].id);
+    updateDoc(documentReference, {categories: categories[0].categories});
     return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export const editCategory = async (userID, categoryIndex, updatedName) => {
+  try {
+    const collectionReference = collection(db, 'categories');
+    const recordsReference = query(collectionReference,
+      where('userID', '==', userID)
+    );
+    const categories = await getDocsUtility(recordsReference)
+    .then((val) => {
+      return val;
+    });
+    if(categories[0].categories.length > categoryIndex){
+      categories[0].categories[categoryIndex] = updatedName;
+      const documentReference = doc(db, 'categories', categories[0].id);
+      updateDoc(documentReference, {categories: categories[0].categories});
+      return true;
+    }else{
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
+export const deleteCategory = async (userID, categoryIndex) => {
+  try {
+    const collectionReference = collection(db, 'categories');
+    const recordsReference = query(collectionReference,
+      where('userID', '==', userID)
+    );
+    const categories = await getDocsUtility(recordsReference)
+    .then((val) => {
+      return val;
+    });
+    if(categories[0].categories.length > categoryIndex){
+      categories[0].categories = categories[0].categories.filter((val, ind) => {
+        return ind != categoryIndex;
+      })
+      const documentReference = doc(db, 'categories', categories[0].id);
+      updateDoc(documentReference, {categories: categories[0].categories});
+      return true;
+    }else{
+      return false;
+    }
   } catch (error) {
     return false;
   }

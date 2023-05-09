@@ -12,7 +12,9 @@
 		addRecord,
 		getRecord,
 		deleteRecord,
-		editRecord
+		editRecord,
+		deleteCategory,
+		editCategory
 	} from '../../../server';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
@@ -27,6 +29,13 @@
 		{ name: 'wah', balance: -1 }
 	];
 	let user = null;
+
+	(
+		async () => {
+			// let ret = await editCategory($authStore.user.uid, 2, "Sample Category").then(val => val);
+			// console.log(ret)
+		}
+	)();
 
 	async function handleLogout() {
 		const success = await logOut();

@@ -4,9 +4,7 @@ import {
   getAllCategories, 
   addCategory, 
   editCategory, 
-  deleteCategory, 
-  addSubcategory, 
-  deleteSubcategory
+  deleteCategory,
 } from './dashboard_routes/categoriesAPI';
 
 import {
@@ -23,8 +21,6 @@ export {
   addCategory, 
   editCategory, 
   deleteCategory, 
-  addSubcategory, 
-  deleteSubcategory,
   getMonthlySummary,
   getWallets,
   getDashboardRecords,
