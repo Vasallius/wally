@@ -18,7 +18,7 @@
 <style>
 	.text-field {
 		position: relative;
-		margin: 1.2rem 0;
+		margin-top: 1.2rem;
 	}
 
 	.text-field input {
