@@ -18,7 +18,10 @@
 
 {#if $authStore}
 	<SettingsNav>Wallet</SettingsNav>
+
+	<div class="max-h-full flex flex-col overflow-y-scroll">
 	<WalletRecordList user={$authStore.user} />
+	</div>
 
 	<div class="flex flex-col mt-auto relative">
 		<button
@@ -36,3 +39,17 @@
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
+<style>
+	::-webkit-scrollbar {
+  		width: 4px;
+	}
+
+	::-webkit-scrollbar-track { 
+  		background: #ffffff00;
+	}
+
+	::-webkit-scrollbar-thumb { 
+  		background: #E3E3E3;
+		border-radius:10px;
+	}
+</style>

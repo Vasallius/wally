@@ -20,3 +20,4 @@
 {:catch error}
 	<div class="error">Error: {error.message}</div>
 {/await}
+

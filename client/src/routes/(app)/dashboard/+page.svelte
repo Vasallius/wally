@@ -7,9 +7,6 @@
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore } from '../../../server/stores/stores';
 	import Records from '../../../components/Records.svelte';
-	import Tabs from '../../../components/Tabs.svelte';
-	import TabPanel from '../../../components/TabPanel.svelte';
-	import Tab from '../../../components/Tab.svelte';
 	import Addrecord from '../../../components/Addrecord.svelte';
 
 	async function handleLogout() {
@@ -30,8 +27,7 @@
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary user={$authStore.user} />
 		<Wallet user={$authStore.user} />
-		<RecordBar />
-		<Records user={$authStore.user} />
+		<RecordBar user={$authStore.user} />		
 	</div>
 
 	<!-- Button is used to add records -->
@@ -42,7 +38,7 @@
 	>
 		+
 	</button>
-
+	
 	<div class="absolute z-50 h-full m-auto ">
 		<Addrecord bind:isOpen={isModalOpen} />
 	</div>
@@ -51,17 +47,3 @@
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
 
-<style>
-	::-webkit-scrollbar {
-  		width: 4px;
-	}
-
-	::-webkit-scrollbar-track { 
-  		background: #ffffff00;
-	}
-
-	::-webkit-scrollbar-thumb { 
-  		background: #E3E3E3;
-		border-radius:10px;
-	}
-</style>
