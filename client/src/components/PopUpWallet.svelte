@@ -1,11 +1,11 @@
 <script>
 	import { addWallet } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore } from '../server/stores/stores';
+	import { authStore, walletStore } from '../server/stores/stores';
 	export let isOpen = false;
 	export let label = '';
 	export let amount = 0;
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		let wallet = {
@@ -15,7 +15,10 @@
 			dailyBudget: 0,
 			weeklyBudget: 0
 		};
-		addWallet($authStore.user.uid, wallet);
+		await addWallet($authStore.user.uid, wallet);
+
+		// Notify the custom store that a wallet was added
+		walletStore.walletAdded();
 
 		closeModal();
 	};
