@@ -1,15 +1,9 @@
 <script>
-	import Records from './Records.svelte';
 	import { getDashboardRecords } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
 
 	// @ts-ignore
 	export let user;
-	// const records = [
-	// 	{ category: 'Foods & Drinks', wallet: 'Cash' },
-	// 	{ category: 'Income', wallet: 'Bank' },
-	// 	{ category: 'Foods & Drinks', wallet: 'Gcash' }
-	// ];
 
 	async function fetchRecords() {
 		// @ts-ignore
