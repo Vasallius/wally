@@ -15,10 +15,11 @@ export const addRecord = async (userID, record) => {
 
     const oldrecords = [...data];
     const newrecords = oldrecords.concat(newRecord);
-    console.log(newrecords)
     await updateDoc(docRef, {
       records: newrecords
-    });
+    })
+    return newrecords;
+    ;
   } else {
     console.log("No such document!");
   }
