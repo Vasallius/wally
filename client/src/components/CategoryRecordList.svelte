@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-	import { getWallets } from '../server';
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import CategoryRecord from './CategoryRecord.svelte';
 	export let user;
@@ -20,4 +19,3 @@
 {:catch error}
 	<div class="error">Error: {error.message}</div>
 {/await}
-
