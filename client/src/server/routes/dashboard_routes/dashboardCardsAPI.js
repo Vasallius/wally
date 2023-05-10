@@ -104,7 +104,6 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const docSnap = await getDoc(docRef)
   if (docSnap.exists()) {
       const data = docSnap.data().records;
-      console.log(data)
       return data
     } else {
       return "NO WALLETS"

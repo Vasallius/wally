@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { authStore } from '../server/stores/stores.js';
+	import { authStore, recordsStore } from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
+	import { db } from '../server';
+	import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 	// <<START: Modal Pop Up>>
 
@@ -72,41 +74,18 @@
 		isOpen = false;
 	};
 
-	function getCurrentDate() {
-		const months = [
-			'Jan',
-			'Feb',
-			'Mar',
-			'Apr',
-			'May',
-			'Jun',
-			'Jul',
-			'Aug',
-			'Sep',
-			'Oct',
-			'Nov',
-			'Dec'
-		];
-		const today = new Date();
-		const monthIndex = today.getMonth();
-		const month = months[monthIndex];
-		const day = today.getDate();
-		return `${month} ${day}`;
-	}
-
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		isOpen = false;
-		let currentDate = getCurrentDate();
-		let record = {
+		let records = $recordsStore;
+		let newRecords = {
 			amount: parseInt(numberInput),
 			category: selectedCategory,
 			name: 'magic',
 			recordType: transactionType,
 			wallet: selectedWallet
 		};
-		console.log(record);
-		addRecord($authStore.user.uid, record);
-
+		records = await addRecord($authStore.user.uid, newRecords);
+		recordsStore.set(records);
 		numberInput = ''; // Clears the calculator upon modal close
 	};
 
