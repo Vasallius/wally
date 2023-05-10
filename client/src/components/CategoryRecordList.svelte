@@ -2,7 +2,18 @@
 	// @ts-nocheck
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import CategoryRecord from './CategoryRecord.svelte';
+	import { onMount } from 'svelte';
+	import { authStore, categoriesStore } from '../server/stores/stores';
+
 	export let user;
+
+	onMount(async () => {
+		// Fetch the data from the database
+		const categories = await getCategories($authStore.user.uid);
+
+		// Initialize the store value
+		categoriesStore.set(categories);
+	});
 
 	// Retrieve the user's wallets from the server
 	async function fetchCategories() {
@@ -12,10 +23,10 @@
 	let promise = fetchCategories();
 </script>
 
-{#await promise then categories}
-	{#each categories as category}
+{#if $categoriesStore}
+	{#each $categoriesStore as category}
 		<CategoryRecord {category} />
 	{/each}
-{:catch error}
-	<div class="error">Error: {error.message}</div>
-{/await}
+{:else}
+	<p>Loading user data...</p>
+{/if}

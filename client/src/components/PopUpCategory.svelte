@@ -1,10 +1,15 @@
 <script>
 	export let isOpen = false;
 	export let label = '';
+	import { authStore, categoriesStore } from '../server/stores/stores';
+	import { addCategory } from '../server';
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-		console.log(`Label: ${label}`);
+		let categories = $categoriesStore;
+		let newCategory = label;
+		categories = await addCategory($authStore.user.uid, newCategory);
+		categoriesStore.set(categories);
 		closeModal();
 	};
 
