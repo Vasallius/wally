@@ -98,7 +98,7 @@
 		isOpen = false;
 		let currentDate = getCurrentDate();
 		let record = {
-			balance: parseInt(numberInput),
+			amount: parseInt(numberInput),
 			category: selectedCategory,
 			name: 'magic',
 			recordType: transactionType,
