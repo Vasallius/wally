@@ -22,11 +22,15 @@
 
 	async function fetchRecords() {
 		// @ts-ignore
-		return getDashboardRecords(user.uid, "Cash");
+		return getDashboardRecords(user.uid, 'Cash');
 	}
 
 	// @ts-ignore
 	let promise = fetchRecords();
+	function convertTimestamp(timestamp) {
+		const date = new Date(timestamp.seconds * 1000);
+		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	}
 	console.log(promise);
 </script>
 
@@ -36,10 +40,7 @@
 			category={record.category}
 			wallet={record.wallet}
 			amount={record.amount}
-			date={`${months[new Date(record.date).getMonth()]} ${new Date(
-				record.date
-			).getDate()}, ${new Date(record.date).getFullYear()}`}
+			date={convertTimestamp(record.date)}
 		/>
 	{/each}
 {/await}
-
