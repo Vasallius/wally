@@ -24,7 +24,6 @@
 
 		async function fetchWallets() {
 			wallets = await getWallets(user.uid);
-			walletStore.set(wallets);
 		}
 
 		fetchWallets();
