@@ -100,27 +100,17 @@ export const addWallet = async (userID, wallet) => {
 }
 
 export const getDashboardRecords = async (userID, currentActiveWallet) => {
-  const coll = collection(db, 'records')
-  // eslint-disable-next-line no-undef
-  const incomeRecordsReference = query(coll,
-    where('userID', '==', userID)
-  );
-  let records = []
-  const querySnap = await getDocs(incomeRecordsReference)
-    .then((val) => {
-      val.forEach((doc) => {
-        records.push({ ...doc.data(), id: doc.id });
-      })
-    });
-  // console.log(records[0].records, "smth");
-  records[0].records = records[0].records.filter((currentDoc) => {
-    return currentDoc.wallet == currentActiveWallet;
-  });
-  records[0].records = records[0].records.sort(
-    (firstDate, secondDate) => Number(new Date(secondDate.date)) - Number(new Date(firstDate.date))
-  );
-  console.log(records[0].records, "yah");
-  return records[0].records;
+  const docRef = doc(db, 'records', userID)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+      const data = docSnap.data().records;
+      console.log(data)
+      return data
+    } else {
+      return "NO WALLETS"
+    }
+
+  // need to implement showing records based on wallet
 }
 
 export const getIncomeRecords = async (userID, currentActiveWallet) => {

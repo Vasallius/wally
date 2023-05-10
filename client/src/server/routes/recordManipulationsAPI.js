@@ -78,7 +78,7 @@ export const deleteRecord = async (userID, index) => {
   if (index < record[0].records.length) {
     record[0].records = record[0].records.filter((val, ind) => {
       return ind != index;
-    })
+  })
     const documentReference = doc(db, 'records', record[0].id)
 
     updateDoc(documentReference, { records: record[0].records });
