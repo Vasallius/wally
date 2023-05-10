@@ -39,6 +39,26 @@ export const getAllCategories = async () => {
 }
 
 export const addCategory = async (userID, category) => {
+  const docRef = doc(db, 'categories', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().categories;
+    let newCategory= category
+
+    const oldcategories = [...data];
+    const newcategories = oldcategories.concat(newCategory);
+    await updateDoc(docRef, {
+      categories: newcategories
+    })
+    return newcategories;
+    ;
+  } else {
+    console.log("No such document!");
+  }
+
+
+
   try {
     const collectionReference = collection(db, 'categories');
     const recordsReference = query(collectionReference,
