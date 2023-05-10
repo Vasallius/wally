@@ -1,22 +1,28 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { collection, getDocs, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
+import { collection, getDocs, getDoc, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
 import { db, auth } from './firebase'
 
 
 export const addRecord = async (userID, record) => {
-  const collectionReference = collection(db, 'records');
-  const recordsReference = query(collectionReference,
-    where('userID', '==', userID)
-  );
-  const records = await getDocsUtility(recordsReference)
-    .then((val) => {
-      return val;
+  const docRef = doc(db, 'records', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().records;
+    let newRecord= record
+    newRecord["date"] = new Date();
+
+    const oldrecords = [...data];
+    const newrecords = oldrecords.concat(newRecord);
+    console.log(newrecords)
+    await updateDoc(docRef, {
+      records: newrecords
     });
-  record["date"] = new Date();
-  records[0].records.push(record);
-  const documentReference = doc(db, 'records', records[0].id);
-  updateDoc(documentReference, { records: records[0].records });
+  } else {
+    console.log("No such document!");
+  }
+  
 }
 
 const getDocsUtility = async (collectionReference) => {
