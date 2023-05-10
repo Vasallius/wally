@@ -18,4 +18,6 @@ function createWalletStore() {
     };
 }
 
+export const recordsStore = writable(null)
+
 export const walletStore = createWalletStore();
