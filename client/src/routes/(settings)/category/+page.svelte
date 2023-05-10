@@ -1,5 +1,4 @@
 <script>
-	import CategoryRecord from '../../../components/CategoryRecord.svelte';
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import PopUpCategory from '../../../components/PopUpCategory.svelte';
 	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';
@@ -7,7 +6,6 @@
 	export const name = 'wallet';
 	let isModalOpen = false;
 	let label = '';
-	let edit = '';
 
 	const openPopUp = () => {
 		isModalOpen = true;
@@ -19,9 +17,6 @@
 <div class="max-h-full flex flex-col overflow-y-scroll">
 	<CategoryRecordList user={$authStore.user} />
 </div>
-<!-- {#each CategoryRecords as item}
-	<CategoryRecord category={item.category} />
-{/each} -->
 
 <div class="flex flex-col mt-auto relative">
 	<button
@@ -38,15 +33,15 @@
 
 <style>
 	::-webkit-scrollbar {
-  		width: 4px;
+		width: 4px;
 	}
 
-	::-webkit-scrollbar-track { 
-  		background: #ffffff00;
+	::-webkit-scrollbar-track {
+		background: #ffffff00;
 	}
 
-	::-webkit-scrollbar-thumb { 
-  		background: #E3E3E3;
-		border-radius:10px;
+	::-webkit-scrollbar-thumb {
+		background: #e3e3e3;
+		border-radius: 10px;
 	}
 </style>
