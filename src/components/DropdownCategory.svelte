@@ -12,7 +12,6 @@
 
 	onMount(async () => {
 		categoryRecords = await getCategories($authStore.user.uid);
-		selectedCategory = categoryRecords[0];
 	});
 </script>
 
@@ -24,6 +23,7 @@
 		Category
 	</label>
 	<select
+		bind:value={selectedCategory}
 		class="rounded-lg border-2 border-[#4F8CE265] text-accent-blue pt-3 pb-1 text-sm font-primary font-bold appearance-none w-full  text-center"
 		id="category-select"
 	>

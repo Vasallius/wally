@@ -15,7 +15,6 @@
 	onMount(async () => {
 		walletRecords = await getWallets($authStore.user.uid);
 		console.log(walletRecords);
-		selectedWallet = walletRecords[0].name;
 	});
 </script>
 
