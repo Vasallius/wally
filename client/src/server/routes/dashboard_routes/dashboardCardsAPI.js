@@ -60,6 +60,20 @@ export const getCategories = async (userID) => {
   }
 }
 
+export const getName = async (userID) => {
+  const docRef = doc(db, 'users', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().name;
+    console.log(data)
+    return data
+  } else {
+    return "No User."
+  }
+}
+
+
 export const getWallets = async (userID) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);

@@ -1,6 +1,15 @@
 <script>
 	import { X, WalletFill, CashStack, TagsFill } from 'svelte-bootstrap-icons';
 	import { authStore } from '../server/stores/stores';
+	import { getName } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+
+	export let user;
+
+	async function fetchUser() {
+		return getName(user.uid);
+	}
+
+	let promise = fetchUser();
 </script>
 
 {#if $authStore}
@@ -13,15 +22,12 @@
 							<img src="./Avatar.png" alt="profile" class="w-9 h-9" />
 						</div>
 						<div class="flex flex-col justify-center">
-							<h1 class="text-normal font-semibold align-center">Swissnuff</h1>
+							{#await promise then user}
+								<h1 class="text-normal font-semibold align-center">{user}</h1>
+							{/await}
 						</div>
 					</div>
 				</a>
-				<!--
-				<div class="flex gap-2 items-center">
-					<img class="w-10 h-10" src="/Logo.svg" alt="background" />
-					<h1 class="text-xl font-bold tracking-widest">WALLY</h1>
-				</div>-->
 				<a href="/dashboard">
 					<X fill="var(--agray-500)" height="2rem" width="2rem" />
 				</a>
