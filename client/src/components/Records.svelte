@@ -1,14 +1,14 @@
 <script>
 	import { getDashboardRecords } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
-	import { recordsStore, authStore } from '../server/stores/stores';
+	import { recordsStore } from '../server/stores/stores';
 	import { onMount } from 'svelte';
 
 	export let user;
 
 	onMount(async () => {
 		// Fetch the data from the database
-		const initialData = await getDashboardRecords($authStore.user.uid, 'Cash');
+		const initialData = await getDashboardRecords(user.uid, 'Cash');
 
 		// Initialize the store value
 		recordsStore.set(initialData);
