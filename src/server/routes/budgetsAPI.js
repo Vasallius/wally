@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where } from 'firebase/firestore'
+import { collection, getDoc, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where } from 'firebase/firestore'
 import { db, auth} from './firebase'
 
 
@@ -13,6 +13,20 @@ const getDocsUtility = async (collectionReference) => {
   });
   return wallets;
 }
+
+export const getBudgets = async (userID) => {
+  const docRef = doc(db, 'budgets', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().budgets;
+    console.log(data, data[0].MonthRecords, data[0].DayRecords, data[0].WeekRecords)
+    return data
+  } else {
+    return "NO WALLETS"
+  }
+}
+
 
 export const getAllBudgets = async () => {
   const collectionReference = collection(db, 'budgets');
