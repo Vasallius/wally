@@ -49,6 +49,15 @@ export const getMonthlySummary = async (userID, currentActiveWallet) => {
   }
 };
 
+export const getActiveWallet = async (userID) => {
+  const docRef = doc(db, 'wallets', userID);
+  const docSnap = await getDoc(docRef);
+  const document = docSnap.data().wallets.filter((currentWallet) => {
+    return currentWallet.active == "True";
+  })
+  return document[0].name;
+}
+
 const getDocsUtility = async (collectionReference) => {
   let wallets = []
   const querySnap = await getDocs(collectionReference);

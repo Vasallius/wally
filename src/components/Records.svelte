@@ -1,15 +1,31 @@
 <script>
-	import { getDashboardRecords } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+// @ts-nocheck
+
+	import {
+		getDashboardRecords,
+		getIncomeRecords,
+		getExpenseRecords,
+		getTransferRecords,
+		getActiveWallet,
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
 	import { recordsStore } from '../server/stores/stores';
 	import { onMount } from 'svelte';
 
 	export let user;
+	export let recordType;
 
 	onMount(async () => {
+		const currentActiveWallet = await getActiveWallet(user.uid);
 		// Fetch the data from the database
-		const initialData = await getDashboardRecords(user.uid, 'Cash');
-
+		let initialData = await getDashboardRecords(user.uid, currentActiveWallet);
+		if (recordType == 'income') {
+			initialData = await getIncomeRecords(user.uid, currentActiveWallet);
+		} else if (recordType == 'expense') {
+			initialData = await getExpenseRecords(user.uid, currentActiveWallet);
+		} else if (recordType == 'transfer') {
+			initialData = await getTransferRecords(user.uid, currentActiveWallet);
+		}
 		// Initialize the store value
 		recordsStore.set(initialData);
 	});

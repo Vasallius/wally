@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import Tabs from './Tabs.svelte';
 	import TabPanel from './TabPanel.svelte';
 	import Tab from './Tab.svelte'; 
@@ -21,27 +23,27 @@
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto"> 
       <!-- Show recordType [All] here -->
-      <Records user={$authStore.user}/>
+      <Records user={$authStore.user} recordType="all" />
     </div>
   </TabPanel>
 
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Income] here -->
-      income 
+      <Records user={$authStore.user} recordType="income" />
     </div>
   </TabPanel>
 
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Expense] here -->
-      expense
+      <Records user={$authStore.user} recordType="expense" />
     </div>
   </TabPanel>
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Transfer] here -->
-      transfer
+      <Records user={$authStore.user} recordType="transfer" />
     </div>
   </TabPanel>
 </Tabs>
