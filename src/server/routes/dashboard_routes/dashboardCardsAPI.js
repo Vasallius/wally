@@ -12,19 +12,30 @@ const findFunction = async (recordType, userID, currentActiveWallet) => {
   let records = []
   const querySnap = await getDocs(incomeRecordsReference);
   querySnap.forEach((doc) => {
+    console.log(doc);
     records.push({ ...doc.data(), id: doc.id });
   });
+  console.log(records, recordType, userID, currentActiveWallet);
   let specificRecords = records[0].records.filter((currentRecord) => {
     return currentRecord.recordType == recordType && currentRecord.wallet == currentActiveWallet;
   })
+  
   return specificRecords;
+}
+
+const getRecords = async (recordType, userID, currentActiveWallet) => {
+  const docRef = doc(db, 'records', userID);
+  const docSnap = await getDoc(docRef);
+  return docSnap.data().records.filter((currentRecord) => {
+    return currentRecord.recordType == recordType && currentRecord.wallet == currentActiveWallet;
+  })
 }
 
 export const getMonthlySummary = async (userID, currentActiveWallet) => {
   console.log("Getting monthly Summary")
   try {
-    const expense = await findFunction('Expense', userID, currentActiveWallet);
-    const income = await findFunction('Income', userID, currentActiveWallet);
+    const expense = await getRecords('expense', userID, currentActiveWallet);
+    const income = await getRecords('income', userID, currentActiveWallet);
     const totalExpense = expense.reduce((total, val) => {
       return total + val.amount;
     }, 0);
@@ -114,13 +125,13 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
 }
 
 export const getIncomeRecords = async (userID, currentActiveWallet) => {
-  return await findFunction('Income', userID, currentActiveWallet);
+  return await getRecords('income', userID, currentActiveWallet);
 };
 
 export const getExpenseRecords = async (userID, currentActiveWallet) => {
-  return await findFunction('Expense', userID, currentActiveWallet);
+  return await getRecords('expense', userID, currentActiveWallet);
 };
 
 export const getTransferRecords = async (userID, currentActiveWallet) => {
-  return await findFunction('Transfer', userID, currentActiveWallet);
+  return await getRecords('transfer', userID, currentActiveWallet);
 };
