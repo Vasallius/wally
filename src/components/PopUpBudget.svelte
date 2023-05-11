@@ -1,14 +1,21 @@
 <script>
+	import { addBudget } from '../server';
 	export let isOpen = false;
 	export let label = '';
 	export let budget = 0;
 	export let intervals = '';
-
-	const handleSubmit = (event) => {
+	import { authStore, budgetStores } from '../server/stores/stores';
+	const handleSubmit = async (event) => {
 		event.preventDefault();
+		let budgets = $budgetStores;
+		let newbudget = budget;
 		console.log(`Label: ${label}`);
 		console.log(`Budget: ${budget}`);
 		console.log(`Intervals: ${intervals}`);
+		let newBudget = await addBudget($authStore.user.uid, label, budget, intervals);
+		console.log('this is from a store');
+		console.log(newBudget);
+		budgetStores.set(newBudget);
 
 		closeModal();
 	};

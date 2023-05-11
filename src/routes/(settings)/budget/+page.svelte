@@ -23,9 +23,10 @@
 		isModalOpen = true;
 	};
 
-	let day;
 	onMount(async () => {
 		const budgets = await getBudgets($authStore.user.uid);
+		console.log('on mount:');
+		console.log(budgets);
 		budgetStores.set(budgets);
 	});
 </script>
@@ -41,7 +42,7 @@
 	<div>
 		<!-- INSERT MONTHLY BUDGET RECORDS HERE -->
 		{#if $budgetStores}
-			{#each $budgetStores[0].MonthRecords as item}
+			{#each $budgetStores.MonthRecords as item}
 				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
 			{/each}
 		{:else}
@@ -56,7 +57,7 @@
 	<div>
 		<!-- INSERT WEEKLY BUDGET RECORDS HERE -->
 		{#if $budgetStores}
-			{#each $budgetStores[0].WeekRecords as item}
+			{#each $budgetStores.WeekRecords as item}
 				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
 			{/each}
 		{:else}
@@ -70,7 +71,7 @@
 	</div>
 	<div>
 		{#if $budgetStores}
-			{#each $budgetStores[0].DayRecords as item}
+			{#each $budgetStores.DayRecords as item}
 				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
 			{/each}
 		{:else}
