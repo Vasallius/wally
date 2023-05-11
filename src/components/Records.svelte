@@ -1,12 +1,12 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import {
 		getDashboardRecords,
 		getIncomeRecords,
 		getExpenseRecords,
 		getTransferRecords,
-		getActiveWallet,
+		getActiveWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
 	import { recordsStore } from '../server/stores/stores';
@@ -26,7 +26,6 @@
 		} else if (recordType == 'transfer') {
 			initialData = await getTransferRecords(user.uid, currentActiveWallet);
 		}
-		// Initialize the store value
 		recordsStore.set(initialData);
 	});
 
