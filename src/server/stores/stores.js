@@ -5,3 +5,4 @@ export const authStore = writable(null);
 export const recordsStore = writable(null)
 export const categoriesStore = writable(null)
 export const walletStores = writable(null)
+export const budgetStores = writable(null)
