@@ -12,7 +12,6 @@
 
 	onMount(async () => {
 		categoryRecords = await getCategories($authStore.user.uid);
-		console.log(categoryRecords);
 		selectedCategory = categoryRecords[0];
 	});
 </script>
