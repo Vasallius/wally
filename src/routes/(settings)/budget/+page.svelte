@@ -14,16 +14,7 @@
 	let DayRecords = [
 		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
 		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 },
+
 	];
 
 	const openPopUp = () => {
