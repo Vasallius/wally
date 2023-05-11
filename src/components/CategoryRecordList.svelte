@@ -14,13 +14,6 @@
 		// Initialize the store value
 		categoriesStore.set(categories);
 	});
-
-	// Retrieve the user's wallets from the server
-	async function fetchCategories() {
-		return getCategories(user.uid);
-	}
-
-	let promise = fetchCategories();
 </script>
 
 {#if $categoriesStore}
