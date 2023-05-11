@@ -105,6 +105,20 @@ export const getWallets = async (userID) => {
   }
 };
 
+export const updateWallets = async (userID, wallet) => {
+  const docRef = doc(db, 'wallets', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log(wallet)
+    await updateDoc(docRef, {
+      wallets: wallet
+    });
+  } else {
+    return "NO WALLETS"
+  }
+};
+
 export const addWallet = async (userID, wallet) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -115,6 +129,7 @@ export const addWallet = async (userID, wallet) => {
     await updateDoc(docRef, {
       wallets: newwallets
     });
+    return newwallets
   } else {
     console.log("No such document!");
   }
