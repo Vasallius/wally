@@ -52,7 +52,6 @@ export const getCategories = async (userID) => {
   const docSnap = await getDoc(docRef)
   if (docSnap.exists()) {
     const data = docSnap.data().categories;
-    console.log(data)
     return data
   } else {
     console.log("ERROR")
