@@ -2,34 +2,20 @@
 	// @ts-nocheck
 	import { getWallets } from '../server';
 	import WalletRecord from './WalletRecord.svelte';
-	import { walletStore } from '../server/stores/stores';
-	import { onDestroy } from 'svelte';
+	import { walletStores } from '../server/stores/stores';
+	import { onMount } from 'svelte';
 
 	export let user;
-
-	let wallets = [];
-	$: {
-		// Listener for the 'walletAdded' custom event
-		const walletAddedListener = (event) => {
-			fetchWallets();
-		};
-
-		// Register the listener
-		document.addEventListener('walletAdded', walletAddedListener);
-
-		// Cleanup function to remove the listener when the component is destroyed
-		onDestroy(() => {
-			document.removeEventListener('walletAdded', walletAddedListener);
-		});
-
-		async function fetchWallets() {
-			wallets = await getWallets(user.uid);
-		}
-
-		fetchWallets();
-	}
+	onMount(async () => {
+		const wallets = await getWallets(user.uid);
+		walletStores.set(wallets);
+	});
 </script>
 
-{#each wallets as wallet}
-	<WalletRecord title={wallet.name} balance={wallet.balance} />
-{/each}
+{#if $walletStores}
+	{#each $walletStores as wallet}
+		<WalletRecord title={wallet.name} balance={wallet.balance} />
+	{/each}
+{:else}
+	<p>Loading Wallets</p>
+{/if}

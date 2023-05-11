@@ -1,28 +1,27 @@
 <script>
 	// @ts-nocheck
-
 	import WalletItem from './WalletItem.svelte';
-
+	import { onMount } from 'svelte';
 	import { getWallets } from '../server';
+	import { walletStores } from '../server/stores/stores';
+
 	export let user;
 
-	// Retrieve the user's wallets from the server
-	async function fetchWallets() {
-		return getWallets(user.uid);
-	}
-
-	let promise = fetchWallets();
+	onMount(async () => {
+		const wallets = await getWallets(user.uid);
+		walletStores.set(wallets);
+	});
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
 	<div class="text-header5 font-primary font-semibold">Wallets</div>
 </div>
 <div class="grid grid-cols-3 carousel mx-3">
-	{#await promise then wallets}
-		{#each wallets as wallet}
+	{#if $walletStores}
+		{#each $walletStores as wallet}
 			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} />
 		{/each}
-	{:catch error}
-		<div class="error">Error: {error.message}</div>
-	{/await}
+	{:else}
+		<p>Loading Wallets</p>
+	{/if}
 </div>
