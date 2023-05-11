@@ -2,7 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { collection, getDocs, getDoc, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
 import { db, auth } from './firebase'
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 export const addRecord = async (userID, record) => {
   const docRef = doc(db, 'records', userID);
@@ -11,13 +12,15 @@ export const addRecord = async (userID, record) => {
   if (docSnap.exists()) {
     const data = docSnap.data().records;
     let newRecord= record
-    newRecord["date"] = new Date();
+    newRecord["date"] = firebase.firestore.Timestamp.now();
 
     const oldrecords = [...data];
     const newrecords = oldrecords.concat(newRecord);
     await updateDoc(docRef, {
       records: newrecords
     })
+    console.log("new records")
+    console.log(newrecords)
     return newrecords;
     ;
   } else {
