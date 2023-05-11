@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { authStore, recordsStore } from '../server/stores/stores.js';
+	import { authStore, recordsStore, walletStores } from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
-
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	// <<START: Modal Pop Up>>
 
 	// <<END: Modal Pop Up>>
@@ -82,6 +82,33 @@
 			recordType: transactionType,
 			wallet: selectedWallet
 		};
+
+		if (transactionType === 'income') {
+			const updatedWallets = $walletStores.map((wallet) => {
+				if (wallet.name === selectedWallet) {
+					return {
+						...wallet,
+						balance: wallet.balance + parseInt(numberInput)
+					};
+				}
+				return wallet;
+			});
+			walletStores.set(updatedWallets);
+			updateWallets($authStore.user.uid, updatedWallets);
+		} else if (transactionType === 'expense') {
+			const updatedWallets = $walletStores.map((wallet) => {
+				if (wallet.name === selectedWallet) {
+					return {
+						...wallet,
+						balance: wallet.balance - parseInt(numberInput)
+					};
+				}
+				return wallet;
+			});
+			walletStores.set(updatedWallets);
+			updateWallets($authStore.user.uid, updatedWallets);
+		}
+
 		records = await addRecord($authStore.user.uid, newRecords);
 		recordsStore.set(records);
 		numberInput = ''; // Clears the calculator upon modal close
@@ -219,7 +246,7 @@
 				<div class="flex">
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
-						class="font-primary font-normal text-4xl self-end focus:outline-none text-right w-full "
+						class="font-primary font-normal text-4xl self-end focus:outline-none text-right w-full"
 						bind:value={numberInput}
 						on:blur={onBlur}
 						autofocus
