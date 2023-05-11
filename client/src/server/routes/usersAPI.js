@@ -38,9 +38,7 @@ export const signUp = async (name, email, password) => {
       const users = {
         name
       };
-      console.log("Reached here")
-
-
+      
       setDoc(doc(db, "records", cred.user.uid), records);
       setDoc(doc(db, "wallets", cred.user.uid), wallets);
       setDoc(doc(db, "categories", cred.user.uid), categories);
