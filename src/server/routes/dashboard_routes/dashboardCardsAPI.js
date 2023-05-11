@@ -115,7 +115,10 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID)
   const docSnap = await getDoc(docRef)
   if (docSnap.exists()) {
-      const data = docSnap.data().records;
+      const data = docSnap.data().records.sort((first, second) => {
+        // console.log(secondDate, firstDate);
+        return Number(new Date(second.date.seconds*1000+second.date.nanoseconds)) - Number(new Date(first.date.seconds*1000+first.date.nanoseconds));
+      });
       return data
     } else {
       return "NO WALLETS"
