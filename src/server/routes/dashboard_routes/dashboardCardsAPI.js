@@ -135,6 +135,10 @@ export const addWallet = async (userID, wallet) => {
   }
 }
 
+const dateUtility = (record) => {
+  return Number(new Date(record.date.second*1000 + record.date.nanoseconds));
+}
+
 export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID)
   const docSnap = await getDoc(docRef)
@@ -142,9 +146,8 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
       const records = docSnap.data().records.filter((currentRecord) => {
         return currentRecord.wallet == currentActiveWallet;
       })
-      const data = records.sort((first, second) => {
-        // console.log(secondDate, firstDate);
-        return Number(new Date(second.date.seconds*1000+second.date.nanoseconds)) - Number(new Date(first.date.seconds*1000+first.date.nanoseconds));
+      const data = records.sort((firstRecord, secondRecord) => {
+        return dateUtility(secondRecord) - dateUtility(firstRecord);
       });
       return data
     } else {
@@ -155,13 +158,22 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
 }
 
 export const getIncomeRecords = async (userID, currentActiveWallet) => {
-  return await getRecords('income', userID, currentActiveWallet);
+  const incomeRecords = await getRecords('income', userID, currentActiveWallet).then(val => val);
+  return incomeRecords.sort((firstRecord, secondRecord) => {
+    return dateUtility(secondRecord)-dateUtility(firstRecord);
+  });
 };
 
 export const getExpenseRecords = async (userID, currentActiveWallet) => {
-  return await getRecords('expense', userID, currentActiveWallet);
+  const incomeRecords = await getRecords('expense', userID, currentActiveWallet).then(val => val);
+  return incomeRecords.sort((firstRecord, secondRecord) => {
+    return dateUtility(secondRecord)-dateUtility(firstRecord);
+  });
 };
 
 export const getTransferRecords = async (userID, currentActiveWallet) => {
-  return await getRecords('transfer', userID, currentActiveWallet);
+  const incomeRecords = await getRecords('transfer', userID, currentActiveWallet).then(val => val);
+  return incomeRecords.sort((firstRecord, secondRecord) => {
+    return dateUtility(secondRecord)-dateUtility(firstRecord);
+  });
 };
