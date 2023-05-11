@@ -4,8 +4,6 @@
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
-	import { db } from '../server';
-	import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 	// <<START: Modal Pop Up>>
 
