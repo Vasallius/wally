@@ -135,6 +135,25 @@ export const addWallet = async (userID, wallet) => {
   }
 }
 
+export const editWallet = async (userID, walletIndex, newValues) => {
+  const docRef = doc(db, 'wallets', userID);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data().wallets;
+    const oldwallets = [...data];
+    for(const key in newValues){
+      oldwallets[walletIndex][key] = newValues[key];
+    }
+    await updateDoc(docRef, {
+      wallets: oldwallets
+    });
+    return true
+  } else {
+    console.log("No such document!");
+    return false
+  }
+}
+
 const dateUtility = (record) => {
   return Number(new Date(record.date.second*1000 + record.date.nanoseconds));
 }
