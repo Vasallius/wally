@@ -31,7 +31,8 @@ export const addBudget = async(userID, label,budget, interval) => {
     if (interval == "Daily") {
       const today = new Date();
       newRecords = newRecords.filter((val) => {
-        const currentDate = new Date(val.date.seconds*1000 + val.date.nanoseconds);
+        const currentDate = new Date(val.date.seconds*1000);
+        console.log(currentDate, today);
         return currentDate.getDate() == today.getDate() &&
                 currentDate.getMonth() == today.getMonth() &&
                 currentDate.getFullYear() == today.getFullYear();
@@ -54,7 +55,7 @@ export const addBudget = async(userID, label,budget, interval) => {
       }
       for(let i=0; i<newRecords.length; i++){
         for(let j=0; j<7; j++){
-          const currentDate = new Date(newRecords[i].date.seconds*1000 + newRecords[i].date.nanoseconds);
+          const currentDate = new Date(newRecords[i].date.seconds*1000);
           if(currentDate.getDate() == today.getDate() &&
           currentDate.getMonth() == today.getMonth() &&
           currentDate.getFullYear() == today.getFullYear()){
@@ -129,7 +130,7 @@ export const getBudgets = async (userID) => {
 
   if (docSnap.exists()) {
     const data = docSnap.data().budgets;
-    console.log(data)
+    // console.log(data)
     return data
   } else {
     return "NO WALLETS"

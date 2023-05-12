@@ -1,3 +1,33 @@
-/**
- * Middleware na maguupdate after a certain time.
- */
+// @ts-nocheck
+/* eslint-disable no-unused-vars */
+import { collection, getDocs, getDoc, addDoc, deleteDoc, onSnapshot, doc, updateDoc, query, where } from 'firebase/firestore'
+import { db, auth } from './firebase'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import { getBudgets } from './budgetsAPI';
+
+export const notificationsList = async (userID) => {
+  const budgetsList = await getBudgets(userID);
+  console.log(budgetsList);
+  const keys = ["DayRecords", "WeekRecords", "MonthRecords"];
+  const interval = ["DAILY", "WEEKLY", "MONTHLY"];
+  const res = [];
+  for(let j=0; j<3; j++){
+    for(let i=0; i<budgetsList[keys[j]].length; i++){
+      console.log(budgetsList[keys[j]][i]);
+      if(budgetsList[keys[j]][i].spent >= budgetsList[keys[j]][i].budget*0.9 && budgetsList[keys[j]][i].spent <= budgetsList[keys[j]][i].budget){
+        res.push({
+          title: `${interval[j]} BUDGET LIMIT`,
+          content: "Your money spent is nearing the budget limit.",
+        });
+      } else if (budgetsList[keys[j]][i].spent > budgetsList[keys[j]][i].budget) {
+        res.push({
+          title: `${interval[j]} BUDGET EXCEEDED`,
+          content: `You have spent $${budgetsList[keys[j]][i].spent} which is over your budget $${budgetsList[keys[j]][i].budget}`,
+        });
+      }
+    }
+  }
+  
+  return res;
+}
