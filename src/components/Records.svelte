@@ -42,6 +42,7 @@
 			wallet={record.wallet}
 			amount={record.amount}
 			date={convertTimestamp(record.date)}
+			recordType={record.recordType}
 		/>
 	{/each}
 {:else}

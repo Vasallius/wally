@@ -3,12 +3,17 @@
 	export let wallet: string;
 	export let amount: number;
 	export let date: string;
+	export let recordType: string;
 </script>
 
 <div class="RecordCard px-5 pt-3 pb-3 border-b border-agray-400">
 	<div class="flex justify-between">
 		<div class="font-semibold text-header5 font-primary text-agray-700">{category}</div>
-		<div class="text-secondary font-primary font-semibold">{amount}</div>
+		{#if recordType == 'income'}
+			<div class="text-primary font-primary font-semibold">+{amount}</div>
+		{:else}
+			<div class="text-secondary font-primary font-semibold">-{amount}</div>
+		{/if}
 	</div>
 	<div class="flex justify-between">
 		<div class="text-xs leading-3 font-primary text-agray-500">{wallet}</div>
