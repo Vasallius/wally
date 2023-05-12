@@ -3,6 +3,8 @@
 import { collection, getDoc, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where } from 'firebase/firestore'
 import { db, auth} from './firebase'
 import { budgetStores } from '../stores/stores';
+import { getExpenseRecords } from './dashboardsAPI';
+import { getActiveWallet } from './dashboard_routes/dashboardCardsAPI';
 
 
 
@@ -20,10 +22,61 @@ export const addBudget = async(userID, label,budget, interval) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
+    const activeWallet = await getActiveWallet(userID);
+    const expenseRecords = await getExpenseRecords(userID, activeWallet);
+    let newRecords = expenseRecords.filter((val) => {
+      return val.category == label;
+    })
+    let spentValue = 0;
+    if (interval == "Daily") {
+      const today = new Date();
+      newRecords = newRecords.filter((val) => {
+        const currentDate = new Date(val.date.seconds*1000 + val.date.nanoseconds);
+        return currentDate.getDate() == today.getDate() &&
+                currentDate.getMonth() == today.getMonth() &&
+                currentDate.getFullYear() == today.getFullYear();
+      });
+      for(let i=0; i<newRecords.length; i++){
+        spentValue+= newRecords[i].amount;
+      }
+    } else if(interval == "Weekly") {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const today = new Date();
+      const res = [];
+      const dayOfWeek = today.getDate();
+      const startDate = new Date(today);
+      startDate.setDate(startDate.getDate() - dayOfWeek);
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+        res.push(currentDate.toLocaleDateString());
+      }
+      for(let i=0; i<newRecords.length; i++){
+        for(let j=0; j<7; j++){
+          const currentDate = new Date(newRecords[i].date.seconds*1000 + newRecords[i].date.nanoseconds);
+          if(currentDate.getDate() == today.getDate() &&
+          currentDate.getMonth() == today.getMonth() &&
+          currentDate.getFullYear() == today.getFullYear()){
+            spentValue += newRecords[i].amount;
+            break;
+          }
+        }
+      }
+    } else {
+      const today = new Date();
+      newRecords = newRecords.filter((val) => {
+        const currentDate = new Date(val.date.seconds*1000 + val.date.nanoseconds);
+        return currentDate.getMonth() == today.getMonth() && currentDate.getFullYear() == today.getFullYear();
+      });
+      for(let i=0; i<newRecords.length; i++){
+        spentValue+= newRecords[i].amount;
+      }
+    }
     const data = docSnap.data().budgets;
     let newbudget = {
       title: label,
-      spent: 0,
+      spent: spentValue,
       budget: budget
     }
     console.log("CHECKING FOR INTERVALS")

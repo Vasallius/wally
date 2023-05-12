@@ -25,8 +25,6 @@
 
 	onMount(async () => {
 		const budgets = await getBudgets($authStore.user.uid);
-		console.log('on mount:');
-		console.log(budgets);
 		budgetStores.set(budgets);
 	});
 </script>
