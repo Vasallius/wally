@@ -1,22 +1,20 @@
 <script>
 	import { addBudget } from '../server';
+	import { authStore, budgetStores } from '../server/stores/stores';
+	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { onMount } from 'svelte';
+
 	export let isOpen = false;
 	export let label = '';
 	export let budget = 0;
 	export let intervals = '';
-	import { authStore, budgetStores } from '../server/stores/stores';
+	let selectedCategory = '';
+	let categoryRecords = [];
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		let budgets = $budgetStores;
-		let newbudget = budget;
-		console.log(`Label: ${label}`);
-		console.log(`Budget: ${budget}`);
-		console.log(`Intervals: ${intervals}`);
 		let newBudget = await addBudget($authStore.user.uid, label, budget, intervals);
-		console.log('this is from a store');
-		console.log(newBudget);
 		budgetStores.set(newBudget);
-
 		closeModal();
 	};
 
@@ -26,6 +24,9 @@
 		budget = 0;
 		intervals = '';
 	};
+	onMount(async () => {
+		categoryRecords = await getCategories($authStore.user.uid);
+	});
 </script>
 
 <!-- need - ayusin itsura ng input fields -->
@@ -40,7 +41,22 @@
 		>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[200px]">
-					<input
+					<select
+						class="peer h-full w-full rounded-[7px] border border-agray-600 border-t-transparent bg-transparent px-3 py-2.5 font-primary text-sm
+              font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-agray-600
+              placeholder-shown:border-t-agray-600 focus:border-2 focus:border-teal-500 focus:border-t-transparent focus:outline-0
+              disabled:border-0 disabled:bg-blue-gray-50"
+						placeholder=" "
+						id="categories-select"
+						bind:value={label}
+					>
+						<option value="">Select a category</option>
+						{#each categoryRecords as category}
+							<option value={category}>{category}</option>
+						{/each}
+					</select>
+
+					<!-- <input
 						class="peer h-full w-full rounded-[7px] border border-agray-600 border-t-transparent bg-transparent px-3 py-2.5 font-primary text-sm
               font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-agray-600
               placeholder-shown:border-t-agray-600 focus:border-2 focus:border-teal-500 focus:border-t-transparent focus:outline-0
@@ -49,7 +65,7 @@
 						type="text"
 						id="label-input"
 						bind:value={label}
-					/>
+					/> -->
 					<label
 						for="label-input"
 						class="before:content[' '] after:content[' '] font-normal pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px]
