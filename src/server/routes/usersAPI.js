@@ -32,7 +32,11 @@ export const signUp = async (name, email, password) => {
       };
 
       const budgets = {
-        budgets: []
+        budgets: {
+          DayRecords: [],
+          WeekRecords: [],
+          MonthRecords: []
+        }
       };
 
       const users = {
