@@ -14,7 +14,7 @@
 
 	export let user;
 	export let recordType;
-
+	// export let recordsStore;
 	onMount(async () => {
 		const currentActiveWallet = await getActiveWallet(user.uid);
 		// Fetch the data from the database

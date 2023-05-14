@@ -5,7 +5,7 @@
 	import { logOut } from '../../../server/routes/usersAPI';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore } from '../../../server/stores/stores';
+	import { authStore, recordsStore } from '../../../server/stores/stores';
 	import Records from '../../../components/Records.svelte';
 	import Addrecord from '../../../components/Addrecord.svelte';
 
@@ -18,6 +18,10 @@
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
+
+	const updateRecords = (e) => {
+		recordsStore.set(e.detail);
+	}
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->
@@ -26,8 +30,8 @@
 	<button on:click={handleLogout}>Logout</button>
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary user={$authStore.user} />
-		<Wallet user={$authStore.user} />
-		<RecordBar user={$authStore.user} />		
+		<Wallet user={$authStore.user} recordsStore={recordsStore} on:updateRecords={updateRecords}/>
+		<RecordBar user={$authStore.user} recordsStore={recordsStore} />		
 	</div>
 
 	<!-- Button is used to add records -->
