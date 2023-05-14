@@ -28,7 +28,7 @@
       let newWallets = await getWallets($authStore.user.uid);
       walletStores = newWallets;
       recordsStore = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
-      dispatch("updateRecords", recordsStore);
+      dispatch("updateRecords", {recordsStore: recordsStore, currentActiveWallet: wallets[index]});
     }
   </script>
   

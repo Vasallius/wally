@@ -3,17 +3,18 @@
 	import { Bell } from 'svelte-bootstrap-icons';
 
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
-
+	import { createEventDispatcher } from 'svelte';
 	export let user;
-
+	export let currentActiveWallet = 'Cash';
+	export let monthlySummary;
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
-
-	async function fetchMonthlySummary() {
-		return getMonthlySummary(user.uid, 'Cash');
-	}
-
-	let promise = fetchMonthlySummary();
+	let promise = [0,0];
+	(
+		async() => {
+			promise = await getMonthlySummary(user.uid,currentActiveWallet);
+		}
+	)();
 </script>
 
 <div class="flex justify-between mx-3 my-4 db-nav">
@@ -36,7 +37,7 @@
 
 			<img class="w-4 h-4 my-auto" src="/ThreeDots.svg" alt="background" />
 		</div>
-		{#await promise then monthlySummary}
+		{#await monthlySummary then monthlySummary}
 			<div class="mx-5  mb-2 flex flex-row justify-between items-center ">
 				<div class="font-primary  font-normal  text-gdark text-xs">Total Income</div>
 				<div class="font-primary  font-semibold text-primary text-xs">₱{monthlySummary[0]}</div>

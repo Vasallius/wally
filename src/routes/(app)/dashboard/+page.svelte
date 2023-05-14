@@ -8,20 +8,31 @@
 	import { authStore, recordsStore } from '../../../server/stores/stores';
 	import Records from '../../../components/Records.svelte';
 	import Addrecord from '../../../components/Addrecord.svelte';
+	import { getActiveWallet, getMonthlySummary } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	async function handleLogout() {
 		await logOut();
 	}
+	let monthlySummary = [0,0];
+	let currentActiveWallet = 'Cash';
+	(
+		async () => {
+			currentActiveWallet = await getActiveWallet($authStore.user.uid);
+			monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+		}
+	)();
 
 	let isModalOpen = false;
-
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
 
-	const updateRecords = (e) => {
-		recordsStore.set(e.detail);
+	const updateRecords = async (e) => {
+		recordsStore.set(e.detail.recordsStore);
+		currentActiveWallet = e.detail.currentActiveWallet.name;
+		monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
 	}
+
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->
@@ -29,8 +40,8 @@
 {#if $authStore}
 	<button on:click={handleLogout}>Logout</button>
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary user={$authStore.user} />
-		<Wallet user={$authStore.user} recordsStore={recordsStore} on:updateRecords={updateRecords}/>
+		<DashboardSummary user={$authStore.user} currentActiveWallet={currentActiveWallet} monthlySummary={monthlySummary} />
+		<Wallet user={$authStore.user} recordsStore={recordsStore} on:updateRecords={updateRecords} />
 		<RecordBar user={$authStore.user} recordsStore={recordsStore} />		
 	</div>
 

@@ -17,7 +17,6 @@
 	const updateRecords = (e) => {
 		dispatch("updateRecords", e.detail);
 	}
-
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
@@ -26,7 +25,14 @@
 <div class="grid grid-cols-3 carousel mx-3">
 	{#if $walletStores}
 		{#each $walletStores as wallet, index}
-			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} index={index} recordsStore={recordsStore} on:updateRecords={updateRecords}/>
+			<WalletItem 
+				label={wallet.name}
+				amount={wallet.balance}
+				active={wallet.active}
+				index={index}
+				recordsStore={recordsStore}
+				on:updateRecords={updateRecords}
+			/>
 		{/each}
 	{:else}
 		<p>Loading Wallets</p>
