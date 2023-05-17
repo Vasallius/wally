@@ -6,21 +6,21 @@
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore, recordsStore } from '../../../server/stores/stores';
-	import Records from '../../../components/Records.svelte';
 	import Addrecord from '../../../components/Addrecord.svelte';
-	import { getActiveWallet, getMonthlySummary } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+	import {
+		getActiveWallet,
+		getMonthlySummary
+	} from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	async function handleLogout() {
 		await logOut();
 	}
-	let monthlySummary = [0,0];
+	let monthlySummary = [0, 0];
 	let currentActiveWallet = 'Cash';
-	(
-		async () => {
-			currentActiveWallet = await getActiveWallet($authStore.user.uid);
-			monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
-		}
-	)();
+	(async () => {
+		currentActiveWallet = await getActiveWallet($authStore.user.uid);
+		monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+	})();
 
 	let isModalOpen = false;
 	const openPopUp = () => {
@@ -31,8 +31,7 @@
 		recordsStore.set(e.detail.recordsStore);
 		currentActiveWallet = e.detail.currentActiveWallet.name;
 		monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
-	}
-
+	};
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->
@@ -40,9 +39,9 @@
 {#if $authStore}
 	<button on:click={handleLogout}>Logout</button>
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary user={$authStore.user} currentActiveWallet={currentActiveWallet} monthlySummary={monthlySummary} />
-		<Wallet user={$authStore.user} recordsStore={recordsStore} on:updateRecords={updateRecords} />
-		<RecordBar user={$authStore.user} recordsStore={recordsStore} />		
+		<DashboardSummary user={$authStore.user} {currentActiveWallet} {monthlySummary} />
+		<Wallet user={$authStore.user} {recordsStore} on:updateRecords={updateRecords} />
+		<RecordBar user={$authStore.user} {recordsStore} />
 	</div>
 
 	<!-- Button is used to add records -->
@@ -53,12 +52,10 @@
 	>
 		+
 	</button>
-	
-	<div class="absolute z-50 h-full m-auto ">
+
+	<div class="absolute z-50 h-full m-auto">
 		<Addrecord bind:isOpen={isModalOpen} />
 	</div>
-
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
-
