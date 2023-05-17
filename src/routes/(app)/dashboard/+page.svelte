@@ -37,7 +37,6 @@
 <!-- Check if the user is authenticated using the $authStore variable -->
 
 {#if $authStore}
-	<button on:click={handleLogout}>Logout</button>
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary user={$authStore.user} {currentActiveWallet} {monthlySummary} />
 		<Wallet user={$authStore.user} {recordsStore} on:updateRecords={updateRecords} />
