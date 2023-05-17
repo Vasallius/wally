@@ -54,19 +54,13 @@
 	</div>
 	<div class="text-xs text-agray-600 mx-7 mb-5 font-normal font-primary" />
 	<div>
-		<div class="flex flex-col items-center mb-9 mx-7">
+		<div class="flex flex-col items-center mb-2 mx-7">
 			<a
 				href="/signup"
 				class="text-header5 bg-primary w-full text-center text-white py-3 font-semibold rounded-lg font-primary hover:opacity-90"
 			>
 				Sign up with email
 			</a>
-			<div class="w-11/12 text-xs text-agray-500 width-screen my-2 text-center">or</div>
-			<a
-				href="/"
-				class="text-header5 text-agray-600 bg-agray-300 w-full text-center py-3 font-semibold rounded-lg font-primary hover:opacity-80"
-				>Continue with Google</a
-			>
 		</div>
 	</div>
 	<div class="mx-7 flex">
