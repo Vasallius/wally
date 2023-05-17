@@ -35,5 +35,8 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^9.21.0"
+	},
+	"gitHooks": {
+		"prepare-commit-msg": "devmoji -e --lint"
 	}
 }
