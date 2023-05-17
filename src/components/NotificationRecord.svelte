@@ -1,7 +1,6 @@
 <script lang="ts">
 	export let title: string;
 	export let content: string;
-	export let timePassed: number;
 	import { CalendarCheckFill } from 'svelte-bootstrap-icons';
 </script>
 
@@ -14,9 +13,6 @@
 			<h1 class="text-base text-agray-700 font-bold">{title}</h1>
 			<p class="text-xs text-agray-500">{content}</p>
 		</div>
-	</div>
-	<div>
-		<p class="text-xs text-agray-500 font-semibold align-baseline">{timePassed} hr</p>
 	</div>
 </a>
 
