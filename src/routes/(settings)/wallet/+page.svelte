@@ -20,7 +20,7 @@
 	<SettingsNav>Wallet</SettingsNav>
 
 	<div class="max-h-full flex flex-col overflow-y-scroll">
-	<WalletRecordList user={$authStore.user} />
+		<WalletRecordList user={$authStore.user} />
 	</div>
 
 	<div class="flex flex-col mt-auto relative">
@@ -32,24 +32,24 @@
 		</button>
 	</div>
 
-	<div class="absolute z-50 h-full m-auto ">
+	<div class="absolute z-50 h-full m-auto">
 		<PopUpWallet bind:isOpen={isModalOpen} {label} {amount} />
 	</div>
-	<div>{$authStore.user.email}</div>
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
+
 <style>
 	::-webkit-scrollbar {
-  		width: 4px;
+		width: 4px;
 	}
 
-	::-webkit-scrollbar-track { 
-  		background: #ffffff00;
+	::-webkit-scrollbar-track {
+		background: #ffffff00;
 	}
 
-	::-webkit-scrollbar-thumb { 
-  		background: #E3E3E3;
-		border-radius:10px;
+	::-webkit-scrollbar-thumb {
+		background: #e3e3e3;
+		border-radius: 10px;
 	}
 </style>
