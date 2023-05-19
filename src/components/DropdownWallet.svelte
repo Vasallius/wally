@@ -2,19 +2,20 @@
 	import { onMount } from 'svelte';
 	import { authStore } from '../server/stores/stores';
 	import { getWallets } from '../server';
+	import Wallet from './Wallet.svelte';
 
 	let walletRecords = [
-		{ id: 0, title: 'Cash', balance: 600 },
-		{ id: 1, title: 'Maya', balance: 1200 },
-		{ id: 2, title: 'Bank (BPI)', balance: 20000 }
+		{ id: 0, name: 'Cash', balance: 600 },
+		{ id: 1, name: 'Maya', balance: 1200 },
+		{ id: 2, name: 'Bank (BPI)', balance: 20000 }
 	];
 
 	export let labelName: string;
-	export let selectedWallet: string = walletRecords[0].title;
+	export let selectedWallet: string = walletRecords[0].name;
 
 	onMount(async () => {
 		walletRecords = await getWallets($authStore.user.uid);
-		console.log(walletRecords);
+		selectedWallet = walletRecords[0].name;
 	});
 </script>
 

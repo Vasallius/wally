@@ -3,15 +3,13 @@
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore } from '../server/stores/stores';
 
-	export let categoryRecords = [
-		{ id: 0, category: 'Shopping' },
-		{ id: 1, category: 'Essentials' }
-	];
+	export let categoryRecords = ['Food & Drinks'];
 
 	export let selectedCategory: string;
 
 	onMount(async () => {
 		categoryRecords = await getCategories($authStore.user.uid);
+		selectedCategory = categoryRecords[0];
 	});
 </script>
 
