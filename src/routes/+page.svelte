@@ -63,8 +63,14 @@
 			</a>
 		</div>
 	</div>
-	<div class="mx-7 flex">
-		<div class="text-xs text-agray-500 font-semibold">Already have an account?</div>
-		<a href="/login" class="text-xs mx-1 text-primary font-semibold hover:underline">Log In</a>
+	<div>
+		<div class="flex flex-col items-center mb-2 mx-7">
+			<a
+				href="/login"
+				class="text-header5 border-2 border-primary w-full text-center text-primary py-3 font-semibold rounded-lg font-primary hover:bg-[#00C09F06]"
+			>
+				Log In
+			</a>
+		</div>
 	</div>
 </div>
