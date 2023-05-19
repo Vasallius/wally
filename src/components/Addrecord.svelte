@@ -124,6 +124,9 @@
 	function addToEquation(value: string | number) {
 		if (value === 'backspace') {
 			numberInput = numberInput.slice(0, -1);
+		} else if (value === '**') {
+			calculate();
+			numberInput = numberInput + '*' + numberInput;
 		} else if (!isDuplicate(value)) {
 			numberInput += value;
 		}
@@ -270,7 +273,7 @@
 
 			<div class="keypad mx-auto py-6">
 				<button on:click={clear}>C</button>
-				<button on:click={() => addToEquation('**')}>x<sup>□</sup></button>
+				<button on:click={() => {addToEquation('**'); calculate();}}>x<sup>2</sup></button>
 				<button on:click={() => addToEquation('%')}>%</button>
 				<button on:click={() => addToEquation('/')}>÷</button>
 
