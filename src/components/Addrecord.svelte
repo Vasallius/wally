@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { authStore, recordsStore, walletStores } from '../server/stores/stores.js';
+	import { authStore, recordsStore, walletStores, monthlySummaryStores } from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { getMonthlySummary, updateWallets, getActiveWallet, } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	// <<START: Modal Pop Up>>
 
 	// <<END: Modal Pop Up>>
@@ -111,6 +111,8 @@
 
 		records = await addRecord($authStore.user.uid, newRecords);
 		recordsStore.set(records);
+		let currentActiveWallet = await getActiveWallet($authStore.user.uid);
+		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 		numberInput = ''; // Clears the calculator upon modal close
 	};
 
@@ -124,9 +126,6 @@
 	function addToEquation(value: string | number) {
 		if (value === 'backspace') {
 			numberInput = numberInput.slice(0, -1);
-		} else if (value === '**') {
-			calculate();
-			numberInput = numberInput + '*' + numberInput;
 		} else if (!isDuplicate(value)) {
 			numberInput += value;
 		}
@@ -273,7 +272,7 @@
 
 			<div class="keypad mx-auto py-6">
 				<button on:click={clear}>C</button>
-				<button on:click={() => {addToEquation('**'); calculate();}}>x<sup>2</sup></button>
+				<button on:click={() => addToEquation('**')}>x<sup>☐</sup></button>
 				<button on:click={() => addToEquation('%')}>%</button>
 				<button on:click={() => addToEquation('/')}>÷</button>
 

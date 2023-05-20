@@ -5,7 +5,7 @@
 	import { logOut } from '../../../server/routes/usersAPI';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore, recordsStore } from '../../../server/stores/stores';
+	import { authStore, recordsStore, monthlySummaryStores } from '../../../server/stores/stores';
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import {
 		getActiveWallet,
@@ -19,7 +19,7 @@
 	let currentActiveWallet = 'Cash';
 	(async () => {
 		currentActiveWallet = await getActiveWallet($authStore.user.uid);
-		monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 	})();
 
 	let isModalOpen = false;
@@ -30,15 +30,15 @@
 	const updateRecords = async (e) => {
 		recordsStore.set(e.detail.recordsStore);
 		currentActiveWallet = e.detail.currentActiveWallet.name;
-		monthlySummary = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+		monthlySummaryStores.update(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 	};
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->
 
-{#if $authStore}
+{#if $authStore && $monthlySummaryStores}
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary user={$authStore.user} {currentActiveWallet} {monthlySummary} />
+		<DashboardSummary user={$authStore.user} {currentActiveWallet} monthlySummary={$monthlySummaryStores} />
 		<Wallet user={$authStore.user} {recordsStore} on:updateRecords={updateRecords} />
 		<RecordBar user={$authStore.user} {recordsStore} />
 	</div>
@@ -55,6 +55,8 @@
 	<div class="absolute z-50 h-full m-auto">
 		<Addrecord bind:isOpen={isModalOpen} />
 	</div>
+{:else if $authStore || $monthlySummaryStores}
+	<div>Loading...</div>
 {:else}
 	<div>You must be authenticated to access the dashboard.</div>
 {/if}
