@@ -40,7 +40,7 @@
 
 	// <<START: Handling the calculator>>
 
-	let numberInput = '';
+	let numberInput = '0';
 	let total = 0;
 
 	const allowedKeys = [
@@ -126,6 +126,11 @@
 	function addToEquation(value: string | number) {
 		if (value === 'backspace') {
 			numberInput = numberInput.slice(0, -1);
+			if (numberInput === '') {
+				numberInput = '0';
+			}
+		} else if (numberInput === '0') {
+			numberInput = '' + value;
 		} else if (!isDuplicate(value)) {
 			numberInput += value;
 		}
@@ -133,7 +138,7 @@
 
 	const clear = () => {
 		total = 0;
-		numberInput = '';
+		numberInput = '0';
 	};
 
 	function calculate() {
