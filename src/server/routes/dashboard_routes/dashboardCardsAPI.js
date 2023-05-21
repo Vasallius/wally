@@ -32,7 +32,6 @@ const getRecords = async (recordType, userID, currentActiveWallet) => {
 }
 
 export const getMonthlySummary = async (userID, currentActiveWallet) => {
-  console.log("Getting monthly Summary")
   try {
     const expense = await getRecords('expense', userID, currentActiveWallet);
     const income = await getRecords('income', userID, currentActiveWallet);
@@ -85,7 +84,6 @@ export const getName = async (userID) => {
 
   if (docSnap.exists()) {
     const data = docSnap.data().name;
-    console.log(data)
     return data
   } else {
     return "No User."

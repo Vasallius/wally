@@ -28,7 +28,7 @@
 
 {#if $authStore && $monthlySummaryStores}
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary {currentActiveWallet} monthlySummary={$monthlySummaryStores} />
+		<DashboardSummary {currentActiveWallet} />
 		<Wallet />
 		<RecordBar />
 	</div>
