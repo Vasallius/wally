@@ -2,11 +2,8 @@
 	// @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import { authStore } from '../server/stores/stores.js';
-
+	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
 	export let currentActiveWallet = 'Cash';
-	export let monthlySummary;
-
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 	let promise = [0, 0];
@@ -33,27 +30,29 @@
 		<div class="mx-5 my-3 flex flex-row justify-between items-center">
 			<div class="font-primary text-header5 text-agray-700 font-semibold">{formattedDate}</div>
 		</div>
-		{#await monthlySummary then monthlySummary}
+		{#if $monthlySummaryStores !== null}
 			<div class="mx-5 mb-2 flex flex-row justify-between items-center">
 				<div class="font-primary font-normal text-gdark text-xs">Total Income</div>
-				<div class="font-primary font-semibold text-primary text-xs">₱{monthlySummary[0]}</div>
+				<div class="font-primary font-semibold text-primary text-xs">
+					₱{$monthlySummaryStores[0]}
+				</div>
 			</div>
 			<div
 				class="mx-5 flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 			>
 				<div class="font-primary font-normal text-agray-700 text-xs">Total Expenses</div>
 				<div class="font-primary font-semibold text-secondary text-xs">
-					-₱{monthlySummary[1]}
+					-₱{$monthlySummaryStores[1]}
 				</div>
 			</div>
 			<div class="mx-5 flex flex-row justify-between items-center pb-4">
 				<div class="font-primary font-normal text-agray-700 text-xs">Total</div>
 				<div class="font-primary font-semibold text-agray-700 text-xs">
-					₱{monthlySummary[0] - monthlySummary[1]}
+					₱{$monthlySummaryStores[0] - $monthlySummaryStores[1]}
 				</div>
 			</div>
-		{:catch error}
+		{:else}
 			<div class="error">Error: {error.message}</div>
-		{/await}
+		{/if}
 	</div>
 </div>
