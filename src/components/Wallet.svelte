@@ -16,8 +16,8 @@
 </div>
 <div class="grid grid-cols-3 carousel mx-3">
 	{#if $walletStores}
-		{#each $walletStores as wallet, index}
-			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} {index} />
+		{#each $walletStores as wallet}
+			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} />
 		{/each}
 	{:else}
 		<p>Loading Wallets</p>

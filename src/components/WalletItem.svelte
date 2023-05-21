@@ -1,35 +1,25 @@
-<!-- WalletItem.svelte -->
-
 <script lang="ts">
-	import type { list } from 'postcss';
-	import {
-		getWallets,
-		getDashboardRecords,
-		getActiveWallet,
-		editWallet,
-		getMonthlySummary
-	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore, walletStores, recordsStore, monthlySummaryStores } from '../server/stores/stores';
+	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { authStore, walletStores } from '../server/stores/stores';
 
 	export let label: string;
 	export let amount: string;
 	export let active: string;
-	export let index: number;
 	const changeActive = async () => {
-		const wallets = await getWallets($authStore.user.uid);
-		let reind = 0;
-		for (let i = 0; i < wallets.length; i++) {
-			if (wallets[i].active == 'True') {
-				reind = i;
-				break;
+		let wallets = await getWallets($authStore.user.uid);
+		wallets = wallets.map((wallet) => {
+			if (wallet.name == label) {
+				wallet.active = 'True';
+			} else {
+				wallet.active = 'False';
 			}
-		}
-		const val = await editWallet($authStore.user.uid,index,{active: "True"});
-		const val2 = await editWallet($authStore.user.uid,reind,{active: "False"});
-		const currentActiveWallet = await getActiveWallet($authStore.user.uid);
-		$walletStores = await getWallets($authStore.user.uid);
-		$recordsStore = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
-		$monthlySummaryStores = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+
+			return wallet;
+		});
+		console.log(wallets);
+		walletStores.set(wallets);
+		updateWallets($authStore.user.uid, wallets);
 	};
 </script>
 
