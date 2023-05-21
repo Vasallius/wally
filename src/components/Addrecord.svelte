@@ -14,6 +14,7 @@
 		updateWallets,
 		getActiveWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import Records from './Records.svelte';
 	// <<START: Modal Pop Up>>
 
 	// <<END: Modal Pop Up>>
@@ -108,7 +109,7 @@
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
 					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expenses', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
 					let newBalance = wallet.initial + income - expenses;
 					return {
 						...wallet,
@@ -122,10 +123,10 @@
 		} else if (transactionType === 'expense') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income');
-					let expenses = sumRecords($recordsStore, 'expenses');
+					console.log(selectedWallet);
+					let income = sumRecords($recordsStore, 'income', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
 					let newBalance = wallet.initial + income - expenses;
-
 					return {
 						...wallet,
 						balance: newBalance
