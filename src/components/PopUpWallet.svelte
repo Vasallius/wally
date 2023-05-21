@@ -10,6 +10,7 @@
 
 		let wallet = {
 			active: 'False',
+			initial: amount,
 			balance: amount,
 			name: label,
 			dailyBudget: 0,
