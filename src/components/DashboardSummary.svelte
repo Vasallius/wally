@@ -1,14 +1,28 @@
 <script>
 	// @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
+	import { getWallets } from '../server';
+
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
-	export let currentActiveWallet = 'Cash';
+	import { activeWalletStore } from '../server/stores/stores.js';
+	import { onMount } from 'svelte';
+
+	let activeWallet;
+	let wallets;
+
+	// Frongz no need to pass active wallet as a prop, nakastore na sa activewalletstore, thanks
+	onMount(async () => {
+		wallets = await getWallets($authStore.user.uid);
+		activeWallet = getActiveWallet(wallets);
+		activeWalletStore.set(activeWallet);
+	});
+
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 	let promise = [0, 0];
 	(async () => {
-		promise = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
+		promise = await getMonthlySummary($authStore.user.uid, activeWallet);
 	})();
 </script>
 
