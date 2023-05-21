@@ -1,10 +1,19 @@
 <script lang="ts">
-	import { authStore, recordsStore, walletStores, monthlySummaryStores } from '../server/stores/stores.js';
+	import {
+		authStore,
+		recordsStore,
+		walletStores,
+		monthlySummaryStores
+	} from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
-	import { getMonthlySummary, updateWallets, getActiveWallet, } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import {
+		getMonthlySummary,
+		updateWallets,
+		getActiveWallet
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	// <<START: Modal Pop Up>>
 
 	// <<END: Modal Pop Up>>
@@ -72,23 +81,38 @@
 		isOpen = false;
 	};
 
+
+	// Add up a certain recordType
+	const sumRecords(records, recordType){
+		return records
+    .filter((record) => record.recordType === recordType)
+    .reduce((sum, record) => sum + record.amount, 0)
+	};
+
 	const handleSubmit = async () => {
 		isOpen = false;
 		let records = $recordsStore;
-		let newRecords = {
+		let newRecord = {
 			amount: parseInt(numberInput),
 			category: selectedCategory,
 			name: 'magic',
 			recordType: transactionType,
 			wallet: selectedWallet
 		};
-
+		records = await addRecord($authStore.user.uid, newRecord);
+		recordsStore.set(records);
+		console.log($recordsStore);
 		if (transactionType === 'income') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
+
+					let income = sumRecords($recordsStore,"income")
+					let expenses = sumRecords($recordsStore,"expenses")
+					let newBalance = wallet.initial + income - expenses
+
 					return {
 						...wallet,
-						balance: wallet.balance + parseInt(numberInput)
+						balance: newBalance
 					};
 				}
 				return wallet;
@@ -98,9 +122,13 @@
 		} else if (transactionType === 'expense') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
+					let income = sumRecords($recordsStore,"income")
+					let expenses = sumRecords($recordsStore,"expenses")
+					let newBalance = wallet.initial + income - expenses
+
 					return {
 						...wallet,
-						balance: wallet.balance - parseInt(numberInput)
+						balance: newBalance
 					};
 				}
 				return wallet;
@@ -109,8 +137,8 @@
 			updateWallets($authStore.user.uid, updatedWallets);
 		}
 
-		records = await addRecord($authStore.user.uid, newRecords);
-		recordsStore.set(records);
+		// records = await addRecord($authStore.user.uid, newRecord);
+		// recordsStore.set(records);
 		let currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 		numberInput = ''; // Clears the calculator upon modal close
