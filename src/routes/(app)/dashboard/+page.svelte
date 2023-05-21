@@ -1,8 +1,7 @@
 <script>
 	// @ts-nocheck
-
+	import { onMount } from 'svelte';
 	import DashboardSummary from './../../../components/DashboardSummary.svelte';
-	import { logOut } from '../../../server/routes/usersAPI';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
 	import { authStore, recordsStore, monthlySummaryStores } from '../../../server/stores/stores';
@@ -12,25 +11,28 @@
 		getMonthlySummary
 	} from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 
-	async function handleLogout() {
-		await logOut();
-	}
-	let monthlySummary = [0, 0];
-	let currentActiveWallet = 'Cash';
-	(async () => {
+	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
+	let isModalOpen = false;
+
+	onMount(async () => {
 		currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
-	})();
+	});
 
-	let isModalOpen = false;
-	const openPopUp = () => {
-		isModalOpen = true;
-	};
+	// (async () => {
+	// 	currentActiveWallet = await getActiveWallet($authStore.user.uid);
+	// 	monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
+	// })();
 
 	const updateRecords = async (e) => {
+		console.log(e);
 		recordsStore.set(e.detail.recordsStore);
 		currentActiveWallet = e.detail.currentActiveWallet.name;
 		monthlySummaryStores.update(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
+	};
+
+	const openPopUp = () => {
+		isModalOpen = true;
 	};
 </script>
 
@@ -38,7 +40,11 @@
 
 {#if $authStore && $monthlySummaryStores}
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary user={$authStore.user} {currentActiveWallet} monthlySummary={$monthlySummaryStores} />
+		<DashboardSummary
+			user={$authStore.user}
+			{currentActiveWallet}
+			monthlySummary={$monthlySummaryStores}
+		/>
 		<Wallet user={$authStore.user} {recordsStore} on:updateRecords={updateRecords} />
 		<RecordBar user={$authStore.user} {recordsStore} />
 	</div>
