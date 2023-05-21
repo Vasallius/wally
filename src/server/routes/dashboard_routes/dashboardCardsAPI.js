@@ -135,6 +135,8 @@ export const addWallet = async (userID, wallet) => {
   }
 }
 
+
+// Nothing uses this!
 export const editWallet = async (userID, walletIndex, newValues) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -153,6 +155,8 @@ export const editWallet = async (userID, walletIndex, newValues) => {
     return false
   }
 }
+
+
 
 const dateUtility = (record) => {
   return Number(new Date(record.date.second*1000 + record.date.nanoseconds));

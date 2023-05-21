@@ -1,7 +1,8 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { Trash } from 'svelte-bootstrap-icons';
-	import { walletStores } from '../server/stores/stores';
+	import { authStore, walletStores } from '../server/stores/stores';
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	export let title: string;
 	export let balance: number;
@@ -10,6 +11,7 @@
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
 		walletStores.set(wallets);
+		updateWallets($authStore.user.uid, wallets);
 	}
 </script>
 
