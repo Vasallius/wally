@@ -82,10 +82,14 @@
 	};
 
 	// Add up a certain recordType
-	function sumRecords(records, recordType) {
-		return records
-			.filter((record) => record.recordType === recordType)
-			.reduce((sum, record) => sum + record.amount, 0);
+	function sumRecords(array, recordType, walletname) {
+		return array.reduce((total, current) => {
+			if (current.recordType === recordType && current.wallet === walletname) {
+				return total + current.amount;
+			} else {
+				return total;
+			}
+		}, 0);
 	}
 
 	const handleSubmit = async () => {
@@ -100,14 +104,12 @@
 		};
 		records = await addRecord($authStore.user.uid, newRecord);
 		recordsStore.set(records);
-		console.log($recordsStore);
 		if (transactionType === 'income') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income');
-					let expenses = sumRecords($recordsStore, 'expenses');
+					let income = sumRecords($recordsStore, 'income', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expenses', selectedWallet);
 					let newBalance = wallet.initial + income - expenses;
-
 					return {
 						...wallet,
 						balance: newBalance
@@ -134,9 +136,6 @@
 			walletStores.set(updatedWallets);
 			updateWallets($authStore.user.uid, updatedWallets);
 		}
-
-		// records = await addRecord($authStore.user.uid, newRecord);
-		// recordsStore.set(records);
 		let currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 		numberInput = ''; // Clears the calculator upon modal close
