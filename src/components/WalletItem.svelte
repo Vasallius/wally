@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore, walletStores } from '../server/stores/stores';
+	import { authStore, walletStores, activeWalletStore } from '../server/stores/stores';
 	import { onMount } from 'svelte';
 
 	export let label: string;
@@ -17,10 +17,11 @@
 		wallets = wallets.map((wallet) => {
 			if (wallet.name == label) {
 				wallet.active = 'True';
+				console.log(`Changing active wallet to ${label}`);
+				activeWalletStore.set(wallet);
 			} else {
 				wallet.active = 'False';
 			}
-
 			return wallet;
 		});
 		walletStores.set(wallets);

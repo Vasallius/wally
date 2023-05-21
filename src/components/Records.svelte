@@ -1,31 +1,28 @@
 <script>
 	// @ts-nocheck
-
-	import {
-		getDashboardRecords,
-		getIncomeRecords,
-		getExpenseRecords,
-		getTransferRecords,
-		getActiveWallet
-	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
-	import { authStore, recordsStore } from '../server/stores/stores';
+	import { getWallets } from '../server';
+	import { authStore, recordsStore, activeWalletStore } from '../server/stores/stores';
 	import { onMount } from 'svelte';
+	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
 
 	export let recordType;
 
+	let activeWallet;
+	let wallets;
+	let records;
+
+	function getActiveWallet(wallets) {
+		return wallets.find((wallet) => wallet.active == 'True');
+	}
+
 	onMount(async () => {
-		const currentActiveWallet = await getActiveWallet($authStore.user.uid);
-		// Fetch the data from the database
-		let initialData = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
-		if (recordType == 'income') {
-			initialData = await getIncomeRecords($authStore.user.uid, currentActiveWallet);
-		} else if (recordType == 'expense') {
-			initialData = await getExpenseRecords($authStore.user.uid, currentActiveWallet);
-		} else if (recordType == 'transfer') {
-			initialData = await getTransferRecords($authStore.user.uid, currentActiveWallet);
-		}
-		recordsStore.set(initialData);
+		wallets = await getWallets($authStore.user.uid);
+		records = await getAllRecords($authStore.user.uid);
+		activeWallet = getActiveWallet(wallets);
+		activeWalletStore.set(activeWallet);
+
+		recordsStore.set(records);
 	});
 
 	function convertTimestamp(timestamp) {
@@ -36,13 +33,15 @@
 
 {#if $recordsStore}
 	{#each $recordsStore as record}
-		<RecordCard
-			category={record.category}
-			wallet={record.wallet}
-			amount={record.amount}
-			date={convertTimestamp(record.date)}
-			recordType={record.recordType}
-		/>
+		{#if record.wallet == $activeWalletStore?.name}
+			<RecordCard
+				category={record.category}
+				wallet={record.wallet}
+				amount={record.amount}
+				date={convertTimestamp(record.date)}
+				recordType={record.recordType}
+			/>
+		{/if}
 	{/each}
 {:else}
 	<p>Loading user data...</p>
