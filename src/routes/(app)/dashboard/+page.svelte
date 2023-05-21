@@ -43,7 +43,6 @@
 		<DashboardSummary
 			user={$authStore.user}
 			{currentActiveWallet}
-			monthlySummary={$monthlySummaryStores}
 		/>
 		<Wallet user={$authStore.user} />
 		<RecordBar user={$authStore.user} />

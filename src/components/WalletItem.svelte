@@ -6,9 +6,10 @@
 		getWallets,
 		getDashboardRecords,
 		getActiveWallet,
-		editWallet
+		editWallet,
+		getMonthlySummary
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
+	import { authStore, walletStores, recordsStore, monthlySummaryStores } from '../server/stores/stores';
 
 	export let label: string;
 	export let amount: string;
@@ -28,6 +29,7 @@
 		const currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		$walletStores = await getWallets($authStore.user.uid);
 		$recordsStore = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
+		$monthlySummaryStores = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
 	};
 </script>
 
