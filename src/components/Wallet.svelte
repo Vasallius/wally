@@ -3,7 +3,11 @@
 	import WalletItem from './WalletItem.svelte';
 	import { onMount } from 'svelte';
 	// import { getWallets } from '../server';
-	import { editWallet,getWallets, getDashboardRecords, getActiveWallet } from '../server/routes/dashboard_routes/dashboardCardsAPI'
+	import {
+		getWallets,
+		getDashboardRecords,
+		getActiveWallet
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
 	import { createEventDispatcher } from 'svelte';
 	export let user;
@@ -15,8 +19,8 @@
 	});
 
 	const updateRecords = (e) => {
-		dispatch("updateRecords", e.detail);
-	}
+		dispatch('updateRecords', e.detail);
+	};
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
@@ -25,12 +29,12 @@
 <div class="grid grid-cols-3 carousel mx-3">
 	{#if $walletStores}
 		{#each $walletStores as wallet, index}
-			<WalletItem 
+			<WalletItem
 				label={wallet.name}
 				amount={wallet.balance}
 				active={wallet.active}
-				index={index}
-				recordsStore={recordsStore}
+				{index}
+				{recordsStore}
 				on:updateRecords={updateRecords}
 			/>
 		{/each}
