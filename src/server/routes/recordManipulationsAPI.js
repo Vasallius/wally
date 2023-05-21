@@ -19,8 +19,6 @@ export const addRecord = async (userID, record) => {
     await updateDoc(docRef, {
       records: newrecords
     })
-    console.log("new records")
-    console.log(newrecords)
     return newrecords;
     ;
   } else {

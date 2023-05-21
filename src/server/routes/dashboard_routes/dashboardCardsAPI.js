@@ -108,7 +108,6 @@ export const updateWallets = async (userID, wallet) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log(wallet)
     await updateDoc(docRef, {
       wallets: wallet
     });

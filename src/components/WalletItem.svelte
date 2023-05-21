@@ -23,7 +23,6 @@
 
 			return wallet;
 		});
-		console.log(wallets);
 		walletStores.set(wallets);
 		updateWallets($authStore.user.uid, wallets);
 	};
