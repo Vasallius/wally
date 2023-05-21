@@ -29,6 +29,18 @@ export const addRecord = async (userID, record) => {
   
 }
 
+export const getAllRecords = async (userID)=>{
+  const docRef = doc(db, 'records', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data().records;
+    return data
+  } else {
+    console.log("No such document!");
+  }
+}
+
 const getDocsUtility = async (collectionReference) => {
   let records = []
   const querySnap = await getDocs(collectionReference);
