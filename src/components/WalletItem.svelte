@@ -2,12 +2,18 @@
 	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
+	import { onMount } from 'svelte';
 
 	export let label: string;
 	export let amount: string;
 	export let active: string;
+	let wallets;
+
+	onMount(async () => {
+		wallets = await getWallets($authStore.user.uid);
+	});
+
 	const changeActive = async () => {
-		let wallets = await getWallets($authStore.user.uid);
 		wallets = wallets.map((wallet) => {
 			if (wallet.name == label) {
 				wallet.active = 'True';
