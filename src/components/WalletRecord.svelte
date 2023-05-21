@@ -1,8 +1,10 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { Pencil, Trash } from 'svelte-bootstrap-icons';
-	import { authStore, walletStores } from '../server/stores/stores';
+	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
 	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
+
 	import EditModal from './EditModal.svelte';
 	let isModalOpen = false;
 	let label = '';
@@ -10,11 +12,14 @@
 	export let title: string;
 	export let balance: number;
 
-	function handleDeleteClick() {
+	async function handleDeleteClick() {
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
 		walletStores.set(wallets);
 		updateWallets($authStore.user.uid, wallets);
+		let records = await getAllRecords($authStore.user.uid);
+		records = data.filter((data) => data.wallet != title);
+		recordsStore.set(records);
 	}
 
 	const openPopUp = () => {
