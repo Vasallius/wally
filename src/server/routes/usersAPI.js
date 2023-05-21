@@ -19,6 +19,7 @@ export const signUp = async (name, email, password) => {
         wallets: [
           {
             name: "Cash",
+            initial: 0,
             balance: 0,
             dailyBudget: 0,
             weeklyBudget: 0,
