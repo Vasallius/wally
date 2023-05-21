@@ -1,17 +1,17 @@
 <script>
 	// @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
-
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import { createEventDispatcher } from 'svelte';
-	export let user;
+	import { authStore } from '../server/stores/stores.js';
+
 	export let currentActiveWallet = 'Cash';
 	export let monthlySummary;
+
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 	let promise = [0, 0];
 	(async () => {
-		promise = await getMonthlySummary(user.uid, currentActiveWallet);
+		promise = await getMonthlySummary($authStore.user.uid, currentActiveWallet);
 	})();
 </script>
 

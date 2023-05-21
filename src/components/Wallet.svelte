@@ -2,19 +2,13 @@
 	// @ts-nocheck
 	import WalletItem from './WalletItem.svelte';
 	import { onMount } from 'svelte';
-	// import { getWallets } from '../server';
-	import {
-		getWallets,
-		getDashboardRecords,
-		getActiveWallet
-	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
-	export let user;
+
 	onMount(async () => {
-		const wallets = await getWallets(user.uid);
+		const wallets = await getWallets($authStore.user.uid);
 		walletStores.set(wallets);
 	});
-
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
@@ -23,12 +17,7 @@
 <div class="grid grid-cols-3 carousel mx-3">
 	{#if $walletStores}
 		{#each $walletStores as wallet, index}
-			<WalletItem
-				label={wallet.name}
-				amount={wallet.balance}
-				active={wallet.active}
-				{index}
-			/>
+			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} {index} />
 		{/each}
 	{:else}
 		<p>Loading Wallets</p>

@@ -9,22 +9,21 @@
 		getActiveWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import RecordCard from './RecordCard.svelte';
-	import { recordsStore } from '../server/stores/stores';
+	import { authStore, recordsStore } from '../server/stores/stores';
 	import { onMount } from 'svelte';
 
-	export let user;
 	export let recordType;
-	// export let recordsStore;
+
 	onMount(async () => {
-		const currentActiveWallet = await getActiveWallet(user.uid);
+		const currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		// Fetch the data from the database
-		let initialData = await getDashboardRecords(user.uid, currentActiveWallet);
+		let initialData = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
 		if (recordType == 'income') {
-			initialData = await getIncomeRecords(user.uid, currentActiveWallet);
+			initialData = await getIncomeRecords($authStore.user.uid, currentActiveWallet);
 		} else if (recordType == 'expense') {
-			initialData = await getExpenseRecords(user.uid, currentActiveWallet);
+			initialData = await getExpenseRecords($authStore.user.uid, currentActiveWallet);
 		} else if (recordType == 'transfer') {
-			initialData = await getTransferRecords(user.uid, currentActiveWallet);
+			initialData = await getTransferRecords($authStore.user.uid, currentActiveWallet);
 		}
 		recordsStore.set(initialData);
 	});

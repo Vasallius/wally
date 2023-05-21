@@ -4,7 +4,7 @@
 	import DashboardSummary from './../../../components/DashboardSummary.svelte';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore, recordsStore, monthlySummaryStores } from '../../../server/stores/stores';
+	import { authStore, monthlySummaryStores } from '../../../server/stores/stores';
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import {
 		getActiveWallet,
@@ -19,18 +19,6 @@
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 	});
 
-	// (async () => {
-	// 	currentActiveWallet = await getActiveWallet($authStore.user.uid);
-	// 	monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
-	// })();
-
-	const updateRecords = async (e) => {
-		console.log(e);
-		recordsStore.set(e.detail.recordsStore);
-		currentActiveWallet = e.detail.currentActiveWallet.name;
-		monthlySummaryStores.update(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
-	};
-
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
@@ -40,13 +28,9 @@
 
 {#if $authStore && $monthlySummaryStores}
 	<div class:scroll-lock={isModalOpen}>
-		<DashboardSummary
-			user={$authStore.user}
-			{currentActiveWallet}
-			monthlySummary={$monthlySummaryStores}
-		/>
-		<Wallet user={$authStore.user} />
-		<RecordBar user={$authStore.user} />
+		<DashboardSummary {currentActiveWallet} monthlySummary={$monthlySummaryStores} />
+		<Wallet />
+		<RecordBar />
 	</div>
 
 	<!-- Button is used to add records -->
