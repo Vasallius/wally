@@ -33,7 +33,15 @@
 
 {#if $recordsStore}
 	{#each $recordsStore as record}
-		{#if record.wallet == $activeWalletStore?.name}
+		{#if record.wallet == $activeWalletStore?.name && recordType == 'all'}
+			<RecordCard
+				category={record.category}
+				wallet={record.wallet}
+				amount={record.amount}
+				date={convertTimestamp(record.date)}
+				recordType={record.recordType}
+			/>
+		{:else if record.wallet == $activeWalletStore?.name && record.recordType == recordType}
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}
