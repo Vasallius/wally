@@ -20,7 +20,7 @@
 	<SettingsNav>Wallet</SettingsNav>
 
 	<div class="max-h-full flex flex-col overflow-y-scroll">
-		<WalletRecordList user={$authStore.user} />
+		<WalletRecordList />
 	</div>
 
 	<div class="flex flex-col mt-auto relative">

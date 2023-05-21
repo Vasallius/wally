@@ -2,12 +2,11 @@
 	// @ts-nocheck
 	import { getWallets } from '../server';
 	import WalletRecord from './WalletRecord.svelte';
-	import { walletStores } from '../server/stores/stores';
+	import { authStore, walletStores } from '../server/stores/stores';
 	import { onMount } from 'svelte';
 
-	export let user;
 	onMount(async () => {
-		const wallets = await getWallets(user.uid);
+		const wallets = await getWallets($authStore.user.uid);
 		walletStores.set(wallets);
 	});
 </script>
