@@ -14,6 +14,7 @@
 		updateWallets,
 		getActiveWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { transferMoney } from '../server/routes/walletsAPI.js';
 	import Records from './Records.svelte';
 	// <<START: Modal Pop Up>>
 
@@ -104,7 +105,7 @@
 			wallet: selectedWallet
 		};
 		records = await addRecord($authStore.user.uid, newRecord);
-		recordsStore.set(records);
+		recordsStore.set(records);		
 		if (transactionType === 'income') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
@@ -136,6 +137,25 @@
 			});
 			walletStores.set(updatedWallets);
 			updateWallets($authStore.user.uid, updatedWallets);
+		} else {
+			const successCheck = await transferMoney(newRecord.wallet, newRecord.category, newRecord.amount);
+			if (successCheck) {
+				const updatedWallets = $walletStores.map((wallet) => {
+					if (wallet.name === selectedWallet) {
+						console.log(selectedWallet);
+						let income = sumRecords($recordsStore, 'income', selectedWallet);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+						let newBalance = wallet.initial + income - expenses;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					}
+					return wallet;
+				});
+				walletStores.set(updatedWallets);
+				updateWallets($authStore.user.uid, updatedWallets);
+			}
 		}
 		let currentActiveWallet = await getActiveWallet($authStore.user.uid);
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));

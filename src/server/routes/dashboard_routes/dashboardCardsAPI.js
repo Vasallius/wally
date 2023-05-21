@@ -3,26 +3,6 @@
 import { collection, getDocs, doc, updateDoc, onSnapshot, query, where, and, getDoc } from 'firebase/firestore'
 import {db,auth} from '../firebase'
 
-const findFunction = async (recordType, userID, currentActiveWallet) => {
-  const coll = collection(db, 'records')
-  // eslint-disable-next-line no-undef
-  const incomeRecordsReference = query(coll,
-    where('userID', '==', userID)
-  );
-  let records = []
-  const querySnap = await getDocs(incomeRecordsReference);
-  querySnap.forEach((doc) => {
-    console.log(doc);
-    records.push({ ...doc.data(), id: doc.id });
-  });
-  console.log(records, recordType, userID, currentActiveWallet);
-  let specificRecords = records[0].records.filter((currentRecord) => {
-    return currentRecord.recordType == recordType && currentRecord.wallet == currentActiveWallet;
-  })
-  
-  return specificRecords;
-}
-
 const getRecords = async (recordType, userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID);
   const docSnap = await getDoc(docRef);
@@ -55,15 +35,6 @@ export const getActiveWallet = async (userID) => {
     return currentWallet.active == "True";
   })
   return document[0].name;
-}
-
-const getDocsUtility = async (collectionReference) => {
-  let wallets = []
-  const querySnap = await getDocs(collectionReference);
-  querySnap.forEach((doc) => {
-    wallets.push({ ...doc.data(), id: doc.id });
-  });
-  return wallets;
 }
 
 export const getCategories = async (userID) => {
@@ -153,8 +124,6 @@ export const editWallet = async (userID, walletIndex, newValues) => {
   }
 }
 
-
-
 const dateUtility = (record) => {
   return Number(new Date(record.date.second*1000 + record.date.nanoseconds));
 }
@@ -197,3 +166,10 @@ export const getTransferRecords = async (userID, currentActiveWallet) => {
     return dateUtility(secondRecord)-dateUtility(firstRecord);
   });
 };
+
+/**
+ * edit
+ */
+export const alertNotification = () => {
+
+}
