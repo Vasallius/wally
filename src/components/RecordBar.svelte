@@ -6,7 +6,6 @@
 	import Tab from './Tab.svelte'; 
   import Records from './Records.svelte';
   import { authStore } from '../server/stores/stores';
-  export let recordsStore;
 </script>
 
 <div class="flex mx-3 mt-5 mb-4">
@@ -24,27 +23,27 @@
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto"> 
       <!-- Show recordType [All] here -->
-      <Records user={$authStore.user} recordType="all" recordsStore={recordsStore}/>
+      <Records user={$authStore.user} recordType="all" />
     </div>
   </TabPanel>
 
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Income] here -->
-      <Records user={$authStore.user} recordType="income" recordsStore={recordsStore}/>
+      <Records user={$authStore.user} recordType="income" />
     </div>
   </TabPanel>
 
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Expense] here -->
-      <Records user={$authStore.user} recordType="expense" recordsStore={recordsStore}/>
+      <Records user={$authStore.user} recordType="expense" />
     </div>
   </TabPanel>
   <TabPanel>
     <div class="max-h-80 flex flex-col overflow-y-auto">
       <!-- Show recordType [Transfer] here -->
-      <Records user={$authStore.user} recordType="transfer" recordsStore={recordsStore}/>
+      <Records user={$authStore.user} recordType="transfer" />
     </div>
   </TabPanel>
 </Tabs>

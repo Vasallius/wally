@@ -45,8 +45,8 @@
 			{currentActiveWallet}
 			monthlySummary={$monthlySummaryStores}
 		/>
-		<Wallet user={$authStore.user} {recordsStore} on:updateRecords={updateRecords} />
-		<RecordBar user={$authStore.user} {recordsStore} />
+		<Wallet user={$authStore.user} />
+		<RecordBar user={$authStore.user} />
 	</div>
 
 	<!-- Button is used to add records -->

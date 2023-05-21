@@ -5,18 +5,15 @@
 	import {
 		getWallets,
 		getDashboardRecords,
-		getActiveWallet
+		getActiveWallet,
+		editWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore } from '../server/stores/stores';
-	import { createEventDispatcher } from 'svelte';
+	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
 
 	export let label: string;
 	export let amount: string;
 	export let active: string;
 	export let index: number;
-	export let walletStores;
-	export let recordsStore;
-	let dispatch = createEventDispatcher();
 	const changeActive = async () => {
 		const wallets = await getWallets($authStore.user.uid);
 		let reind = 0;
@@ -26,11 +23,11 @@
 				break;
 			}
 		}
+		const val = await editWallet($authStore.user.uid,index,{active: "True"});
+		const val2 = await editWallet($authStore.user.uid,reind,{active: "False"});
 		const currentActiveWallet = await getActiveWallet($authStore.user.uid);
-		let newWallets = await getWallets($authStore.user.uid);
-		walletStores = newWallets;
-		recordsStore = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
-		dispatch('updateRecords', { recordsStore: recordsStore, currentActiveWallet: wallets[index] });
+		$walletStores = await getWallets($authStore.user.uid);
+		$recordsStore = await getDashboardRecords($authStore.user.uid, currentActiveWallet);
 	};
 </script>
 

@@ -9,19 +9,12 @@
 		getActiveWallet
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
-	import { createEventDispatcher } from 'svelte';
-
 	export let user;
-	export let recordsStore;
-	let dispatch = createEventDispatcher();
 	onMount(async () => {
 		const wallets = await getWallets(user.uid);
 		walletStores.set(wallets);
 	});
 
-	const updateRecords = (e) => {
-		dispatch('updateRecords', e.detail);
-	};
 </script>
 
 <div class="flex mx-3 mt-3.5 mb-1.5">
@@ -35,8 +28,6 @@
 				amount={wallet.balance}
 				active={wallet.active}
 				{index}
-				{recordsStore}
-				on:updateRecords={updateRecords}
 			/>
 		{/each}
 	{:else}
