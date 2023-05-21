@@ -81,13 +81,12 @@
 		isOpen = false;
 	};
 
-
 	// Add up a certain recordType
-	const sumRecords(records, recordType){
+	function sumRecords(records, recordType) {
 		return records
-    .filter((record) => record.recordType === recordType)
-    .reduce((sum, record) => sum + record.amount, 0)
-	};
+			.filter((record) => record.recordType === recordType)
+			.reduce((sum, record) => sum + record.amount, 0);
+	}
 
 	const handleSubmit = async () => {
 		isOpen = false;
@@ -105,10 +104,9 @@
 		if (transactionType === 'income') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
-
-					let income = sumRecords($recordsStore,"income")
-					let expenses = sumRecords($recordsStore,"expenses")
-					let newBalance = wallet.initial + income - expenses
+					let income = sumRecords($recordsStore, 'income');
+					let expenses = sumRecords($recordsStore, 'expenses');
+					let newBalance = wallet.initial + income - expenses;
 
 					return {
 						...wallet,
@@ -122,9 +120,9 @@
 		} else if (transactionType === 'expense') {
 			const updatedWallets = $walletStores.map((wallet) => {
 				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore,"income")
-					let expenses = sumRecords($recordsStore,"expenses")
-					let newBalance = wallet.initial + income - expenses
+					let income = sumRecords($recordsStore, 'income');
+					let expenses = sumRecords($recordsStore, 'expenses');
+					let newBalance = wallet.initial + income - expenses;
 
 					return {
 						...wallet,
