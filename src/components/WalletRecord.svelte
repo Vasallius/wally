@@ -2,7 +2,10 @@
 	// @ts-nocheck
 	import { Pencil, Trash } from 'svelte-bootstrap-icons';
 	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import {
+		updateWallets,
+		updateRecords
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
 
 	import EditModal from './EditModal.svelte';
@@ -12,14 +15,16 @@
 	export let title: string;
 	export let balance: number;
 
+	// This function handles the delete button click event
 	async function handleDeleteClick() {
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
 		walletStores.set(wallets);
 		updateWallets($authStore.user.uid, wallets);
 		let records = await getAllRecords($authStore.user.uid);
-		records = data.filter((data) => data.wallet != title);
+		records = records.filter((data) => data.wallet != title);
 		recordsStore.set(records);
+		updateRecords($authStore.user.uid, records);
 	}
 
 	const openPopUp = () => {
