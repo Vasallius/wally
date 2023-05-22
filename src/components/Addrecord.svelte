@@ -13,23 +13,17 @@
 		getMonthlySummary,
 		updateWallets,
 		getActiveWallet,
-
-		recordErrorCheck
-
+		recordErrorCheck,
+		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import { transferMoney } from '../server/routes/walletsAPI.js';
 	import Records from './Records.svelte';
-	// <<START: Modal Pop Up>>
-
-	// <<END: Modal Pop Up>>
-
-	// <<START: Handling Different Transactions>>
 
 	let transactionType = 'income';
 	let sign = '+';
 	let color = 'primary';
 	let labelName = 'account';
 	let selectedWallet = '';
+	let selectedWallet2 = '';
 	let selectedCategory = '';
 
 	function changeTransactionType(event: Event) {
@@ -97,6 +91,22 @@
 		}, 0);
 	}
 
+	function sumTransferFrom(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
+	function sumTransferTo(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
 	const handleSubmit = async () => {
 		calculate();
 		isOpen = false;
@@ -104,72 +114,75 @@
 		let newRecord = {
 			amount: parseInt(numberInput),
 			category: selectedCategory,
-			name: 'magic',
+			name: 'magic', // UNUSED FIELD LMFAO
 			recordType: transactionType,
-			wallet: selectedWallet
+			wallet: selectedWallet,
+			wallet2: selectedWallet2
 		};
-		let errorRecordCheck = recordErrorCheck(newRecord, $walletStores);
-		console.log(errorRecordCheck);
-		if (!errorRecordCheck[0]) {
-			alert(errorRecordCheck[1]);
-			numberInput = '0';
-		} else {
-			records = await addRecord($authStore.user.uid, newRecord);
-			recordsStore.set(records);		
-			if (transactionType === 'income') {
-				const updatedWallets = $walletStores.map((wallet) => {
-					if (wallet.name === selectedWallet) {
-						let income = sumRecords($recordsStore, 'income', selectedWallet);
-						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-						let newBalance = wallet.initial + income - expenses;
-						return {
-							...wallet,
-							balance: newBalance
-						};
-					}
-					return wallet;
-				});
-				walletStores.set(updatedWallets);
-				updateWallets($authStore.user.uid, updatedWallets);
-			} else if (transactionType === 'expense') {
-				const updatedWallets = $walletStores.map((wallet) => {
-					if (wallet.name === selectedWallet) {
-						console.log(selectedWallet);
-						let income = sumRecords($recordsStore, 'income', selectedWallet);
-						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-						let newBalance = wallet.initial + income - expenses;
-						return {
-							...wallet,
-							balance: newBalance
-						};
-					}
-					return wallet;
-				});
-				walletStores.set(updatedWallets);
-				updateWallets($authStore.user.uid, updatedWallets);
-			} else {
-				const successCheck = await transferMoney(newRecord.wallet, newRecord.category, newRecord.amount);
-				if (successCheck) {
-					const updatedWallets = $walletStores.map((wallet) => {
-						if (wallet.name === selectedWallet) {
-							console.log(selectedWallet);
-							let income = sumRecords($recordsStore, 'income', selectedWallet);
-							let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-							let newBalance = wallet.initial + income - expenses;
-							return {
-								...wallet,
-								balance: newBalance
-							};
-						}
-						return wallet;
-					});
-					walletStores.set(updatedWallets);
-					updateWallets($authStore.user.uid, updatedWallets);
+		records = await addRecord($authStore.user.uid, newRecord);
+		recordsStore.set(records);
+		updateRecords($authStore.user.uid, records);
+		if (transactionType === 'income') {
+			const updatedWallets = $walletStores.map((wallet) => {
+				if (wallet.name === selectedWallet) {
+					let income = sumRecords($recordsStore, 'income', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+					let transferout = sumTransferFrom($recordsStore, selectedWallet);
+					let transferin = sumTransferTo($recordsStore, selectedWallet);
+					let newBalance = wallet.initial + income - expenses - transferout + transferin;
+					return {
+						...wallet,
+						balance: newBalance
+					};
 				}
-			}
-			let currentActiveWallet = await getActiveWallet($authStore.user.uid);
-			monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
-			numberInput = ''; // Clears the calculator upon modal close
+				return wallet;
+			});
+			walletStores.set(updatedWallets);
+			updateWallets($authStore.user.uid, updatedWallets);
+		} else if (transactionType === 'expense') {
+			const updatedWallets = $walletStores.map((wallet) => {
+				if (wallet.name === selectedWallet) {
+					let income = sumRecords($recordsStore, 'income', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+					let transferout = sumTransferFrom($recordsStore, selectedWallet);
+					let transferin = sumTransferTo($recordsStore, selectedWallet);
+					let newBalance = wallet.initial + income - expenses - transferout + transferin;
+					return {
+						...wallet,
+						balance: newBalance
+					};
+				}
+				return wallet;
+			});
+			walletStores.set(updatedWallets);
+			updateWallets($authStore.user.uid, updatedWallets);
+		} else {
+			const updatedWallets = $walletStores.map((wallet) => {
+				if (wallet.name === selectedWallet) {
+					let income = sumRecords($recordsStore, 'income', selectedWallet);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+					let transferout = sumTransferFrom($recordsStore, selectedWallet);
+					let transferin = sumTransferTo($recordsStore, selectedWallet);
+					let newBalance = wallet.initial + income - expenses - transferout + transferin;
+					return {
+						...wallet,
+						balance: newBalance
+					};
+				} else if (wallet.name === selectedWallet2) {
+					let income = sumRecords($recordsStore, 'income', selectedWallet2);
+					let expenses = sumRecords($recordsStore, 'expense', selectedWallet2);
+					let transferout = sumTransferFrom($recordsStore, selectedWallet2);
+					let transferin = sumTransferTo($recordsStore, selectedWallet2);
+					let newBalance = wallet.initial + income - expenses - transferout + transferin;
+					return {
+						...wallet,
+						balance: newBalance
+					};
+				}
+				return wallet;
+			});
+			walletStores.set(updatedWallets);
+			updateWallets($authStore.user.uid, updatedWallets);
 		}
 	};
 
@@ -298,7 +311,7 @@
 			<div class="flex flex-row gap-2 mb-10">
 				<DropdownWallet {labelName} bind:selectedWallet />
 				{#if transactionType === 'transfer'}
-					<DropdownWallet labelName="to account" bind:selectedWallet />
+					<DropdownWallet labelName="to account" bind:selectedWallet={selectedWallet2} />
 				{/if}
 				{#if !(transactionType === 'transfer')}
 					<DropdownCategory bind:selectedCategory />
