@@ -4,18 +4,27 @@
 	import DashboardSummary from './../../../components/DashboardSummary.svelte';
 	import Wallet from '../../../components/Wallet.svelte';
 	import RecordBar from '../../../components/RecordBar.svelte';
-	import { authStore, monthlySummaryStores } from '../../../server/stores/stores';
-	import Addrecord from '../../../components/Addrecord.svelte';
 	import {
-		getActiveWallet,
-		getMonthlySummary
-	} from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+		authStore,
+		monthlySummaryStores,
+		activeWalletStore
+	} from '../../../server/stores/stores';
+	import Addrecord from '../../../components/Addrecord.svelte';
+	import { getMonthlySummary } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
 
+	function getActiveWallet(wallets) {
+		return wallets.find((wallet) => wallet.active == 'True');
+	}
+	let wallets;
+	let activeWallet;
 	onMount(async () => {
-		currentActiveWallet = await getActiveWallet($authStore.user.uid);
+		wallets = await getWallets($authStore.user.uid);
+		activeWallet = getActiveWallet(wallets);
+		activeWalletStore.set(activeWallet);
 		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
 	});
 

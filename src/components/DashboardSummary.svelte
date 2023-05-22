@@ -2,13 +2,17 @@
 	// @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
 	import { getWallets } from '../server';
-	import { getMonthlySummary, getActiveWallet } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
 	import { activeWalletStore } from '../server/stores/stores.js';
 	import { onMount } from 'svelte';
 
 	let activeWallet;
 	let wallets;
+
+	function getActiveWallet(wallets) {
+		return wallets.find((wallet) => wallet.active == 'True');
+	}
 
 	// Frongz no need to pass active wallet as a prop, nakastore na sa activewalletstore, thanks
 	onMount(async () => {
