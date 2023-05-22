@@ -2,20 +2,15 @@
 	import { onMount } from 'svelte';
 	import { authStore } from '../server/stores/stores';
 	import { getWallets } from '../server';
-	import Wallet from './Wallet.svelte';
-
-	let walletRecords = [
-		{ id: 0, name: 'Cash', balance: 600 },
-		{ id: 1, name: 'Maya', balance: 1200 },
-		{ id: 2, name: 'Bank (BPI)', balance: 20000 }
-	];
+	import { walletStores } from '../server/stores/stores';
 
 	export let labelName: string;
-	export let selectedWallet: string = walletRecords[0].name;
+	export let selectedWallet: string;
 
 	onMount(async () => {
-		walletRecords = await getWallets($authStore.user.uid);
-		selectedWallet = walletRecords[0].name;
+		const wallets = await getWallets($authStore.user.uid);
+		walletStores.set(wallets);
+		selectedWallet = $walletStores[0].name;
 	});
 </script>
 
@@ -28,10 +23,10 @@
 	</label>
 	<select
 		bind:value={selectedWallet}
-		class="rounded-lg border-2 border-[#00C09F65] text-accent-green pt-3 pb-1 text-sm font-primary font-bold appearance-none w-full  text-center"
+		class="rounded-lg border-2 border-[#00C09F65] text-accent-green pt-3 pb-1 text-sm font-primary font-bold appearance-none w-full text-center"
 		name={labelName}
 	>
-		{#each walletRecords as item}
+		{#each $walletStores as item}
 			<option class="text-slate-700" value={item.name}>{item.name}</option>
 		{/each}
 	</select>
