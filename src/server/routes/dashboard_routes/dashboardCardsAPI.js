@@ -193,7 +193,3 @@ export const recordErrorCheck = (record, walletStores) => {
     return [true, "Valid"];
   }
 }
-
-export const walletErrorCheck = (wallet) => {
-  const userUID = $authStore.user.uid;
-}

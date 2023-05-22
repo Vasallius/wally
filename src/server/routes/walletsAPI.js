@@ -40,3 +40,12 @@ export const transferMoney = async (firstWalletName, secondWalletName, amount) =
     return true;
   }
 }
+
+export const walletErrorCheck = (wallet) => {
+  // console.log(wallet.initial);
+  if (wallet.name === '' || wallet.initial <= 0) {
+    return [false, "Invalid inputs"];
+  } else {
+    return [true, "Valid"];
+  }
+}
