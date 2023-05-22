@@ -15,7 +15,7 @@
 {#if $authStore}
 	<main class="flex flex-col h-screen p-4 justify-between font-primary">
 		<div>
-			<header class="flex flex-row content-center justify-between">
+			<header class="flex flex-row content-center justify-between items-center">
 				<a href="/profile" class="flex flex-row px-2 py-5 justify-between">
 					<div class="flex flex-row gap-4">
 						<div class="rounded">
