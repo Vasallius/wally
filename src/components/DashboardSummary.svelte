@@ -30,9 +30,9 @@
 </script>
 
 <div class="flex justify-between mx-3 my-4 db-nav">
-	<div class="flex">
-		<div class="flex items-center">
-			<a href="/menu"><div class="w-4 h-4 my-auto bg-light-green rounded-full mr-5" /></a>
+	<div class="flex items-center">
+		<div class="rounded mr-4">
+			<img src="./Avatar.png" alt="profile" class="w-9 h-9" />
 		</div>
 		<div class="font-primary font-semibold text-header5 text-black">Dashboard</div>
 	</div>
