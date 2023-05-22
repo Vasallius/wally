@@ -37,6 +37,7 @@
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}
+				wallet2={record.wallet2}
 				amount={record.amount}
 				date={convertTimestamp(record.date)}
 				recordType={record.recordType}
@@ -45,6 +46,7 @@
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}
+				wallet2={record.wallet2}
 				amount={record.amount}
 				date={convertTimestamp(record.date)}
 				recordType={record.recordType}
