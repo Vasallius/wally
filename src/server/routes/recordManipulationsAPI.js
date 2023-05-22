@@ -39,16 +39,6 @@ export const getAllRecords = async (userID)=>{
   }
 }
 
-const getDocsUtility = async (collectionReference) => {
-  let records = []
-  const querySnap = await getDocs(collectionReference);
-  querySnap.forEach((doc) => {
-    records.push({ ...doc.data(), id: doc.id });
-  });
-  return records;
-};
-
-
 export const getRecord = async (userID, index) => {
   const collectionReference = collection(db, 'records');
   const recordsReference = query(collectionReference, where('userID', '==', userID));

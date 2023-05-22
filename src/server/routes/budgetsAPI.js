@@ -144,25 +144,6 @@ export const getAllBudgets = async () => {
   return await getDocsUtility(snapQuery);
 };
 
-// export const addBudget = async (userID, budget) => {
-//   try {
-//     const collectionReference = collection(db, 'budgets');
-//     const recordsReference = query(collectionReference,
-//       where('userID', '==', userID)
-//     );
-//     const budgets = await getDocsUtility(recordsReference)
-//     .then((val) => {
-//       return val;
-//     });
-//     budgets[0].budgets.push(budget);
-//     const documentReference = doc(db, 'budgets', budgets[0].id);
-//     updateDoc(documentReference, {budgets: budgets[0].budgets});
-//     return true;
-//   } catch (error) {
-//     return false;
-//   }
-// }
-
 export const deleteBudget = async (userID, index) => {
   try {
     const collectionReference = collection(db, 'budgets');

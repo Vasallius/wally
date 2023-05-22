@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { collection, getDocs, doc, updateDoc, onSnapshot, query, where, and, getDoc } from 'firebase/firestore'
 import {db,auth} from '../firebase'
+import { authStore, walletStores } from '../../stores/stores';
 
 const getRecords = async (recordType, userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID);
@@ -172,4 +173,27 @@ export const getTransferRecords = async (userID, currentActiveWallet) => {
  */
 export const alertNotification = () => {
 
+}
+
+export const recordErrorCheck = (record, walletStores) => {
+  console.log(record);
+  if(record.amount <= 0) {
+    return [false,"Non-positive value"];
+  } else if (record.recordType === 'expense') {
+    const activeWallet = walletStores.filter((wallet) => {
+      return wallet.active == 'True';
+    })[0];
+    console.log(activeWallet);
+    if (activeWallet.balance < record.amount) {
+      return [false, "Negative balance"];
+    } else {
+      return [true, "Valid"];
+    }
+  } else {
+    return [true, "Valid"];
+  }
+}
+
+export const walletErrorCheck = (wallet) => {
+  const userUID = $authStore.user.uid;
 }

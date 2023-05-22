@@ -12,7 +12,10 @@
 	import {
 		getMonthlySummary,
 		updateWallets,
-		getActiveWallet
+		getActiveWallet,
+
+		recordErrorCheck
+
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { transferMoney } from '../server/routes/walletsAPI.js';
 	import Records from './Records.svelte';
@@ -95,6 +98,7 @@
 	}
 
 	const handleSubmit = async () => {
+		calculate();
 		isOpen = false;
 		let records = $recordsStore;
 		let newRecord = {
@@ -104,42 +108,30 @@
 			recordType: transactionType,
 			wallet: selectedWallet
 		};
-		records = await addRecord($authStore.user.uid, newRecord);
-		recordsStore.set(records);		
-		if (transactionType === 'income') {
-			const updatedWallets = $walletStores.map((wallet) => {
-				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					let newBalance = wallet.initial + income - expenses;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				}
-				return wallet;
-			});
-			walletStores.set(updatedWallets);
-			updateWallets($authStore.user.uid, updatedWallets);
-		} else if (transactionType === 'expense') {
-			const updatedWallets = $walletStores.map((wallet) => {
-				if (wallet.name === selectedWallet) {
-					console.log(selectedWallet);
-					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					let newBalance = wallet.initial + income - expenses;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				}
-				return wallet;
-			});
-			walletStores.set(updatedWallets);
-			updateWallets($authStore.user.uid, updatedWallets);
+		let errorRecordCheck = recordErrorCheck(newRecord, $walletStores);
+		console.log(errorRecordCheck);
+		if (!errorRecordCheck[0]) {
+			alert(errorRecordCheck[1]);
+			numberInput = '0';
 		} else {
-			const successCheck = await transferMoney(newRecord.wallet, newRecord.category, newRecord.amount);
-			if (successCheck) {
+			records = await addRecord($authStore.user.uid, newRecord);
+			recordsStore.set(records);		
+			if (transactionType === 'income') {
+				const updatedWallets = $walletStores.map((wallet) => {
+					if (wallet.name === selectedWallet) {
+						let income = sumRecords($recordsStore, 'income', selectedWallet);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+						let newBalance = wallet.initial + income - expenses;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					}
+					return wallet;
+				});
+				walletStores.set(updatedWallets);
+				updateWallets($authStore.user.uid, updatedWallets);
+			} else if (transactionType === 'expense') {
 				const updatedWallets = $walletStores.map((wallet) => {
 					if (wallet.name === selectedWallet) {
 						console.log(selectedWallet);
@@ -155,11 +147,30 @@
 				});
 				walletStores.set(updatedWallets);
 				updateWallets($authStore.user.uid, updatedWallets);
+			} else {
+				const successCheck = await transferMoney(newRecord.wallet, newRecord.category, newRecord.amount);
+				if (successCheck) {
+					const updatedWallets = $walletStores.map((wallet) => {
+						if (wallet.name === selectedWallet) {
+							console.log(selectedWallet);
+							let income = sumRecords($recordsStore, 'income', selectedWallet);
+							let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+							let newBalance = wallet.initial + income - expenses;
+							return {
+								...wallet,
+								balance: newBalance
+							};
+						}
+						return wallet;
+					});
+					walletStores.set(updatedWallets);
+					updateWallets($authStore.user.uid, updatedWallets);
+				}
 			}
+			let currentActiveWallet = await getActiveWallet($authStore.user.uid);
+			monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
+			numberInput = ''; // Clears the calculator upon modal close
 		}
-		let currentActiveWallet = await getActiveWallet($authStore.user.uid);
-		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
-		numberInput = ''; // Clears the calculator upon modal close
 	};
 
 	function isDuplicate(value: string | number) {
@@ -193,6 +204,8 @@
 			const roundedResult = resultValue.toFixed(2);
 			const formattedResult = parseFloat(roundedResult).toString();
 			numberInput = formattedResult;
+		} else {
+			numberInput = '0';
 		}
 	}
 
