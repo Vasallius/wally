@@ -14,7 +14,7 @@
 <div class="flex mx-3 mt-3.5 mb-1.5">
 	<div class="text-header5 font-primary font-semibold">Wallets</div>
 </div>
-<div class="grid grid-cols-3 carousel mx-3">
+<div class="flex overflow-x-auto snap-x overflow-y-visible mx-3 walletscroll">
 	{#if $walletStores}
 		{#each $walletStores as wallet}
 			<WalletItem label={wallet.name} amount={wallet.balance} active={wallet.active} />
@@ -23,3 +23,14 @@
 		<p>Loading Wallets</p>
 	{/if}
 </div>
+<style>/* Hide scrollbar for Chrome, Safari and Opera */
+	.walletscroll::-webkit-scrollbar {
+	  display: none;
+	}
+	
+	/* Hide scrollbar for IE, Edge and Firefox */
+	.walletscroll {
+	  -ms-overflow-style: none;  /* IE and Edge */
+	  scrollbar-width: none;  /* Firefox */
+	}
+</style>
