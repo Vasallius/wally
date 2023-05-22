@@ -14,10 +14,10 @@
 	});
 
 	const changeActive = async () => {
-		wallets = wallets.map((wallet) => {
+		wallets = $walletStores.map((wallet) => {
 			if (wallet.name == label) {
 				wallet.active = 'True';
-				console.log(`Changing active wallet to ${label}`);
+				// console.log(`Changing active wallet to ${label}`);
 				activeWalletStore.set(wallet);
 			} else {
 				wallet.active = 'False';
