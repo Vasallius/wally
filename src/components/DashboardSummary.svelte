@@ -32,7 +32,7 @@
 <div class="flex justify-between mx-3 my-4 db-nav">
 	<div class="flex items-center">
 		<div class="rounded mr-4">
-			<img src="./Avatar.png" alt="profile" class="w-9 h-9" />
+			<a href="/menu"><img src="./Avatar.png" alt="profile" class="w-9 h-9" /></a>
 		</div>
 		<div class="font-primary font-semibold text-header5 text-black">Dashboard</div>
 	</div>
