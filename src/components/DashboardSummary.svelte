@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
+	import { getActiveWallet } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { getWallets } from '../server';
-
 	import { getMonthlySummary } from './../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
 	import { activeWalletStore } from '../server/stores/stores.js';
