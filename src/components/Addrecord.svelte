@@ -107,6 +107,7 @@
 		return sum;
 	}
 
+	// This function handles when the plus button is clicked
 	const handleSubmit = async () => {
 		calculate();
 		isOpen = false;

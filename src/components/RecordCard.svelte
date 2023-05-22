@@ -11,8 +11,10 @@
 		<div class="font-semibold text-header5 font-primary text-agray-700">{category}</div>
 		{#if recordType == 'income'}
 			<div class="text-primary font-primary font-semibold">+{amount}</div>
-		{:else}
+		{:else if recordType == 'expense'}
 			<div class="text-secondary font-primary font-semibold">-{amount}</div>
+		{:else}
+			<div class="text-tertiary font-primary font-semibold">-{amount}</div>
 		{/if}
 	</div>
 	<div class="flex justify-between">
