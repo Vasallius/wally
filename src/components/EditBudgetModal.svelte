@@ -1,11 +1,10 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	export let isOpen = false;
 	export let label = '';
 	export let budget = 0;
 	export let intervals = '';
-
 
 	const handleSubmit = async (event) => {
 		// Add handle submission
@@ -28,7 +27,7 @@
 			on:submit={handleSubmit}
 			class="flex flex-col gap-4 bg-white rounded-xl text-agray-700 text-base font-semibold py-10 px-10 mx-auto"
 		>
-		<h1>Edit Budget</h1>
+			<h1>Edit Budget</h1>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[200px]">
 					<select
@@ -40,7 +39,7 @@
 						id="categories-select"
 						bind:value={label}
 					>
-					<option value="" selected disabled hidden>Select a category</option>
+						<option value="" selected disabled hidden>Select a category</option>
 						<!-- {#each categoryRecords as category}
 							<option value={category}>{category}</option>
 						{/each} -->
@@ -124,19 +123,22 @@
 					>
 						Intervals
 					</label>
-			</div>
+				</div>
 				<div class="relative self-center flex flex-row font-normal justify-between w-full">
-					<button type="submit"
-						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
-					>
-						Save
-					</button>
-					<button on:click={closeModal}
+					<button
+						on:click={closeModal}
 						class="w-16 relative text-center text-white rounded-lg bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
 						Cancel
 					</button>
+					<button
+						type="submit"
+						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
+					>
+						Save
+					</button>
 				</div>
+			</div>
 		</form>
 	</div>
 {/if}

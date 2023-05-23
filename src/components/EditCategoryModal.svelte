@@ -1,22 +1,25 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	export let isOpen = false;
 	export let label = '';
 	export let category;
 	import { authStore, recordsStore, categoriesStore } from '../server/stores/stores';
-	import { updateRecords, updateCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import {
+		updateRecords,
+		updateCategories
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		const updatedRecords = $recordsStore.map((rec) => {
 			console.log(rec.category, category);
-			if(rec.category == category){
+			if (rec.category == category) {
 				return {
 					...rec,
-					category: label,
-				}
+					category: label
+				};
 			}
 			return rec;
 		});
@@ -48,7 +51,7 @@
 			on:submit={handleSubmit}
 			class="flex flex-col gap-4 bg-white rounded-xl text-agray-700 text-base font-semibold py-8 px-8 mx-auto"
 		>
-		<h1>Edit Category</h1>
+			<h1>Edit Category</h1>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[250px]">
 					<input
@@ -79,17 +82,20 @@
 					</label>
 				</div>
 				<div class="relative self-center flex flex-row font-normal justify-between w-full">
-					<button type="submit"
-						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
-					>
-						Save
-					</button>
-					<button on:click={closeModal}
+					<button
+						on:click={closeModal}
 						class="w-16 relative text-center text-white rounded-lg bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
 						Cancel
 					</button>
+					<button
+						type="submit"
+						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
+					>
+						Save
+					</button>
 				</div>
+			</div>
 		</form>
 	</div>
 {/if}
