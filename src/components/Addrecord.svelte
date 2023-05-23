@@ -4,7 +4,8 @@
 		authStore,
 		recordsStore,
 		walletStores,
-		monthlySummaryStores
+		monthlySummaryStores,
+		budgetStores
 	} from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
@@ -15,12 +16,13 @@
 		recordErrorCheck,
 		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import Records from './Records.svelte';
 	import {
 		sumRecords,
 		sumTransferFrom,
 		sumTransferTo
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { getBudgets } from '../server/routes/budgetsAPI.js';
+	import { updateBudgets } from '../server/routes/budgetsAPI.js';
 
 	let transactionType = 'income';
 	let sign = '+';
@@ -88,6 +90,8 @@
 
 	// This function handles when the plus button is clicked
 	const handleSubmit = async () => {
+		let budgets = await getBudgets($authStore.user.uid);
+		budgetStores.set(budgets);
 		calculate();
 		isOpen = false;
 		let records = $recordsStore;
@@ -100,7 +104,7 @@
 			wallet2: selectedWallet2
 		};
 		let check = recordErrorCheck(newRecord, $walletStores);
-		if(!check[0]){
+		if (!check[0]) {
 			alert(check[1]);
 		} else {
 			records = await addRecord($authStore.user.uid, newRecord);
@@ -144,6 +148,14 @@
 				});
 				walletStores.set(updatedWallets);
 				updateWallets($authStore.user.uid, updatedWallets);
+				const updatedBudgets = $budgetStores.DayRecords.map((budget) => {
+					if (budget.title == selectedCategory) {
+						return { ...budget, spent: (budget.spent += parseInt(numberInput)) };
+					}
+					return budget;
+				});
+				updateBudgets($authStore.user.uid, $budgetStores);
+				budgetStores.set({ ...$budgetStores, DayRecords: updatedBudgets });
 			} else {
 				const updatedWallets = $walletStores.map((wallet) => {
 					if (wallet.name === selectedWallet) {
@@ -333,7 +345,7 @@
 								}
 							}
 						}}
-						inputmode='none'
+						inputmode="none"
 					/>
 					<div class="self-end p-[6px] text-sm">PHP</div>
 				</div>

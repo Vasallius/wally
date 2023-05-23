@@ -154,6 +154,20 @@ export const getBudgets = async (userID) => {
   }
 }
 
+export const updateBudgets = async (userID, budgets) => {
+  const docRef = doc(db, 'budgets', userID);
+  const docSnap = await getDoc(docRef);
+  console.log("updating budgets to:")
+  console.log(budgets)
+  if (docSnap.exists()) {
+    await updateDoc(docRef, {
+      budgets: budgets
+    });
+  } else {
+    return "NO BUDGETS"
+  }
+};
+
 /**
  * Deletes a budget based on its index.
  * @param {string} userID 
@@ -202,8 +216,6 @@ export const budgetErrorCheck = (budget, interval, budgetStores) => {
   });
   if (check.length > 0) {
     return [false, "Budget already exists."];
-  } else if (budget.title.match(/\W/)) {
-    return [false, "No special characters allowed."];
   } else if (budget.title === '') {
     return [false, "Budget title must contain at least one character."];
   } else if (budget.initial < 0) {
