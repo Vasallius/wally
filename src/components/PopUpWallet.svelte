@@ -15,7 +15,7 @@
 			active: 'False',
 			initial: amount,
 			balance: amount,
-			name: label,
+			name: label.charAt(0).toUpperCase() + label.slice(1),
 			dailyBudget: 0,
 			weeklyBudget: 0
 		};
