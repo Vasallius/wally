@@ -157,8 +157,6 @@ export const getBudgets = async (userID) => {
 export const updateBudgets = async (userID, budgets) => {
   const docRef = doc(db, 'budgets', userID);
   const docSnap = await getDoc(docRef);
-  console.log("updating budgets to:")
-  console.log(budgets)
   if (docSnap.exists()) {
     await updateDoc(docRef, {
       budgets: budgets
