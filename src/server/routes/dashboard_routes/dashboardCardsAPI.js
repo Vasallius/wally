@@ -175,6 +175,25 @@ export const updateRecords = async (userID, records) => {
 };
 
 /**
+ * Updates the properties of a specific category. 
+ * @param {string} userID 
+ * @param {object} categories 
+ * @returns An updated list of categories.
+ */
+export const updateCategories = async (userID, categories) => {
+  const docRef = doc(db, 'categories', userID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    await updateDoc(docRef, {
+      categories: categories
+    });
+  } else {
+    return "NO categories"
+  }
+};
+
+/**
  * Adds a wallet.
  * @param {string} userID 
  * @param {object} wallet 

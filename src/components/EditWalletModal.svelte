@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 	export let isOpen = false;
 	export let label = '';
 	export let title;
