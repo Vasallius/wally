@@ -47,8 +47,6 @@
 $: {
 	if(options == "Delete"){
 		handleDeleteClick();
-	}else if(options == "Edit"){
-		isModalOpen = true;
 	}
 }
 </script>
@@ -68,4 +66,4 @@ $: {
 	</button>
 </button>
 
-<EditRecordModal bind:isOpen={isModalOpen} {label} />
+<EditRecordModal bind:isOpen={isModalOpen} {label} {category} />

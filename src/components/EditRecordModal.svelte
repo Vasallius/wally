@@ -3,40 +3,34 @@
 
 	export let isOpen = false;
 	export let label = '';
-	export let title;
-	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	export let category;
+	import { authStore, recordsStore, categoriesStore } from '../server/stores/stores';
+	import { updateRecords, updateCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		let newInitial = parseInt(label);
 
-		function sumRecords(array, recordType, walletname) {
-			return array.reduce((total, current) => {
-				if (current.recordType === recordType && current.wallet === walletname) {
-					return total + current.amount;
-				} else {
-					return total;
-				}
-			}, 0);
-		}
-
-		const updatedWallets = $walletStores.map((wallet) => {
-			if (wallet.name === title) {
-				let income = sumRecords($recordsStore, 'income', title);
-				let expenses = sumRecords($recordsStore, 'expenses', title);
-				let newBalance = newInitial + income - expenses;
-
+		const updatedRecords = $recordsStore.map((rec) => {
+			console.log(rec.category, category);
+			if(rec.category == category){
 				return {
-					...wallet,
-					initial: newInitial,
-					balance: newBalance
-				};
+					...rec,
+					category: label,
+				}
 			}
-			return wallet;
+			return rec;
 		});
-		walletStores.set(updatedWallets);
-		updateWallets($authStore.user.uid, updatedWallets);
+
+		const updatedCategories = $categoriesStore.map((categ) => {
+			if (categ === category) {
+				return label;
+			}
+			return categ;
+		});
+		recordsStore.set(updatedRecords);
+		categoriesStore.set(updatedCategories);
+		updateRecords($authStore.user.uid, updatedRecords);
+		updateCategories($authStore.user.uid, updatedCategories);
 		closeModal();
 	};
 
