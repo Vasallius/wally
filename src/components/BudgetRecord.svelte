@@ -11,6 +11,12 @@
 		<p class="text-xs text-agray-600">₱{budget}</p>
 	</div>
 	<div class="flex w-full bg-gray-200 rounded-full h-2">
-		<div class="flex bg-accent-green h-2 rounded-full" style="width: {percent}%" />
+		{#if budgetSpent > budget}
+			<div class="flex bg-accent-pink h-2 rounded-full" style="width: {percent}%" />
+		{:else if percent >= 75}
+			<div class="flex bg-accent-yellow h-2 rounded-full" style="width: {percent}%" />
+		{:else}
+			<div class="flex bg-primary h-2 rounded-full" style="width: {percent}%" />
+		{/if}
 	</div>
 </div>
