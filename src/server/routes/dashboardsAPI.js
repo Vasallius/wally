@@ -8,7 +8,6 @@ import {
 } from './dashboard_routes/categoriesAPI';
 
 import {
-  getMonthlySummary,
   getWallets,
   getDashboardRecords,
   getIncomeRecords,
@@ -21,7 +20,6 @@ export {
   addCategory, 
   editCategory, 
   deleteCategory, 
-  getMonthlySummary,
   getWallets,
   getDashboardRecords,
   getIncomeRecords,

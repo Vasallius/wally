@@ -1,7 +1,6 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 import { db, auth} from './routes/firebase'
-import { collection, getDocs } from 'firebase/firestore'
 import { addBudget, deleteBudget } from './routes/budgetsAPI';
 import { signUp, logIn, logOut } from './routes/usersAPI';
 import { 
@@ -9,7 +8,6 @@ import {
   addCategory, 
   editCategory, 
   deleteCategory,
-  getMonthlySummary,
   getWallets,
   getDashboardRecords,
   getIncomeRecords,
@@ -33,7 +31,6 @@ export {
   addCategory, 
   editCategory, 
   deleteCategory,
-  getMonthlySummary,
   getWallets,
   getDashboardRecords,
   getIncomeRecords,
