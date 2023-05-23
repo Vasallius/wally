@@ -12,7 +12,7 @@
 	} from '../../../server/stores/stores';
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
-
+	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
 	let wallets;
@@ -52,6 +52,8 @@
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
+		let records = await getAllRecords($authStore.user.uid);
+		recordsStore.set(records);
 		let income = sumRecords($recordsStore, 'income', activeWallet.name);
 		let expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
 		monthlySummaryStores.set([income, expenses]);
