@@ -24,10 +24,6 @@
 
 	const date = new Date();
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
-	let promise = [0, 0];
-	(async () => {
-		promise = await getMonthlySummary($authStore.user.uid, activeWallet);
-	})();
 </script>
 
 <div class="flex justify-between mx-3 my-4 db-nav">
@@ -38,7 +34,7 @@
 		<div class="font-primary font-semibold text-header5 text-black">Dashboard</div>
 	</div>
 	<div class="flex items-center">
-		<NotificationIcon/>
+		<NotificationIcon />
 	</div>
 </div>
 <div class="db-summary mx-3">
@@ -46,7 +42,7 @@
 		<div class="mx-5 my-3 flex flex-row justify-between items-center">
 			<div class="font-primary text-header5 text-agray-700 font-semibold">{formattedDate}</div>
 		</div>
-		{#if $monthlySummaryStores !== null}
+		{#if $monthlySummaryStores}
 			<div class="mx-5 mb-2 flex flex-row justify-between items-center">
 				<div class="font-primary font-normal text-gdark text-xs">Total Income</div>
 				<div class="font-primary font-semibold text-primary text-xs">

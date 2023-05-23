@@ -7,7 +7,8 @@
 	import {
 		authStore,
 		monthlySummaryStores,
-		activeWalletStore
+		activeWalletStore,
+		recordsStore
 	} from '../../../server/stores/stores';
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import { getMonthlySummary } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
@@ -15,18 +16,46 @@
 
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
+	let wallets;
+	let activeWallet;
 
 	function getActiveWallet(wallets) {
 		return wallets.find((wallet) => wallet.active == 'True');
 	}
-	let wallets;
-	let activeWallet;
+
+	function sumRecords(array, recordType, walletname) {
+		return array.reduce((total, current) => {
+			if (current.recordType === recordType && current.wallet === walletname) {
+				return total + current.amount;
+			} else {
+				return total;
+			}
+		}, 0);
+	}
+
+	function sumTransferFrom(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
+	function sumTransferTo(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
 	onMount(async () => {
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
-		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, activeWallet));
-		console.log($monthlySummaryStores);
+		let income = sumRecords($recordsStore, 'income', activeWallet.name);
+		let expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
+		monthlySummaryStores.set([income, expenses]);
 	});
 
 	const openPopUp = () => {
