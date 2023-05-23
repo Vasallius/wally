@@ -1,6 +1,6 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { Pencil, Trash } from 'svelte-bootstrap-icons';
+	import { TrashFill, XLg } from 'svelte-bootstrap-icons';
 	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
 	import {
 		updateWallets,
@@ -8,7 +8,7 @@
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
 
-	import EditModal from './EditModal.svelte';
+	import EditWalletModal from './EditWalletModal.svelte';
 	let isModalOpen = false;
 	let label = '';
 
@@ -53,19 +53,16 @@
 	}
 </script>
 
-<div class="flex flex-row px-8 py-4 justify-between border-b hover:bg-agray-50 items-center">
+<button on:click={handleEditClick} class="flex flex-row px-8 py-4 justify-between border-b hover:bg-agray-50 items-center">
 	<div class="flex flex-col">
 		<h1 class="text-base text-agray-700 font-semibold">{title}</h1>
 		<p class="text-xs text-agray-600">₱{balance}</p>
 	</div>
-	<div class="flex flex-row gap-2">
-		<button on:click={handleEditClick}>
-			<Pencil fill="#00C09F" />
-		</button>
+	<div class="flex">
 		<button on:click={handleDeleteClick}>
-			<Trash fill="#B43C25" />
+			<TrashFill class="fill-agray-400 hover:fill-secondary"/>
 		</button>
 	</div>
-</div>
+</button>
 
-<EditModal bind:isOpen={isModalOpen} {label} {title} />
+<EditWalletModal bind:isOpen={isModalOpen} {label} {title} />
