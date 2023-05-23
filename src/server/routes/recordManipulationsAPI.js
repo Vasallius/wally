@@ -5,6 +5,12 @@ import { db, auth } from './firebase'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 
+/**
+ * A function that adds a record.
+ * @param {string} userID 
+ * @param {object} record 
+ * @returns A list of the updated records;
+ */
 export const addRecord = async (userID, record) => {
   const docRef = doc(db, 'records', userID);
   const docSnap = await getDoc(docRef);
@@ -13,12 +19,12 @@ export const addRecord = async (userID, record) => {
     const data = docSnap.data().records;
     let newRecord= record
     newRecord["date"] = firebase.firestore.Timestamp.now();
-
     const oldrecords = [...data];
     const newrecords = oldrecords.concat(newRecord);
     await updateDoc(docRef, {
       records: newrecords
     })
+      .then(val => val);
     return newrecords;
     ;
   } else {
@@ -27,6 +33,12 @@ export const addRecord = async (userID, record) => {
   
 }
 
+/**
+ * A function that gets all the records for
+ * a specific user.
+ * @param {string} userID 
+ * @returns The list of all records.
+ */
 export const getAllRecords = async (userID)=>{
   const docRef = doc(db, 'records', userID);
   const docSnap = await getDoc(docRef);
@@ -39,6 +51,13 @@ export const getAllRecords = async (userID)=>{
   }
 }
 
+/**
+ * A function that gets a record using a
+ * specified index.
+ * @param {string} userID 
+ * @param {Number} index 
+ * @returns The record with the specified index.
+ */
 export const getRecord = async (userID, index) => {
   const collectionReference = collection(db, 'records');
   const recordsReference = query(collectionReference, where('userID', '==', userID));
@@ -56,6 +75,14 @@ export const getRecord = async (userID, index) => {
   }
 }
 
+/**
+ * A function that deletes a record using a
+ * specified index.
+ * @param {string} userID 
+ * @param {Number} index 
+ * @returns A boolean value that tells whether
+ * the operation was successful.
+ */
 export const deleteRecord = async (userID, index) => {
   const collectionReference = collection(db, 'records');
   const recordsReference = query(collectionReference, where('userID', '==', userID));
@@ -79,6 +106,14 @@ export const deleteRecord = async (userID, index) => {
   }
 }
 
+/**
+ * Edits a record based on the update values parameter.
+ * @param {string} userID 
+ * @param {Number} index 
+ * @param {object} updateValues 
+ * @returns A boolean value if the update was successful
+ * or not.
+ */
 export const editRecord = async (userID, index, updateValues) => {
   const collectionReference = collection(db, 'records');
   const recordsReference = query(collectionReference, where('userID', '==', userID));
