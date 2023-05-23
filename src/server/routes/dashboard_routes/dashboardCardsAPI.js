@@ -12,6 +12,32 @@ const getRecords = async (recordType, userID, currentActiveWallet) => {
   })
 }
 
+export const sumRecords = function(array, recordType, walletname) {
+  return array.reduce((total, current) => {
+    if (current.recordType === recordType && current.wallet === walletname) {
+      return total + current.amount;
+    } else {
+      return total;
+    }
+  }, 0);
+}
+
+export const  sumTransferFrom = function(array, walletname) {
+  let transfer = array.filter(
+    (wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
+  );
+  let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+  return sum;
+}
+
+export const  sumTransferTo = function(array, walletname) {
+  let transfer = array.filter(
+    (wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
+  );
+  let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+  return sum;
+}
+
 // USELESS 
 // export const getMonthlySummary = async (userID, currentActiveWallet) => {
 //   try {

@@ -15,6 +15,11 @@
 		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import Records from './Records.svelte';
+	import {
+		sumRecords,
+		sumTransferFrom,
+		sumTransferTo
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	let transactionType = 'income';
 	let sign = '+';
@@ -80,33 +85,6 @@
 		total = 0;
 	};
 
-	// Add up a certain recordType
-	function sumRecords(array, recordType, walletname) {
-		return array.reduce((total, current) => {
-			if (current.recordType === recordType && current.wallet === walletname) {
-				return total + current.amount;
-			} else {
-				return total;
-			}
-		}, 0);
-	}
-
-	function sumTransferFrom(array, walletname) {
-		let transfer = array.filter(
-			(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
-		);
-		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-		return sum;
-	}
-
-	function sumTransferTo(array, walletname) {
-		let transfer = array.filter(
-			(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
-		);
-		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-		return sum;
-	}
-
 	// This function handles when the plus button is clicked
 	const handleSubmit = async () => {
 		calculate();
@@ -147,9 +125,10 @@
 				if (wallet.name === selectedWallet) {
 					let income = sumRecords($recordsStore, 'income', selectedWallet);
 					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					monthlySummaryStores.set([income, expenses]);
 					let transferout = sumTransferFrom($recordsStore, selectedWallet);
 					let transferin = sumTransferTo($recordsStore, selectedWallet);
+					let initial = wallet.initial;
+					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
 					let newBalance = wallet.initial + income - expenses - transferout + transferin;
 					return {
 						...wallet,
@@ -167,6 +146,8 @@
 					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
 					let transferout = sumTransferFrom($recordsStore, selectedWallet);
 					let transferin = sumTransferTo($recordsStore, selectedWallet);
+					let initial = wallet.initial;
+					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
 					let newBalance = wallet.initial + income - expenses - transferout + transferin;
 					return {
 						...wallet,
@@ -177,6 +158,8 @@
 					let expenses = sumRecords($recordsStore, 'expense', selectedWallet2);
 					let transferout = sumTransferFrom($recordsStore, selectedWallet2);
 					let transferin = sumTransferTo($recordsStore, selectedWallet2);
+					let initial = wallet.initial;
+					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
 					let newBalance = wallet.initial + income - expenses - transferout + transferin;
 					return {
 						...wallet,

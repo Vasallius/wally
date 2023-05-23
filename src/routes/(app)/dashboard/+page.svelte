@@ -13,6 +13,12 @@
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
+	import {
+		sumRecords,
+		sumTransferFrom,
+		sumTransferTo
+	} from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
 	let wallets;
@@ -20,32 +26,6 @@
 
 	function getActiveWallet(wallets) {
 		return wallets.find((wallet) => wallet.active == 'True');
-	}
-
-	function sumRecords(array, recordType, walletname) {
-		return array.reduce((total, current) => {
-			if (current.recordType === recordType && current.wallet === walletname) {
-				return total + current.amount;
-			} else {
-				return total;
-			}
-		}, 0);
-	}
-
-	function sumTransferFrom(array, walletname) {
-		let transfer = array.filter(
-			(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
-		);
-		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-		return sum;
-	}
-
-	function sumTransferTo(array, walletname) {
-		let transfer = array.filter(
-			(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
-		);
-		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-		return sum;
 	}
 
 	onMount(async () => {
