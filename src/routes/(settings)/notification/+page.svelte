@@ -21,19 +21,3 @@
 {:else}
 	<p>No notifications</p>
 {/if}
-
-<!-- <NotificationRecord
-	title="Reminder: Add today’s transaction"
-	content="Lorem Ipsum"
-	timePassed={1}
-/>
-<NotificationRecord
-	title="Reminder: Add today’s transaction"
-	content="Lorem Ipsum"
-	timePassed={2}
-/>
-<NotificationRecord
-	title="Reminder: Add today’s transaction"
-	content="Lorem Ipsum"
-	timePassed={3}
-/> -->

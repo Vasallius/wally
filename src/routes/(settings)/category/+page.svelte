@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import PopUpCategory from '../../../components/PopUpCategory.svelte';
 	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';

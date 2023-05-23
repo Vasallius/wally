@@ -7,7 +7,11 @@ import { doc, getDoc } from 'firebase/firestore'
 import { editWallet } from './dashboard_routes/dashboardCardsAPI';
 
 /**
- * Return props of specific wallet.
+ * A function that searches a wallet from a given user
+ * using the specified wallet name.
+ * @param {string} walletName 
+ * @returns A list containing a wallet object and its
+ * corresponding index.
  */
 const getWalletUtility = async (walletName) => {
   const docRef = doc(db, 'wallets', $authStore.user.uid);
@@ -20,6 +24,15 @@ const getWalletUtility = async (walletName) => {
   return [{}, -1];
 }
 
+/**
+ * A function that transfers money from one wallet to
+ * another, also considers the possibility of errors
+ * and negative values.
+ * @param {string} firstWalletName 
+ * @param {string} secondWalletName 
+ * @param {Number} amount 
+ * @returns A boolean value if transfer is successful.
+ */
 export const transferMoney = async (firstWalletName, secondWalletName, amount) => {
   let userUID = $authStore.user.uid;
   let firstWallet = await getWalletUtility(firstWalletName);
@@ -41,8 +54,15 @@ export const transferMoney = async (firstWalletName, secondWalletName, amount) =
   }
 }
 
+/**
+ * A function that checks the inputs passed when
+ * adding a new wallet.
+ * @param {object} wallet 
+ * @returns A list that contains a boolean value that
+ * tells if the inputs are valid and a text containing
+ * the message. 
+ */
 export const walletErrorCheck = (wallet) => {
-  // console.log(wallet.initial);
   if (wallet.name === '' || wallet.initial <= 0) {
     return [false, "Invalid inputs"];
   } else {

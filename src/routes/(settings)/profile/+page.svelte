@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import Textfield from '../../../components/Textfield.svelte';
 
