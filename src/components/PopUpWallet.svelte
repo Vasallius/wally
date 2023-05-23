@@ -2,6 +2,7 @@
 	import { addWallet } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
 	import { walletErrorCheck } from '../server/routes/walletsAPI';
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { error } from '@sveltejs/kit';
 	export let isOpen = false;
 	export let label = '';
@@ -24,11 +25,14 @@
 			alert(errorCheck[1]);
 		} else {
 			wallets = await addWallet($authStore.user.uid, wallet);
-			// Notify the custom store that a wallet was added
+			// If this is the first wallet to be added, set the active field to True
+			if (wallets.length == 1) {
+				wallets[0].active = 'True';
+			}
 			walletStores.set(wallets);
+			updateWallets($authStore.user.uid, wallets);
 			closeModal();
 		}
-		
 	};
 
 	const closeModal = () => {
