@@ -43,16 +43,16 @@
 	};
 </script>
 
-<!-- need - ayusin itsura ng input fields -->
 
 {#if isOpen}
 	<div
-		class="flex w-full min-h-full items-center bg-black/40 px-20 border border-x-1 border-black/40 border-r-transparent"
+	class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-full sm:w-[448px] z-20"
 	>
 		<form
 			on:submit={handleSubmit}
-			class="flex flex-col gap-6 bg-agray-50 rounded-xl text-agray-700 text-base font-semibold pt-8 pb-6 px-8 mx-2.5"
+			class="flex flex-col gap-4 bg-white rounded-xl text-agray-700 text-base font-semibold py-10 px-10 mx-auto"
 		>
+		<h1>Add Wallet</h1>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[200px]">
 					<input
@@ -111,22 +111,19 @@
 						Amount
 					</label>
 				</div>
-				<div class="relative self-center flex flex-row gap-x-12 font-normal pr-1">
-					<button type="submit"
-						><div
-							class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-full shadow-lg shadow-inherit hover:opacity-70"
-						>
-							Add
-						</div></button
-					>
 
-					<div
-						class="w-16 relative text-center text-white rounded-full bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
+				<div class="relative self-center flex flex-row font-normal justify-between w-full">
+					<button type="submit"
+						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
 					>
-						<button on:click={closeModal}>close</button>
-					</div>
+						Save
+					</button>
+					<button on:click={closeModal}
+						class="w-16 relative text-center text-white rounded-lg bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
+					>
+						Cancel
+					</button>
 				</div>
-			</div>
-		</form>
+		</form> 
 	</div>
 {/if}
