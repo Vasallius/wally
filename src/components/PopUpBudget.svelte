@@ -1,8 +1,11 @@
 <script>
+	// @ts-nocheck
+	
 	import { addBudget } from '../server';
 	import { authStore, budgetStores } from '../server/stores/stores';
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { onMount } from 'svelte';
+	import { budgetErrorCheck } from '../server/routes/budgetsAPI';
 
 	export let isOpen = false;
 	export let label = '';
@@ -13,9 +16,16 @@
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		let newBudget = await addBudget($authStore.user.uid, label, budget, intervals);
-		budgetStores.set(newBudget);
-		closeModal();
+
+		let errorCheck = budgetErrorCheck({title: label, initial: budget}, intervals, $budgetStores)
+		console.log(errorCheck);
+		if(!errorCheck[0]){
+			alert(errorCheck[1]);
+		} else {
+			let newBudget = await addBudget($authStore.user.uid, label, budget, intervals);
+			budgetStores.set(newBudget);
+			closeModal();
+		}
 	};
 
 	const closeModal = () => {

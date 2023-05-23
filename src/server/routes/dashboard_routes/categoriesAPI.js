@@ -109,3 +109,26 @@ export const deleteCategory = async (userID, categoryIndex) => {
     return false;
   }
 }
+
+
+/**
+ * Checks if the category being added has valid inputs.
+ * @param {string} categories 
+ * @param {object} categoriesStore 
+ * @returns A list that contains a boolean that tells if the
+ * inputs are valid and a message about the result.
+ */
+export const categoriesErrorCheck = (categories, categoriesStore) => {
+  const check = categoriesStore.filter((categ) => {
+    return categ == categories;
+  });
+  if (check.length > 0) {
+    return [false, "Category already exists."];
+  } else if (categories.name.match(/\W/)) {
+    return [false, "No special characters allowed."];
+  } else if (categories === '') {
+    return [false, "Category name must contain at least one character."];
+  } else {
+    return [true, "Valid"];
+  }
+}
