@@ -3,6 +3,12 @@
 import { collection, getDocs, getDoc, updateDoc, doc, query, where } from 'firebase/firestore'
 import {db,auth} from '../firebase'
 
+/**
+ * Returns a list of categories.
+ * @param {object} collectionReference 
+ * @returns A list of categories for the specified
+ * collection reference.
+ */
 const getDocsUtility = async (collectionReference) => {
   let categories = []
   const querySnap = await getDocs(collectionReference);
@@ -12,6 +18,10 @@ const getDocsUtility = async (collectionReference) => {
   return categories;
 }
 
+/**
+ * A function that gets all categories.
+ * @returns A list of categories for the current user.
+ */
 export const getAllCategories = async () => {
   try {
     const collectionReference = collection(db, 'categories');
@@ -23,6 +33,12 @@ export const getAllCategories = async () => {
   }
 }
 
+/**
+ * Adds a category.
+ * @param {string} userID 
+ * @param {object} category 
+ * @returns A list of the updated categories' list.
+ */
 export const addCategory = async (userID, category) => {
   const docRef = doc(db, 'categories', userID);
   const docSnap = await getDoc(docRef);
@@ -62,6 +78,14 @@ export const addCategory = async (userID, category) => {
   }
 }
 
+/**
+ * Updates the label for a category.
+ * @param {string} userID 
+ * @param {Number} categoryIndex 
+ * @param {string} updatedName 
+ * @returns A boolean that tells whether the operation
+ * was successful or not.
+ */
 export const editCategory = async (userID, categoryIndex, updatedName) => {
   try {
     const collectionReference = collection(db, 'categories');
@@ -85,6 +109,13 @@ export const editCategory = async (userID, categoryIndex, updatedName) => {
   }
 }
 
+/**
+ * Deletes a category.
+ * @param {string} userID 
+ * @param {Number} categoryIndex 
+ * @returns A boolean value that tells if the
+ * operation was successful or not.
+ */
 export const deleteCategory = async (userID, categoryIndex) => {
   try {
     const collectionReference = collection(db, 'categories');
