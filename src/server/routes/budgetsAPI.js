@@ -6,17 +6,30 @@ import { budgetStores } from '../stores/stores';
 import { getExpenseRecords } from './dashboardsAPI';
 import { getActiveWallet } from './dashboard_routes/dashboardCardsAPI';
 
-
-
+/**
+ * Utility function that returns a list of objects for
+ * a specific collection reference.
+ * @param {object} collectionReference 
+ * @returns A list of objects based on a collection
+ * reference.
+ */
 const getDocsUtility = async (collectionReference) => {
-  let wallets = []
+  let documents = [];
   const querySnap = await getDocs(collectionReference);
   querySnap.forEach((doc) => {
-    wallets.push({...doc.data(), id: doc.id});
+    documents.push({...doc.data(), id: doc.id});
   });
-  return wallets;
+  return documents;
 }
 
+/**
+ * A function that adds a budget.
+ * @param {string} userID 
+ * @param {string} label 
+ * @param {Number} budget 
+ * @param {string} interval 
+ * @returns A list of the updated budgets' list.
+ */
 export const addBudget = async(userID, label,budget, interval) => {
   const docRef = doc(db, 'budgets', userID);
   const docSnap = await getDoc(docRef);
@@ -79,51 +92,55 @@ export const addBudget = async(userID, label,budget, interval) => {
       title: label,
       spent: spentValue,
       budget: budget
-    }
-    console.log("CHECKING FOR INTERVALS")
+    };
     if (interval == "Daily"){
-      let dayRecords = data.DayRecords
-      dayRecords.push(newbudget)
+      let dayRecords = data.DayRecords;
+      dayRecords.push(newbudget);
       let updatedData = { ...data, DayRecords: dayRecords };
-      console.log(updatedData)
       await updateDoc(docRef, {
         budgets: updatedData
       })
-
-      return updatedData
+        .then(val => val);
+      return updatedData;
 
     } else if (interval == "Weekly"){
-      let WeekRecords = data.WeekRecords
-      WeekRecords.push(newbudget)
+      let WeekRecords = data.WeekRecords;
+      WeekRecords.push(newbudget);
       let updatedData = { ...data, WeekRecords: WeekRecords };
 
       await updateDoc(docRef, {
         budgets: updatedData
       })
+        .then(val => val);
 
-      return updatedData
+      return updatedData;
 
 
     } else if (interval == "Monthly") {
-      let MonthRecords = data.MonthRecords
-      MonthRecords.push(newbudget)
+      let MonthRecords = data.MonthRecords;
+      MonthRecords.push(newbudget);
       let updatedData = { ...data, MonthRecords: MonthRecords };
 
       await updateDoc(docRef, {
         budgets: updatedData
-      })
-      return updatedData
+      });
+      return updatedData;
 
     }
 
     
   } else {
-    return "no document"
-    // console.log("No such document!");
+    return "no document";
   }
 }
 
-
+/**
+ * Gets the list of all budgets from a specific user.
+ * @param {string} userID 
+ * @returns Returns a list of all budgets from a
+ * specific user. If there are no budgets, it returns
+ * a string instead.
+ */
 export const getBudgets = async (userID) => {
   const docRef = doc(db, 'budgets', userID);
   const docSnap = await getDoc(docRef);
@@ -133,17 +150,17 @@ export const getBudgets = async (userID) => {
     // console.log(data)
     return data
   } else {
-    return "NO WALLETS"
+    return "NO BUDGETS"
   }
 }
 
-
-export const getAllBudgets = async () => {
-  const collectionReference = collection(db, 'budgets');
-  const snapQuery = query(collectionReference, where('userID', '==', auth.currentUser.uid));
-  return await getDocsUtility(snapQuery);
-};
-
+/**
+ * Deletes a budget based on its index.
+ * @param {string} userID 
+ * @param {Number} index 
+ * @returns A boolean value if the operation
+ * was successful or not.
+ */
 export const deleteBudget = async (userID, index) => {
   try {
     const collectionReference = collection(db, 'budgets');
@@ -155,7 +172,7 @@ export const deleteBudget = async (userID, index) => {
       return val;
     });
     if(budgets[0].budgets.length > index){
-      budgets[0].budgets.filter((val, ind) => {
+      budgets[0].budgets.filter((_, ind) => {
         return ind != index;
       })
       const documentReference = doc(db, 'budgets', budgets[0].id);

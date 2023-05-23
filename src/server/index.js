@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { db, auth} from './routes/firebase'
 import { collection, getDocs } from 'firebase/firestore'
-import { addBudget, getAllBudgets, deleteBudget } from './routes/budgetsAPI';
+import { addBudget, deleteBudget } from './routes/budgetsAPI';
 import { signUp, logIn, logOut } from './routes/usersAPI';
 import { 
   getAllCategories, 
@@ -25,7 +25,6 @@ import {
 
 export {
   addBudget,
-  getAllBudgets,
   deleteBudget,
   signUp,
   logIn,
