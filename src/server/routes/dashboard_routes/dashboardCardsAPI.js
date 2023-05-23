@@ -4,6 +4,15 @@ import { collection, getDocs, doc, updateDoc, onSnapshot, query, where, and, get
 import {db,auth} from '../firebase'
 import { authStore, walletStores } from '../../stores/stores';
 
+/**
+ * A function that gets all the records for a specific
+ * wallet of a user.
+ * @param {string} recordType 
+ * @param {string} userID 
+ * @param {string} currentActiveWallet 
+ * @returns A filtered list that contains all records
+ * of a specific record and wallet.
+ */
 const getRecords = async (recordType, userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID);
   const docSnap = await getDoc(docRef);
@@ -56,6 +65,13 @@ export const  sumTransferTo = function(array, walletname) {
 //   }
 // };
 
+/**
+ * Searches for the current active wallet for a
+ * user.
+ * @param {string} userID 
+ * @returns A string that contains the name of the
+ * current active wallet.
+ */
 export const getActiveWallet = async (userID) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -65,6 +81,12 @@ export const getActiveWallet = async (userID) => {
   return document[0].name;
 }
 
+/**
+ * Returns a list that contains all categories.
+ * @param {string} userID 
+ * @returns A list that contains all categories
+ * a user have.
+ */
 export const getCategories = async (userID) => {
   const docRef = doc(db, 'categories', userID)
   const docSnap = await getDoc(docRef)
@@ -77,6 +99,12 @@ export const getCategories = async (userID) => {
   }
 }
 
+/**
+ * Returns the name of the current authenticated
+ * user.
+ * @param {string} userID 
+ * @returns A string.
+ */
 export const getName = async (userID) => {
   const docRef = doc(db, 'users', userID);
   const docSnap = await getDoc(docRef);
@@ -89,7 +117,13 @@ export const getName = async (userID) => {
   }
 }
 
-
+/**
+ * A function that returns the list of wallets for the
+ * specified user.
+ * @param {string} userID 
+ * @returns A list that contains the wallets for the
+ * specified user.
+ */
 export const getWallets = async (userID) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -102,6 +136,12 @@ export const getWallets = async (userID) => {
   }
 };
 
+/**
+ * Updates the properties of a specific wallet. 
+ * @param {string} userID 
+ * @param {object} wallet 
+ * @returns An updated list of wallets.
+ */
 export const updateWallets = async (userID, wallet) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -115,7 +155,12 @@ export const updateWallets = async (userID, wallet) => {
   }
 };
 
-
+/**
+ * Updates the properties of a specific record. 
+ * @param {string} userID 
+ * @param {object} records 
+ * @returns An updated list of records.
+ */
 export const updateRecords = async (userID, records) => {
   const docRef = doc(db, 'records', userID);
   const docSnap = await getDoc(docRef);
@@ -129,6 +174,13 @@ export const updateRecords = async (userID, records) => {
   }
 };
 
+/**
+ * Adds a wallet.
+ * @param {string} userID 
+ * @param {object} wallet 
+ * @returns An updated list containing the newly added
+ * wallet.
+ */
 export const addWallet = async (userID, wallet) => {
   const docRef = doc(db, 'wallets', userID);
   const docSnap = await getDoc(docRef);
@@ -166,10 +218,22 @@ export const editWallet = async (userID, walletIndex, newValues) => {
   }
 }
 
+/**
+ * Returns the Number equivalent of a date.
+ * @param {object} record 
+ * @returns The Number equivalent of a date.
+ */
 const dateUtility = (record) => {
   return Number(new Date(record.date.second*1000 + record.date.nanoseconds));
 }
 
+/**
+ * Filters the record shown in the dashboard.
+ * @param {string} userID 
+ * @param {string} currentActiveWallet 
+ * @returns A filtered list containing the records shown
+ * in the dashboard.
+ */
 export const getDashboardRecords = async (userID, currentActiveWallet) => {
   const docRef = doc(db, 'records', userID)
   const docSnap = await getDoc(docRef)
@@ -188,6 +252,12 @@ export const getDashboardRecords = async (userID, currentActiveWallet) => {
   // need to implement showing records based on wallet
 }
 
+/**
+ * Returns a list of records under the income record type.
+ * @param {string} userID 
+ * @param {string} currentActiveWallet 
+ * @returns A list of records under the income record type.
+ */
 export const getIncomeRecords = async (userID, currentActiveWallet) => {
   const incomeRecords = await getRecords('income', userID, currentActiveWallet).then(val => val);
   return incomeRecords.sort((firstRecord, secondRecord) => {
@@ -195,6 +265,12 @@ export const getIncomeRecords = async (userID, currentActiveWallet) => {
   });
 };
 
+/**
+ * Returns a list of records under the expense record type.
+ * @param {string} userID 
+ * @param {string} currentActiveWallet 
+ * @returns A list of records under the expense record type.
+ */
 export const getExpenseRecords = async (userID, currentActiveWallet) => {
   const incomeRecords = await getRecords('expense', userID, currentActiveWallet).then(val => val);
   return incomeRecords.sort((firstRecord, secondRecord) => {
@@ -202,6 +278,12 @@ export const getExpenseRecords = async (userID, currentActiveWallet) => {
   });
 };
 
+/**
+ * Returns a list of records under the transfer record type.
+ * @param {string} userID 
+ * @param {string} currentActiveWallet 
+ * @returns A list of records under the transfer record type.
+ */
 export const getTransferRecords = async (userID, currentActiveWallet) => {
   const incomeRecords = await getRecords('transfer', userID, currentActiveWallet).then(val => val);
   return incomeRecords.sort((firstRecord, secondRecord) => {
@@ -210,14 +292,13 @@ export const getTransferRecords = async (userID, currentActiveWallet) => {
 };
 
 /**
- * edit
+ * Checks if the record being added has valid inputs.
+ * @param {object} record 
+ * @param {object} walletStores 
+ * @returns A list that contains a boolean that tells if the
+ * inputs are valid and a message about the result.
  */
-export const alertNotification = () => {
-
-}
-
 export const recordErrorCheck = (record, walletStores) => {
-  console.log(record);
   if(record.amount <= 0) {
     return [false,"Non-positive value"];
   } else if (record.recordType === 'expense') {
