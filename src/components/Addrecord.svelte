@@ -10,9 +10,7 @@
 	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
 	import {
-		getMonthlySummary,
 		updateWallets,
-		getActiveWallet,
 		recordErrorCheck,
 		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';

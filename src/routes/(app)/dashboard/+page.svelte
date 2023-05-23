@@ -11,7 +11,6 @@
 		recordsStore
 	} from '../../../server/stores/stores';
 	import Addrecord from '../../../components/Addrecord.svelte';
-	import { getMonthlySummary } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
