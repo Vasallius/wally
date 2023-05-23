@@ -319,14 +319,28 @@ export const getTransferRecords = async (userID, currentActiveWallet) => {
  */
 export const recordErrorCheck = (record, walletStores) => {
   if(record.amount <= 0) {
-    return [false,"Non-positive value"];
+    const types = {
+                "income": "Income",
+                "expense": "Expense",
+                "transfer": "Transfer",
+                }
+    return [false,`${types[record.recordType]} must be positive`];
   } else if (record.recordType === 'expense') {
     const activeWallet = walletStores.filter((wallet) => {
       return wallet.active == 'True';
     })[0];
     console.log(activeWallet);
     if (activeWallet.balance < record.amount) {
-      return [false, "Negative balance"];
+      return [false, "Your expense is over your current balance."];
+    } else {
+      return [true, "Valid"];
+    }
+  } else if (record.recordType === 'transfer') {
+    const activeWallet = walletStores.filter((wallet) => {
+      return wallet.active == 'True';
+    })[0];
+    if (activeWallet.balance < record.amount) {
+      return [false, "Your transfer amount is over your current balance."];
     } else {
       return [true, "Valid"];
     }

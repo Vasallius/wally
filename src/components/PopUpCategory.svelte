@@ -1,16 +1,25 @@
 <script>
-	export let isOpen = false;
-	export let label = '';
+	// @ts-nocheck
+	
 	import { authStore, categoriesStore } from '../server/stores/stores';
 	import { addCategory } from '../server';
+	import { categoriesErrorCheck } from '../server/routes/dashboard_routes/categoriesAPI';
+
+	export let isOpen = false;
+	export let label = '';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		let categories = $categoriesStore;
 		let newCategory = label;
-		categories = await addCategory($authStore.user.uid, newCategory);
-		categoriesStore.set(categories);
-		closeModal();
+		let errorCheck = categoriesErrorCheck(newCategory, categories);
+		if (!errorCheck[0]) {
+			alert(errorCheck[1]);
+		} else {
+			categories = await addCategory($authStore.user.uid, newCategory);
+			categoriesStore.set(categories);
+			closeModal();
+		}
 	};
 
 	const closeModal = () => {

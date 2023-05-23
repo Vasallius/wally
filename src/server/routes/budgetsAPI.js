@@ -185,3 +185,30 @@ export const deleteBudget = async (userID, index) => {
     return false;
   }
 };
+
+/**
+ * Checks if the budget being added has valid inputs.
+ * @param {object} budget 
+ * @param {string} interval 
+ * @param {object} budgetStores 
+ * @returns A list that contains a boolean that tells if the
+ * inputs are valid and a message about the result.
+ */
+export const budgetErrorCheck = (budget, interval, budgetStores) => {
+  console.log(budgetStores, interval);
+  const intervals = {"Monthly": "MonthRecords", "Weekly": "WeekRecords", "Daily": "DayRecords"};
+  const check = budgetStores[intervals[interval]].filter((budg) => {
+    return budg.title == budget.title;
+  });
+  if (check.length > 0) {
+    return [false, "Budget already exists."];
+  } else if (budget.title.match(/\W/)) {
+    return [false, "No special characters allowed."];
+  } else if (budget.title === '') {
+    return [false, "Budget title must contain at least one character."];
+  } else if (budget.initial < 0) {
+    return [false, "Initial budget must be non-negative."];
+  } else {
+    return [true, "Valid"];
+  }
+}

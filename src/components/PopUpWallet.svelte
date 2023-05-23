@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { addWallet } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { authStore, walletStores } from '../server/stores/stores';
 	import { walletErrorCheck } from '../server/routes/walletsAPI';
@@ -19,7 +20,7 @@
 			dailyBudget: 0,
 			weeklyBudget: 0
 		};
-		let errorCheck = walletErrorCheck(wallet);
+		let errorCheck = walletErrorCheck(wallet, $walletStores);
 		console.log(errorCheck);
 		if (!errorCheck[0]) {
 			alert(errorCheck[1]);
