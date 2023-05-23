@@ -15,10 +15,27 @@
 	export let title: string;
 	export let balance: number;
 
+	function getActiveWallet(wallets) {
+		return wallets.find((wallet) => wallet.active == 'True');
+	}
+
 	// This function handles the delete button click event
 	async function handleDeleteClick() {
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
+		// Check if there are still wallets
+		if (wallets.length > 0) {
+			let activeWallet = getActiveWallet(wallets);
+			if (activeWallet != null) {
+				// Do nothing
+			} else {
+				// If there is no active wallet, set first wallet to active
+				wallets[0].active = 'True';
+			}
+		} else {
+			console.log('No more wallets to delete');
+		}
+
 		walletStores.set(wallets);
 		updateWallets($authStore.user.uid, wallets);
 		let records = await getAllRecords($authStore.user.uid);

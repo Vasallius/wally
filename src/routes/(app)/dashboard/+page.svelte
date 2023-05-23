@@ -54,12 +54,17 @@
 		activeWalletStore.set(activeWallet);
 		let records = await getAllRecords($authStore.user.uid);
 		recordsStore.set(records);
-		let initial = activeWallet.initial;
-		let income = sumRecords($recordsStore, 'income', activeWallet.name);
-		let expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
-		let transferout = sumTransferFrom($recordsStore, activeWallet.name);
-		let transferin = sumTransferTo($recordsStore, activeWallet.name);
-		monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+		let initial, income, expenses, transferout, transferin;
+		if (activeWallet == null) {
+			monthlySummaryStores.set([0, 0, 0, 0, 0]);
+		} else {
+			initial = activeWallet.initial;
+			income = sumRecords($recordsStore, 'income', activeWallet.name);
+			expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
+			transferout = sumTransferFrom($recordsStore, activeWallet.name);
+			transferin = sumTransferTo($recordsStore, activeWallet.name);
+			monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+		}
 	});
 
 	const openPopUp = () => {
