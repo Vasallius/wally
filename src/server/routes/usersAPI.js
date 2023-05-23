@@ -6,6 +6,14 @@ import { db, auth } from './firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 
+/**
+ * A function that signs-up the user. Utilizes the
+ * createUserWithEmailAndPassword() method from
+ * firebase.
+ * @param {string} name 
+ * @param {string} email 
+ * @param {string} password 
+ */
 export const signUp = async (name, email, password) => {
   await createUserWithEmailAndPassword(auth, email, password)
     .then(cred => {
@@ -29,7 +37,20 @@ export const signUp = async (name, email, password) => {
       };
 
       const categories = {
-        categories: ['Food & Drinks', 'Shopping', 'Housing', 'Transportation', 'Vehicle', 'Life & Entertainment', 'Communication, PC', 'Financial expenses', 'Investments', 'Income', 'Others', 'Unknown']
+        categories: [
+          'Food & Drinks',
+          'Shopping',
+          'Housing',
+          'Transportation',
+          'Vehicle',
+          'Life & Entertainment',
+          'Communication, PC',
+          'Financial expenses',
+          'Investments',
+          'Income',
+          'Others',
+          'Unknown'
+        ]
       };
 
       const budgets = {
@@ -58,11 +79,19 @@ export const signUp = async (name, email, password) => {
     });
 }
 
+/**
+ * A function that logs-in the user. Utilizes the
+ * signInWithEmailAndPassword() method from firebase.
+ * @param {string} email 
+ * @param {string} password 
+ * @returns A message that tells if there is an
+ *  error upon login.
+ */
 export const logIn = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
     .then(cred => {
-      authStore.set(cred)
-      goto('/dashboard')
+      authStore.set(cred);
+      goto('/dashboard');
       return '';
     })
     .catch(err => {
@@ -70,12 +99,15 @@ export const logIn = (email, password) => {
     })
 }
 
-
+/**
+ * A function that logs-out the user.
+ * @returns Redirects the user to the main menu
+ * upon successful logout.
+ */
 export const logOut = () => {
   return signOut(auth)
     .then(() => {
-      goto('/login')
-      // redirect to dashboard
+      goto('/login');
     })
     .catch((err) => {
       console.log(err.message);
