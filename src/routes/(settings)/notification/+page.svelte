@@ -13,7 +13,7 @@
 	})();
 </script>
 
-<SettingsNav>Notification</SettingsNav>
+<SettingsNav redirect="dashboard">Notification</SettingsNav>
 {#if budgetsList.length > 0}
 	{#each budgetsList as item, ind}
 		<NotificationRecord title={item.title} content={item.content} />

@@ -25,7 +25,7 @@
 	};
 </script>
 
-<SettingsNav>Profile</SettingsNav>
+<SettingsNav redirect="menu">Profile</SettingsNav>
 
 <div class= "bg-light-green"> 
 	<form>

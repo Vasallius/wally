@@ -17,7 +17,7 @@
 </script>
 
 {#if $authStore}
-	<SettingsNav>Wallet</SettingsNav>
+	<SettingsNav redirect="menu">Wallet</SettingsNav>
 
 	<div class="max-h-full flex flex-col overflow-y-scroll">
 		<WalletRecordList />

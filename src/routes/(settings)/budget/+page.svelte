@@ -29,7 +29,7 @@
 	});
 </script>
 
-<SettingsNav>Budget</SettingsNav>
+<SettingsNav redirect="menu">Budget</SettingsNav>
 
 <div class="max-h-full flex flex-col overflow-y-scroll">
 	<div

@@ -78,6 +78,8 @@
 	export let isOpen = false;
 	const closeModal = () => {
 		isOpen = false;
+		numberInput = '0';
+		total = 0;
 	};
 
 	// Add up a certain recordType

@@ -12,7 +12,7 @@
 	};
 </script>
 
-<SettingsNav>Category</SettingsNav>
+<SettingsNav redirect="menu">Category</SettingsNav>
 
 <div class="max-h-full flex flex-col overflow-y-scroll">
 	<CategoryRecordList user={$authStore.user} />
