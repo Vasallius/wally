@@ -1,12 +1,24 @@
 <script lang="ts">
+	import EditBudgetModal from "./EditBudgetModal.svelte";
+
 	export let title: string;
 	export let budgetSpent: number;
 	export let budget: number;
 	$: percent = (budgetSpent / budget) * 100;
+
+	let isModalOpen = false;
+
+	const openPopUp = () => {
+		isModalOpen = true;
+	};
+
+	function handleEditClick() {
+		openPopUp();
+	}
 </script>
 
-<div class="flex flex-col px-8 py-4 justify-between border-b hover:bg-agray-50">
-	<div class="flex flex-row justify-between">
+<button on:click={handleEditClick} class="flex flex-col px-8 py-4 justify-between border-b hover:bg-agray-50 w-full">
+	<div class="flex flex-row justify-between w-full">
 		<h1 class="text-base text-agray-700 font-semibold pb-1">{title}</h1>
 		<p class="text-xs text-agray-600">₱{budget}</p>
 	</div>
@@ -19,4 +31,6 @@
 			<div class="flex bg-primary h-2 rounded-full" style="width: {percent}%" />
 		{/if}
 	</div>
-</div>
+</button>
+
+<EditBudgetModal bind:isOpen={isModalOpen} />
