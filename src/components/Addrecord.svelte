@@ -130,6 +130,7 @@
 				if (wallet.name === selectedWallet) {
 					let income = sumRecords($recordsStore, 'income', selectedWallet);
 					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+					monthlySummaryStores.set([income, expenses]);
 					let transferout = sumTransferFrom($recordsStore, selectedWallet);
 					let transferin = sumTransferTo($recordsStore, selectedWallet);
 					let newBalance = wallet.initial + income - expenses - transferout + transferin;
@@ -147,6 +148,7 @@
 				if (wallet.name === selectedWallet) {
 					let income = sumRecords($recordsStore, 'income', selectedWallet);
 					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+					monthlySummaryStores.set([income, expenses]);
 					let transferout = sumTransferFrom($recordsStore, selectedWallet);
 					let transferin = sumTransferTo($recordsStore, selectedWallet);
 					let newBalance = wallet.initial + income - expenses - transferout + transferin;

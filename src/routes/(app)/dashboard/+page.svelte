@@ -25,7 +25,8 @@
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
-		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, currentActiveWallet));
+		monthlySummaryStores.set(await getMonthlySummary($authStore.user.uid, activeWallet));
+		console.log($monthlySummaryStores);
 	});
 
 	const openPopUp = () => {
