@@ -1,8 +1,56 @@
 <script lang="ts">
+	// @ts-nocheck
 	export let category: string;
 	export let options = '';
 	import { BagHeartFill, ThreeDotsVertical } from 'svelte-bootstrap-icons';
+	import { authStore, categoriesStore, recordsStore } from '../server/stores/stores';
+	import {
+		updateRecords,
+		updateCategories,
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import EditModal from './EditModal.svelte';
 
+	let isModalOpen = false;
+	let label = '';
+
+	function handleDeleteClick() {
+		let records = $recordsStore.filter((data) => data.wallet != category);
+		recordsStore.set(records);
+		let categories = $categoriesStore;
+		categories = categories.filter((categ) => categ != category);
+		// Check if there are still categories
+		// if (categories.length > 0) {
+		// 	let activeWallet = getActiveWallet(wallets);
+		// 	if (activeWallet != null) {
+		// 		// Do nothing
+		// 	} else {
+		// 		// If there is no active wallet, set first wallet to active
+		// 		wallets[0].active = 'True';
+		// 	}
+		// } else {
+		// 	console.log('No more wallets to delete');
+		// }
+		categoriesStore.set(categories);
+
+		// Update Firebase
+		updateCategories($authStore.user.uid, categories);
+		updateRecords($authStore.user.uid, records);
+	}
+
+	const openPopUp = () => {
+		isModalOpen = true;
+	}
+
+	function handleEditClick() {
+		openPopUp();
+	}
+$: {
+	if(options == "Delete"){
+		handleDeleteClick();
+	}else if(options == "Edit"){
+		isModalOpen = true;
+	}
+}
 </script>
 
 <!-- changed from a to div muna --> 
