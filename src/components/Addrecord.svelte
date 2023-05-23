@@ -327,6 +327,7 @@
 								}
 							}
 						}}
+						inputmode='none'
 					/>
 					<div class="self-end p-[6px] text-sm">PHP</div>
 				</div>
