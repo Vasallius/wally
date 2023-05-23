@@ -29,15 +29,34 @@
 		}, 0);
 	}
 
+	function sumTransferFrom(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
+	function sumTransferTo(array, walletname) {
+		let transfer = array.filter(
+			(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
+		);
+		let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+		return sum;
+	}
+
 	const changeActive = async () => {
 		wallets = $walletStores.map((wallet) => {
 			if (wallet.name == label) {
 				wallet.active = 'True';
 				// console.log(`Changing active wallet to ${label}`);
 				activeWalletStore.set(wallet);
+				let initial = wallet.initial;
 				let income = sumRecords($recordsStore, 'income', wallet.name);
 				let expense = sumRecords($recordsStore, 'expense', wallet.name);
-				monthlySummaryStores.set([income, expense]);
+				let transferout = sumTransferFrom($recordsStore, wallet.name);
+				let transferin = sumTransferTo($recordsStore, wallet.name);
+				monthlySummaryStores.set([income, expense, transferin, transferout, initial]);
 			} else {
 				wallet.active = 'False';
 			}

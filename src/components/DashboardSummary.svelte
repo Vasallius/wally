@@ -42,17 +42,35 @@
 		</div>
 		{#if $monthlySummaryStores}
 			<div class="mx-5 mb-2 flex flex-row justify-between items-center">
+				<div class="font-primary font-normal text-gdark text-xs">Initial</div>
+				<div class="font-primary font-semibold text-primary text-xs">
+					₱{$monthlySummaryStores[4]}
+				</div>
+			</div>
+			<div class="mx-5 mb-2 flex flex-row justify-between items-center">
 				<div class="font-primary font-normal text-gdark text-xs">Total Income</div>
 				<div class="font-primary font-semibold text-primary text-xs">
-					₱{$monthlySummaryStores[0]}
+					+₱{$monthlySummaryStores[0]}
+				</div>
+			</div>
+			<div class="mx-5 flex flex-row justify-between items-center pb-1.5 border-sky-500">
+				<div class="font-primary font-normal text-agray-700 text-xs">Total Expenses</div>
+				<div class="font-primary font-semibold text-secondary text-xs">
+					-₱{$monthlySummaryStores[1]}
+				</div>
+			</div>
+			<div class="mx-5 flex flex-row justify-between items-center pb-1.5 border-sky-500">
+				<div class="font-primary font-normal text-agray-700 text-xs">Transfer in</div>
+				<div class="font-primary font-semibold text-tertiary text-xs">
+					+₱{$monthlySummaryStores[2]}
 				</div>
 			</div>
 			<div
 				class="mx-5 flex flex-row justify-between items-center pb-1.5 border-b border-sky-500 mb-1.5"
 			>
-				<div class="font-primary font-normal text-agray-700 text-xs">Total Expenses</div>
-				<div class="font-primary font-semibold text-secondary text-xs">
-					-₱{$monthlySummaryStores[1]}
+				<div class="font-primary font-normal text-agray-700 text-xs">Transfer Out</div>
+				<div class="font-primary font-semibold text-tertiary text-xs">
+					-₱{$monthlySummaryStores[3]}
 				</div>
 			</div>
 			<div class="mx-5 flex flex-row justify-between items-center pb-4">
