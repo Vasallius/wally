@@ -322,7 +322,6 @@ export const recordErrorCheck = (record, walletStores) => {
     const activeWallet = walletStores.filter((wallet) => {
       return wallet.name == record.wallet;
     })[0];
-    console.log(record);
     if (record.wallet == record.wallet2) {
       return [false, "You can't transfer on the same wallet."];
     } else if (activeWallet.balance < record.amount) {
