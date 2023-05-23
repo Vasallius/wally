@@ -7,7 +7,6 @@
 	export let intervals = '';
 
 
-
 	const handleSubmit = async (event) => {
 		// Add handle submission
 		closeModal();
@@ -32,16 +31,21 @@
 		<h1>Edit Budget</h1>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[200px]">
-					<input
+					<select
 						class="peer h-full w-full rounded-[7px] border border-agray-600 border-t-transparent bg-transparent px-3 py-2.5 font-primary text-sm
               font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-agray-600
               placeholder-shown:border-t-agray-600 focus:border-2 focus:border-teal-500 focus:border-t-transparent focus:outline-0
               disabled:border-0 disabled:bg-blue-gray-50"
 						placeholder=" "
-						type="text"
-						id="label-input"
+						id="categories-select"
 						bind:value={label}
-					/>
+					>
+					<option value="" selected disabled hidden>Select a category</option>
+						<!-- {#each categoryRecords as category}
+							<option value={category}>{category}</option>
+						{/each} -->
+					</select>
+
 					<label
 						for="label-input"
 						class="before:content[' '] after:content[' '] font-normal pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px]
@@ -56,7 +60,7 @@
               peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent
               peer-disabled:peer-placeholder-shown:text-blue-gray-500"
 					>
-						Label
+						Category
 					</label>
 				</div>
 
