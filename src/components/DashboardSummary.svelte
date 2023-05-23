@@ -6,6 +6,7 @@
 	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
 	import { activeWalletStore } from '../server/stores/stores.js';
 	import { onMount } from 'svelte';
+	import NotificationIcon from './NotificationIcon.svelte';
 
 	let activeWallet;
 	let wallets;
@@ -37,9 +38,7 @@
 		<div class="font-primary font-semibold text-header5 text-black">Dashboard</div>
 	</div>
 	<div class="flex items-center">
-		<a href="/notification">
-			<Bell fill="var(--agray-600)" width={20} height={20} />
-		</a>
+		<NotificationIcon/>
 	</div>
 </div>
 <div class="db-summary mx-3">
