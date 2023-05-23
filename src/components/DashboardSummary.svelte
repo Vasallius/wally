@@ -76,7 +76,11 @@
 			<div class="mx-5 flex flex-row justify-between items-center pb-4">
 				<div class="font-primary font-normal text-agray-700 text-xs">Total</div>
 				<div class="font-primary font-semibold text-agray-700 text-xs">
-					₱{$monthlySummaryStores[0] - $monthlySummaryStores[1]}
+					₱{$monthlySummaryStores[4] +
+						$monthlySummaryStores[0] -
+						$monthlySummaryStores[1] +
+						$monthlySummaryStores[2] -
+						$monthlySummaryStores[3]}
 				</div>
 			</div>
 		{:else}
