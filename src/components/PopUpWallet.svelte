@@ -111,11 +111,14 @@
 					</label>
 				</div>
 				<div class="relative self-center flex flex-row gap-x-12 font-normal pr-1">
-					<div
-						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-full shadow-lg shadow-inherit hover:opacity-70"
+					<button type="submit"
+						><div
+							class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-full shadow-lg shadow-inherit hover:opacity-70"
+						>
+							Add
+						</div></button
 					>
-						<button type="submit">save</button>
-					</div>
+
 					<div
 						class="w-16 relative text-center text-white rounded-full bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
