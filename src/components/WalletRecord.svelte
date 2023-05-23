@@ -21,6 +21,8 @@
 
 	// This function handles the delete button click event
 	async function handleDeleteClick() {
+		let records = $recordsStore.filter((data) => data.wallet != title);
+		recordsStore.set(records);
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
 		// Check if there are still wallets
@@ -35,12 +37,10 @@
 		} else {
 			console.log('No more wallets to delete');
 		}
-
 		walletStores.set(wallets);
+
+		// Update Firebase
 		updateWallets($authStore.user.uid, wallets);
-		let records = await getAllRecords($authStore.user.uid);
-		records = records.filter((data) => data.wallet != title);
-		recordsStore.set(records);
 		updateRecords($authStore.user.uid, records);
 	}
 
