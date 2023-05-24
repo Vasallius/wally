@@ -1,9 +1,9 @@
 <script>
-	import { X, WalletFill, CashStack, TagsFill } from 'svelte-bootstrap-icons';
+	import { X, WalletFill, CashStack, TagsFill, PersonFill } from 'svelte-bootstrap-icons';
 	import { authStore } from '../server/stores/stores';
 	import { getName } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-
-	export let user;
+	
+	export let user;	
 
 	async function fetchUser() {
 		return getName(user.uid);
@@ -13,57 +13,62 @@
 </script>
 
 {#if $authStore}
-	<main class="flex flex-col h-screen p-4 justify-between font-primary">
+	<div class="bg-primary flex flex-row justify-between">
+		<h1 class="text-white text-xl font-semibold my-auto pl-8">Menu</h1>
+		<a href="/dashboard" class="my-3 pr-5" >
+			<X fill="white" height="2.5rem" width="2.5rem" />
+		</a>		
+	</div>
+	<main class="flex flex-col h-screen justify-between font-primary">
 		<div>
-			<header class="flex flex-row content-center justify-between items-center">
-				<a href="/profile" class="flex flex-row px-2 py-5 justify-between">
-					<div class="flex flex-row gap-4">
-						<div class="rounded">
-							<img src="./Avatar.png" alt="profile" class="w-9 h-9" />
-						</div>
-						<div class="flex flex-col justify-center">
-							{#await promise then user}
-								<h1 class="text-normal font-semibold align-center">{user}</h1>
-							{/await}
-						</div>
+			<a href="/profile" class="flex flex-row content-center justify-between items-center border-b px-2 py-6 hover:bg-agray-50">
+				<div class="flex flex-row gap-4">
+					<div class="rounded pl-2">
+						<img src="./Avatar.png" alt="profile" class="w-10 h-10" />
 					</div>
-				</a>
-				<a href="/dashboard">
-					<X fill="var(--agray-500)" height="2rem" width="2rem" />
-				</a>
-			</header>
-			<hr />
-			<a href="/wallet" class="flex flex-row px-2 pt-20 pb-2.5 justify-between">
+					<div class="flex flex-col justify-center">
+						{#await promise then user}
+							<h1 class="text-lg text-agray-700 font-semibold align-center">{user}</h1>
+						{/await}
+					</div>
+				</div>
+			</a>
+			<a href="/profile" class="flex flex-row pl-4 pr-2 mt-16 py-4 justify-between hover:bg-agray-50">
+				<div class="flex flex-row gap-4 ">
+					<PersonFill fill="var(--primary)" width={20} height={20} />
+					<div class="flex flex-col justify-center">
+						<h1 class="text-sm font-medium text-agray-700 align-center hover:opacity-90">Profile</h1>
+					</div>
+				</div>
+			</a>			
+			<a href="/wallet" class="flex flex-row pl-4 pr-2 py-4 justify-between hover:bg-agray-50">
 				<div class="flex flex-row gap-4">
 					<WalletFill fill="var(--primary)" width={20} height={20} />
 					<div class="flex flex-col justify-center">
-						<h1 class="text-sm text-agray-700 align-center">Wallet</h1>
+						<h1 class="text-sm font-medium text-agray-700 align-center hover:opacity-90">Wallet</h1>
 					</div>
 				</div>
 			</a>
-			<a href="/budget" class="flex flex-row px-2 py-2 justify-between">
+			<a href="/budget" class="flex flex-row pl-4 pr-2 py-4 justify-between hover:bg-agray-50">
 				<div class="flex flex-row gap-4">
 					<CashStack fill="var(--primary)" width={20} height={20} />
 					<div class="flex flex-col justify-center">
-						<h1 class="text-sm text-agray-700 align-center">Budget</h1>
+						<h1 class="text-sm font-medium text-agray-700 align-center hover:opacity-90">Budget</h1>
 					</div>
 				</div>
 			</a>
-			<a href="/category" class="flex flex-row px-2 py-2.5 justify-between">
+			<a href="/category" class="flex flex-row pl-4 pr-2 py-4 justify-between hover:bg-agray-50">
 				<div class="flex flex-row gap-4">
 					<TagsFill fill="var(--primary)" width={20} height={20} />
 					<div class="flex flex-col justify-center">
-						<h1 class="text-sm text-agray-700 align-center">Category</h1>
+						<h1 class="text-sm font-medium text-agray-700 align-center hover:opacity-90">Category</h1>
 					</div>
 				</div>
 			</a>
 		</div>
-		<div class="py-8">
-			<hr />
-			<!-- need to move -->
-			<a href="/" class="text-sm text-agray-700 align-center">Log Out</a>
-		</div>
+		<a href="/" class="text-base font-semibold text-agray-700 align-center border-t pt-5 pb-10 pl-4 hover:bg-agray-50">Log Out</a>
 	</main>
 {:else}
 	<div>You must be authenticated to access the menu.</div>
 {/if}
+

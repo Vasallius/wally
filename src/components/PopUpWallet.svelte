@@ -122,7 +122,7 @@
 					<div
 						class="w-16 relative text-center text-white rounded-full bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
-						<button on:click={closeModal}>close</button>
+						<button on:click={closeModal}>Close</button>
 					</div>
 				</div>
 			</div>

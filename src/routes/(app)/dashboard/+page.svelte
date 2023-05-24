@@ -50,6 +50,7 @@
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
+
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->

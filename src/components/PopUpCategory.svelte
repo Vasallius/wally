@@ -62,12 +62,12 @@
 				<div
 					class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-full shadow-lg shadow-inherit hover:opacity-70"
 				>
-					<button type="submit">save</button>
+					<button type="submit">Save</button>
 				</div>
 				<div
 					class="w-16 relative text-center text-white rounded-full bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 				>
-					<button on:click={closeModal}>close</button>
+					<button on:click={closeModal}>Close</button>
 				</div>
 			</div>
 		</form>
