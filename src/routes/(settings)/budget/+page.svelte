@@ -105,8 +105,6 @@
 			WeekRecords: weekAmountByCategory,
 			MonthRecords: monthAmountByCategory
 		};
-		console.log(budgets);
-		console.log(newBudgets);
 		budgetStores.set(newBudgets);
 	});
 </script>
