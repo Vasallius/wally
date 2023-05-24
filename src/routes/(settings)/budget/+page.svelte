@@ -12,13 +12,6 @@
 	let budget = 0;
 	let intervals = '';
 
-	export let MonthRecords = [{ id: 0, title: 'Shopping', budgetSpent: 200, budget: 1000 }];
-	let WeekRecords = [{ id: 0, title: 'Transportation', budgetSpent: 500, budget: 700 }];
-	let DayRecords = [
-		{ id: 0, title: 'Food', budgetSpent: 290, budget: 300 },
-		{ id: 1, title: 'Entertainment', budgetSpent: 50, budget: 200 }
-	];
-
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
