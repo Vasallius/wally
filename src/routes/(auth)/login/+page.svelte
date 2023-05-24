@@ -43,10 +43,10 @@
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
 	<form class="login">
 		<div class="mx-7 mb-2">
-			<Textfield type="email" id="email">Email</Textfield>
+			<Textfield type="email" id="email" value="">Email</Textfield>
 		</div>
 		<div class="mx-7 mb-64">
-			<Textfield type="password" id="password">Password</Textfield>
+			<Textfield type="password" id="password" value="">Password</Textfield>
 			<span class="text-xs text-secondary font-semibold">{message}</span>
 		</div>
 
