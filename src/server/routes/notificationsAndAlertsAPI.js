@@ -17,17 +17,19 @@ export const notificationsList = async (userID) => {
   for(let j=0; j<3; j++){
     for(let i=0; i<budgetsList[keys[j]].length; i++){
       console.log(budgetsList[keys[j]][i]);
-      if ( budgetsList[keys[j]][i].spent >= budgetsList[keys[j]][i].budget*0.9 &&
-            budgetsList[keys[j]][i].spent <= budgetsList[keys[j]][i].budget ) {
-        res.push({
-          title: `${interval[j]} BUDGET LIMIT`,
-          content: "Your money spent is nearing the budget limit.",
-        });
-      } else if (budgetsList[keys[j]][i].spent > budgetsList[keys[j]][i].budget) {
-        res.push({
-          title: `${interval[j]} BUDGET EXCEEDED`,
-          content: `You have spent $${budgetsList[keys[j]][i].spent} which is over your budget $${budgetsList[keys[j]][i].budget}`,
-        });
+      if (budgetsList[keys[j]][i].budget != 0) {
+        if ( budgetsList[keys[j]][i].spent >= budgetsList[keys[j]][i].budget*0.9 &&
+              budgetsList[keys[j]][i].spent <= budgetsList[keys[j]][i].budget ) {
+          res.push({
+            title: `${interval[j]} BUDGET LIMIT`,
+            content: "Your money spent is nearing the budget limit.",
+          });
+        } else if (budgetsList[keys[j]][i].spent > budgetsList[keys[j]][i].budget) {
+          res.push({
+            title: `${interval[j]} BUDGET EXCEEDED`,
+            content: `You have spent $${budgetsList[keys[j]][i].spent} which is over your budget $${budgetsList[keys[j]][i].budget}`,
+          });
+        }
       }
     }
   }
