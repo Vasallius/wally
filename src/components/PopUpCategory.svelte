@@ -30,7 +30,7 @@
 
 {#if isOpen}
 	<div
-		class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-full sm:w-[448px] z-20"
+	class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-screen sm:w-[448px] z-20"
 	>
 		<form
 			on:submit={handleSubmit}
