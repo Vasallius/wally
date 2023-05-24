@@ -1,6 +1,17 @@
 <script>
+    // @ts-nocheck
 	import { Bell } from 'svelte-bootstrap-icons';
-    export let notifcount = 42;
+    import { notificationsList } from '../server/routes/notificationsAndAlertsAPI';
+	import { authStore, notificationsStore } from '../server/stores/stores';
+    export let notifcount = 0;
+
+    (
+        async() => {
+            let notifs = await notificationsList($authStore.user.uid);
+            notificationsStore.set(notifs);
+            notifcount = notifs.length;
+        }
+    )();
 </script>
 
 <a href="/notification" class="relative mr-1">
