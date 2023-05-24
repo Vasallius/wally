@@ -8,7 +8,7 @@
 		updateRecords,
 		updateCategories,
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import EditRecordModal from './EditRecordModal.svelte';
+	import EditCategoryModal from './EditCategoryModal.svelte';
 
 	let isModalOpen = false;
 	let label = '';
@@ -47,25 +47,25 @@
 $: {
 	if(options == "Delete"){
 		handleDeleteClick();
-	}else if(options == "Edit"){
-		isModalOpen = true;
 	}
 }
 </script>
 
 <!-- changed from a to div muna --> 
-<button on:click={handleEditClick} class="flex flex-row px-4 py-4 justify-between border-b hover:bg-agray-50 items-center">
-	<div class="flex flex-row gap-4">
-		<div class="bg-light-green p-3 rounded-full">
-			<BagHeartFill fill="var(--primary)" width={20} height={20} />
+<div class="flex flex-row px-4 py-4 justify-between border-b hover:bg-agray-50 items-center">
+	<button on:click={handleEditClick} class="w-full">
+		<div class="flex flex-row gap-4">
+			<div class="bg-light-green p-3 rounded-full">
+				<BagHeartFill fill="var(--primary)" width={20} height={20} />
+			</div>
+			<div class="flex flex-col justify-center">
+				<h1 class="text-base text-agray-700 font-semibold align-center">{category}</h1>
+			</div>
 		</div>
-		<div class="flex flex-col justify-center">
-			<h1 class="text-base text-agray-700 font-semibold align-center">{category}</h1>
-		</div>
-	</div>
+	</button>
 	<button on:click={handleDeleteClick}>
 		<TrashFill class="fill-agray-400 hover:fill-secondary"/>
 	</button>
-</button>
+</div>
 
-<EditRecordModal bind:isOpen={isModalOpen} {label} />
+<EditCategoryModal bind:isOpen={isModalOpen} {label} {category} />

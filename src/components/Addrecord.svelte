@@ -1,9 +1,11 @@
 <script lang="ts">
+	// @ts-nocheck
 	import {
 		authStore,
 		recordsStore,
 		walletStores,
-		monthlySummaryStores
+		monthlySummaryStores,
+		budgetStores
 	} from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
@@ -14,12 +16,13 @@
 		recordErrorCheck,
 		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import Records from './Records.svelte';
 	import {
 		sumRecords,
 		sumTransferFrom,
 		sumTransferTo
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { getBudgets } from '../server/routes/budgetsAPI.js';
+	import { updateBudgets } from '../server/routes/budgetsAPI.js';
 
 	let transactionType = 'income';
 	let sign = '+';
@@ -87,6 +90,8 @@
 
 	// This function handles when the plus button is clicked
 	const handleSubmit = async () => {
+		let budgets = await getBudgets($authStore.user.uid);
+		budgetStores.set(budgets);
 		calculate();
 		isOpen = false;
 		let records = $recordsStore;
@@ -98,78 +103,91 @@
 			wallet: selectedWallet,
 			wallet2: selectedWallet2
 		};
-		records = await addRecord($authStore.user.uid, newRecord);
-		recordsStore.set(records);
-		updateRecords($authStore.user.uid, records);
-		if (transactionType === 'income') {
-			const updatedWallets = $walletStores.map((wallet) => {
-				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					let transferout = sumTransferFrom($recordsStore, selectedWallet);
-					let transferin = sumTransferTo($recordsStore, selectedWallet);
-					let initial = wallet.initial;
-					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
-					let newBalance = wallet.initial + income - expenses - transferout + transferin;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				}
-				return wallet;
-			});
-			walletStores.set(updatedWallets);
-			updateWallets($authStore.user.uid, updatedWallets);
-		} else if (transactionType === 'expense') {
-			const updatedWallets = $walletStores.map((wallet) => {
-				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					let transferout = sumTransferFrom($recordsStore, selectedWallet);
-					let transferin = sumTransferTo($recordsStore, selectedWallet);
-					let initial = wallet.initial;
-					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
-					let newBalance = wallet.initial + income - expenses - transferout + transferin;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				}
-				return wallet;
-			});
-			walletStores.set(updatedWallets);
-			updateWallets($authStore.user.uid, updatedWallets);
+		let check = recordErrorCheck(newRecord, $walletStores);
+		if (!check[0]) {
+			alert(check[1]);
 		} else {
-			const updatedWallets = $walletStores.map((wallet) => {
-				if (wallet.name === selectedWallet) {
-					let income = sumRecords($recordsStore, 'income', selectedWallet);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
-					let transferout = sumTransferFrom($recordsStore, selectedWallet);
-					let transferin = sumTransferTo($recordsStore, selectedWallet);
-					let initial = wallet.initial;
-					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
-					let newBalance = wallet.initial + income - expenses - transferout + transferin;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				} else if (wallet.name === selectedWallet2) {
-					let income = sumRecords($recordsStore, 'income', selectedWallet2);
-					let expenses = sumRecords($recordsStore, 'expense', selectedWallet2);
-					let transferout = sumTransferFrom($recordsStore, selectedWallet2);
-					let transferin = sumTransferTo($recordsStore, selectedWallet2);
-					let initial = wallet.initial;
-					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
-					let newBalance = wallet.initial + income - expenses - transferout + transferin;
-					return {
-						...wallet,
-						balance: newBalance
-					};
-				}
-				return wallet;
-			});
-			walletStores.set(updatedWallets);
-			updateWallets($authStore.user.uid, updatedWallets);
+			records = await addRecord($authStore.user.uid, newRecord);
+			recordsStore.set(records);
+			updateRecords($authStore.user.uid, records);
+			if (transactionType === 'income') {
+				const updatedWallets = $walletStores.map((wallet) => {
+					if (wallet.name === selectedWallet) {
+						let income = sumRecords($recordsStore, 'income', selectedWallet);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+						let transferout = sumTransferFrom($recordsStore, selectedWallet);
+						let transferin = sumTransferTo($recordsStore, selectedWallet);
+						let initial = wallet.initial;
+						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						let newBalance = wallet.initial + income - expenses - transferout + transferin;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					}
+					return wallet;
+				});
+				walletStores.set(updatedWallets);
+				updateWallets($authStore.user.uid, updatedWallets);
+			} else if (transactionType === 'expense') {
+				const updatedWallets = $walletStores.map((wallet) => {
+					if (wallet.name === selectedWallet) {
+						let income = sumRecords($recordsStore, 'income', selectedWallet);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+						let transferout = sumTransferFrom($recordsStore, selectedWallet);
+						let transferin = sumTransferTo($recordsStore, selectedWallet);
+						let initial = wallet.initial;
+						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						let newBalance = wallet.initial + income - expenses - transferout + transferin;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					}
+					return wallet;
+				});
+				walletStores.set(updatedWallets);
+				updateWallets($authStore.user.uid, updatedWallets);
+				const updatedBudgets = $budgetStores.DayRecords.map((budget) => {
+					if (budget.title == selectedCategory) {
+						return { ...budget, spent: (budget.spent += parseInt(numberInput)) };
+					}
+					return budget;
+				});
+				updateBudgets($authStore.user.uid, $budgetStores);
+				budgetStores.set({ ...$budgetStores, DayRecords: updatedBudgets });
+			} else {
+				const updatedWallets = $walletStores.map((wallet) => {
+					if (wallet.name === selectedWallet) {
+						let income = sumRecords($recordsStore, 'income', selectedWallet);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet);
+						let transferout = sumTransferFrom($recordsStore, selectedWallet);
+						let transferin = sumTransferTo($recordsStore, selectedWallet);
+						let initial = wallet.initial;
+						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						let newBalance = wallet.initial + income - expenses - transferout + transferin;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					} else if (wallet.name === selectedWallet2) {
+						let income = sumRecords($recordsStore, 'income', selectedWallet2);
+						let expenses = sumRecords($recordsStore, 'expense', selectedWallet2);
+						let transferout = sumTransferFrom($recordsStore, selectedWallet2);
+						let transferin = sumTransferTo($recordsStore, selectedWallet2);
+						let initial = wallet.initial;
+						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						let newBalance = wallet.initial + income - expenses - transferout + transferin;
+						return {
+							...wallet,
+							balance: newBalance
+						};
+					}
+					return wallet;
+				});
+				walletStores.set(updatedWallets);
+				updateWallets($authStore.user.uid, updatedWallets);
+			}
 		}
 	};
 
@@ -327,6 +345,7 @@
 								}
 							}
 						}}
+						inputmode="none"
 					/>
 					<div class="self-end p-[6px] text-sm">PHP</div>
 				</div>

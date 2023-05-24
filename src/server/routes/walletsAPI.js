@@ -62,9 +62,18 @@ export const transferMoney = async (firstWalletName, secondWalletName, amount) =
  * tells if the inputs are valid and a text containing
  * the message. 
  */
-export const walletErrorCheck = (wallet) => {
-  if (wallet.name === '' || wallet.initial <= 0) {
-    return [false, "Invalid inputs"];
+export const walletErrorCheck = (wallet, walletStores) => {
+  const check = walletStores.filter((wall) => {
+    return wall.name == wallet.name;
+  });
+  if (check.length > 0) {
+    return [false, "Wallet already exists."];
+  } else if (wallet.name.match(/\W/)) {
+    return [false, "No special characters allowed."];
+  } else if (wallet.name === '') {
+    return [false, "Wallet name must contain at least one character."];
+  } else if (wallet.initial < 0) {
+    return [false, "Initial amount must be non-negative."];
   } else {
     return [true, "Valid"];
   }

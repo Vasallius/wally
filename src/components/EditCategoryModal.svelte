@@ -1,42 +1,39 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	export let isOpen = false;
 	export let label = '';
-	export let title;
-	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	export let category;
+	import { authStore, recordsStore, categoriesStore } from '../server/stores/stores';
+	import {
+		updateRecords,
+		updateCategories
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		let newInitial = parseInt(label);
 
-		function sumRecords(array, recordType, walletname) {
-			return array.reduce((total, current) => {
-				if (current.recordType === recordType && current.wallet === walletname) {
-					return total + current.amount;
-				} else {
-					return total;
-				}
-			}, 0);
-		}
-
-		const updatedWallets = $walletStores.map((wallet) => {
-			if (wallet.name === title) {
-				let income = sumRecords($recordsStore, 'income', title);
-				let expenses = sumRecords($recordsStore, 'expenses', title);
-				let newBalance = newInitial + income - expenses;
-
+		const updatedRecords = $recordsStore.map((rec) => {
+			console.log(rec.category, category);
+			if (rec.category == category) {
 				return {
-					...wallet,
-					initial: newInitial,
-					balance: newBalance
+					...rec,
+					category: label
 				};
 			}
-			return wallet;
+			return rec;
 		});
-		walletStores.set(updatedWallets);
-		updateWallets($authStore.user.uid, updatedWallets);
+
+		const updatedCategories = $categoriesStore.map((categ) => {
+			if (categ === category) {
+				return label;
+			}
+			return categ;
+		});
+		recordsStore.set(updatedRecords);
+		categoriesStore.set(updatedCategories);
+		updateRecords($authStore.user.uid, updatedRecords);
+		updateCategories($authStore.user.uid, updatedCategories);
 		closeModal();
 	};
 
@@ -48,15 +45,15 @@
 
 {#if isOpen}
 	<div
-		class="flex absolute top-0 min-h-full items-center bg-black/40 px-20 border border-x-1 border-black/40 border-r-transparent"
+		class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-full sm:w-[448px] z-20"
 	>
 		<form
 			on:submit={handleSubmit}
-			class="flex flex-col gap-6 bg-agray-50 rounded-xl text-agray-700 text-base font-semibold pt-8 pb-6 px-8 mx-2.5"
+			class="flex flex-col gap-4 bg-white rounded-xl text-agray-700 text-base font-semibold py-8 px-8 mx-auto"
 		>
-		<h1>Edit Category</h1>
+			<h1>Edit Category</h1>
 			<div class="flex w-auto flex-col gap-6">
-				<div class="relative h-10 w-48 min-w-[200px]">
+				<div class="relative h-10 w-48 min-w-[250px]">
 					<input
 						class="peer h-full w-full rounded-[7px] border border-agray-600 border-t-transparent bg-transparent px-3 py-2.5 font-primary text-sm
               font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-agray-600
@@ -84,19 +81,19 @@
 						Category
 					</label>
 				</div>
-
-				<div class="relative h-10 w-48 min-w-[200px]"></div>
-				<div class="relative self-center flex flex-row gap-x-12 font-normal pr-1">
-					<div
-						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-full shadow-lg shadow-inherit hover:opacity-70"
+				<div class="relative self-center flex flex-row font-normal justify-between w-full">
+					<button
+						on:click={closeModal}
+						class="w-16 relative text-center text-white rounded-lg bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
-						<button type="submit">Save</button>
-					</div>
-					<div
-						class="w-16 relative text-center text-white rounded-full bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
+						Cancel
+					</button>
+					<button
+						type="submit"
+						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
 					>
-						<button on:click={closeModal}>Cancel</button>
-					</div>
+						Save
+					</button>
 				</div>
 			</div>
 		</form>

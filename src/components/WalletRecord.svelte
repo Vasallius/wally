@@ -53,16 +53,13 @@
 	}
 </script>
 
-<button on:click={handleEditClick} class="flex flex-row px-8 py-4 justify-between border-b hover:bg-agray-50 items-center">
-	<div class="flex flex-col">
-		<h1 class="text-base text-agray-700 font-semibold">{title}</h1>
-		<p class="text-xs text-agray-600">₱{balance}</p>
-	</div>
-	<div class="flex">
-		<button on:click={handleDeleteClick}>
-			<TrashFill class="fill-agray-400 hover:fill-secondary"/>
+<div  class="flex px-8 py-4 justify-between border-b hover:bg-agray-50">
+		<button on:click={handleEditClick} class="flex flex-col w-full">
+			<h1 class="text-base text-agray-700 font-semibold align-left">{title}</h1>
+			<p class="text-xs text-agray-600">₱{balance}</p>
 		</button>
-	</div>
-</button>
-
+	<button on:click={handleDeleteClick}>
+		<TrashFill class="fill-agray-400 hover:fill-secondary"/>
+	</button>
+</div>
 <EditWalletModal bind:isOpen={isModalOpen} {label} {title} />
