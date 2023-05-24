@@ -29,7 +29,7 @@
 
 <SettingsNav redirect="menu">Profile</SettingsNav>
 
-<div class= "bg-light-green"> 
+<div class="my-14"> 
 	<form>
 		<div class="mx-7 mb-2">
 			<Textfield type="text" id="name">Name</Textfield>
@@ -43,8 +43,7 @@
 		<div class="flex flex-col items-center mb-5">
 			<button
 				on:click={submit}
-				class="text-header5 bg-primary px-4 text-center text-white py-2 font-semibold rounded-full font-primary hover:opacity-90"
-			>
+				class="text-header5 bg-primary px-4 text-center text-white py-2 font-semibold rounded-full font-primary hover:opacity-90">
 				Update
 			</button>
 		</div>
