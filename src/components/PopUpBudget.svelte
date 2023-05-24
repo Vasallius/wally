@@ -181,16 +181,16 @@
 				</div>
 				<div class="relative self-center flex flex-row font-normal justify-between w-full">
 					<button
-						type="submit"
-						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
-					>
-						Save
-					</button>
-					<button
 						on:click={closeModal}
 						class="w-16 relative text-center text-white rounded-lg bg-agray-500 shadow-lg shadow-inherit hover:opacity-70"
 					>
 						Cancel
+					</button>
+					<button
+						type="submit"
+						class="pb-0.5 w-16 relative text-center text-white bg-primary rounded-lg shadow-lg shadow-inherit hover:opacity-70"
+					>
+						Save
 					</button>
 				</div>
 			</div>
