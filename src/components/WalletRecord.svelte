@@ -1,7 +1,7 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { TrashFill, XLg } from 'svelte-bootstrap-icons';
-	import { authStore, walletStores, recordsStore } from '../server/stores/stores';
+	import { authStore, walletStores, recordsStore, budgetStores } from '../server/stores/stores';
 	import {
 		updateWallets,
 		updateRecords
@@ -25,6 +25,14 @@
 		recordsStore.set(records);
 		let wallets = $walletStores;
 		wallets = wallets.filter((wallet) => wallet.name != title);
+		let records2 = records.filter((data) => data.recordType == 'expense');
+		console.log(records2);
+		const today = new Date();
+		let newRecords = records2.filter((val) => {
+			const currentDate = new Date(val.date.seconds * 1000);
+			console.log(currentDate, today);
+			return true;
+		});
 		// Check if there are still wallets
 		if (wallets.length > 0) {
 			let activeWallet = getActiveWallet(wallets);
@@ -53,13 +61,13 @@
 	}
 </script>
 
-<div  class="flex px-8 py-4 justify-between border-b hover:bg-agray-50">
-		<button on:click={handleEditClick} class="flex flex-col w-full">
-			<h1 class="text-base text-agray-700 font-semibold align-left">{title}</h1>
-			<p class="text-xs text-agray-600">₱{balance}</p>
-		</button>
+<div class="flex px-8 py-4 justify-between border-b hover:bg-agray-50">
+	<button on:click={handleEditClick} class="flex flex-col w-full">
+		<h1 class="text-base text-agray-700 font-semibold align-left">{title}</h1>
+		<p class="text-xs text-agray-600">₱{balance}</p>
+	</button>
 	<button on:click={handleDeleteClick}>
-		<TrashFill class="fill-agray-400 hover:fill-secondary"/>
+		<TrashFill class="fill-agray-400 hover:fill-secondary" />
 	</button>
 </div>
 <EditWalletModal bind:isOpen={isModalOpen} {label} {title} />

@@ -2,23 +2,112 @@
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import BudgetRecord from '../../../components/BudgetRecord.svelte';
 	import PopUpBudget from '../../../components/PopUpBudget.svelte';
-	import { getBudgets } from '../../../server/routes/budgetsAPI';
+	import { getBudgets, updateBudgets } from '../../../server/routes/budgetsAPI';
 	import { onMount } from 'svelte';
-	import { authStore, budgetStores } from '../../../server/stores/stores';
-
+	import {
+		authStore,
+		budgetStores,
+		recordsStore,
+		categoriesStore
+	} from '../../../server/stores/stores';
+	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
+	import { getCategories } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 	export const name = 'budget';
 	let isModalOpen = false;
 	let label = '';
 	let budget = 0;
 	let intervals = '';
+	let expenses;
 
+	function filterByDay(expenses) {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0); // Set to the start of the day
+
+		return expenses.filter((item) => {
+			const itemDate = new Date(item.date.seconds * 1000);
+			return itemDate >= today;
+		});
+	}
+
+	function filterByWeek(expenses) {
+		const startOfWeek = new Date();
+		startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Set to the start of the week
+		startOfWeek.setHours(0, 0, 0, 0); // Set to the start of the day
+
+		return expenses.filter((item) => {
+			const itemDate = new Date(item.date.seconds * 1000);
+			return itemDate >= startOfWeek;
+		});
+	}
+
+	function filterByMonth(expenses) {
+		const startOfMonth = new Date();
+		startOfMonth.setDate(1); // Set to the start of the month
+		startOfMonth.setHours(0, 0, 0, 0); // Set to the start of the day
+
+		return expenses.filter((item) => {
+			const itemDate = new Date(item.date.seconds * 1000);
+			return itemDate >= startOfMonth;
+		});
+	}
+
+	function sumAmountByCategory(expenses, categories, array) {
+		return categories.map((category) => {
+			const filteredExpenses = expenses.filter((item) => item.category === category);
+			const totalSpent = filteredExpenses.reduce((sum, item) => sum + item.amount, 0);
+
+			const result = array.find((el) => el.title === category);
+
+			if (result) {
+				const budget = result.budget || 0;
+				return {
+					title: category,
+					spent: totalSpent,
+					budget: budget
+				};
+			} else {
+				return {
+					title: category,
+					spent: totalSpent,
+					budget: 0
+				};
+			}
+		});
+	}
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
-
+	let budgets;
 	onMount(async () => {
-		const budgets = await getBudgets($authStore.user.uid);
-		budgetStores.set(budgets);
+		let records = await getAllRecords($authStore.user.uid);
+		recordsStore.set(records);
+		expenses = records.filter((item) => item.recordType === 'expense');
+		let dayExpenses = filterByDay(expenses);
+		let weeklyExpenses = filterByWeek(expenses);
+		let monthlyExpenses = filterByMonth(expenses);
+		const categories = await getCategories($authStore.user.uid);
+		// Initialize the store value
+		categoriesStore.set(categories);
+		budgets = await getBudgets($authStore.user.uid);
+		const dayAmountByCategory = sumAmountByCategory(dayExpenses, categories, budgets.DayRecords);
+		const weekAmountByCategory = sumAmountByCategory(
+			weeklyExpenses,
+			categories,
+			budgets.WeekRecords
+		);
+		const monthAmountByCategory = sumAmountByCategory(
+			monthlyExpenses,
+			categories,
+			budgets.MonthRecords
+		);
+		let newBudgets = {
+			DayRecords: dayAmountByCategory,
+			WeekRecords: weekAmountByCategory,
+			MonthRecords: monthAmountByCategory
+		};
+		console.log(budgets);
+		console.log(newBudgets);
+		budgetStores.set(newBudgets);
 	});
 </script>
 
@@ -34,7 +123,9 @@
 		<!-- INSERT MONTHLY BUDGET RECORDS HERE -->
 		{#if $budgetStores}
 			{#each $budgetStores.MonthRecords as item}
-				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{#if item.budget > 0}
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{/if}
 			{/each}
 		{:else}
 			<p>Loading Wallets</p>
@@ -49,7 +140,9 @@
 		<!-- INSERT WEEKLY BUDGET RECORDS HERE -->
 		{#if $budgetStores}
 			{#each $budgetStores.WeekRecords as item}
-				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{#if item.budget > 0}
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{/if}
 			{/each}
 		{:else}
 			<p>Loading Wallets</p>
@@ -63,7 +156,9 @@
 	<div>
 		{#if $budgetStores}
 			{#each $budgetStores.DayRecords as item}
-				<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{#if item.budget > 0}
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+				{/if}
 			{/each}
 		{:else}
 			<p>Loading Wallets</p>
