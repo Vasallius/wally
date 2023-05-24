@@ -54,7 +54,7 @@
 
 	// <<START: Handling the calculator>>
 
-	let numberInput = '0';
+	let numberInput = '';
 	let total = 0;
 
 	const allowedKeys = [
@@ -84,7 +84,7 @@
 	export let isOpen = false;
 	const closeModal = () => {
 		isOpen = false;
-		numberInput = '0';
+		numberInput = '';
 		total = 0;
 	};
 
