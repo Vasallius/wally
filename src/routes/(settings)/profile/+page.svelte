@@ -3,27 +3,25 @@
 
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import Textfield from '../../../components/Textfield.svelte';
+	import { updateProfile } from '../../../server/routes/settingsAPI';
+	import { authStore } from '../../../server/stores/stores';
+	import { goto } from '$app/navigation';
 
-	export const name = 'profile';
-
-	let username = '';
-	let fullname = '';
+	let name = '';
 	let email = '';
 	let password = '';
 
 	const submit = async () => {
-		const body = { username, fullname, email, password };
-		await fetch('http://127.0.0.1:3002/signup', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: JSON.stringify(body)
-		})
-			.then((res) => res.json())
-			.then((returnValue) => {
-				console.log(returnValue);
-			});
+		try {
+			let check = await updateProfile(name, email, password, $authStore.user.uid).then(val => val);
+			if (!check) {
+				throw new Error("Update unsuccessful");
+			}
+			alert("Update successful");
+			goto("/menu");
+		} catch (error) {
+			alert(error.message);
+		}
 	};
 </script>
 
@@ -32,13 +30,13 @@
 <div class="my-14"> 
 	<form>
 		<div class="mx-7 mb-2">
-			<Textfield type="text" id="name">Name</Textfield>
+			<Textfield type="text" id="name" bind:value={name}>Name</Textfield>
 		</div>
 		<div class="mx-7 mb-2">
-			<Textfield type="email" id="email">Email</Textfield>
+			<Textfield type="email" id="email" bind:value={email}>Email</Textfield>
 		</div>
 		<div class="mx-7 mb-64">
-			<Textfield type="password" id="password">Password</Textfield>
+			<Textfield type="password" id="password" bind:value={password}>Password</Textfield>
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button
