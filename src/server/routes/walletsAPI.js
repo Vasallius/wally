@@ -55,6 +55,39 @@ export const transferMoney = async (firstWalletName, secondWalletName, amount) =
 }
 
 /**
+ * Utitlity function that checks for special characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * contains a special character or not.
+ */
+const specialCharactersCheck = (string) => {
+  const special_characters = "~`!@#$%^*()+={}[]|\\/:;\"<>,.?";
+  for(let i=0; i<string.length; i++){
+    for(let j=0; j<special_characters.length; j++){
+      if (special_characters[j] == string[i]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if a string only contains space characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * is a space-only string.
+ */
+const spaceOnlyCheck = (string) => {
+  for(let i=0; i<string.length; i++){
+    if(string[i] != ' '){
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * A function that checks the inputs passed when
  * adding a new wallet.
  * @param {object} wallet 
@@ -68,10 +101,12 @@ export const walletErrorCheck = (wallet, walletStores) => {
   });
   if (check.length > 0) {
     return [false, "Wallet already exists."];
-  } else if (wallet.name.match(/\W/)) {
-    return [false, "No special characters allowed."];
+  } else if (specialCharactersCheck(wallet.name)) {
+    return [false, "Special character not allowed."];
   } else if (wallet.name === '') {
     return [false, "Wallet name must contain at least one character."];
+  } else if (spaceOnlyCheck(wallet.name)) {
+    return [false, "Wallet name must not contain space-only characters."];
   } else if (wallet.initial < 0) {
     return [false, "Initial amount must be non-negative."];
   } else {
