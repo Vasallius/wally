@@ -7,9 +7,7 @@
 
     (
         async() => {
-            let notifs = await notificationsList($authStore.user.uid);
-            notificationsStore.set(notifs);
-            notifcount = notifs.length;
+            notifcount = $notificationsStore.length;
         }
     )();
 </script>

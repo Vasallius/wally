@@ -8,8 +8,10 @@
 		authStore,
 		monthlySummaryStores,
 		activeWalletStore,
-		recordsStore
+		recordsStore,
+		notificationsStore
 	} from '../../../server/stores/stores';
+	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
 	import Addrecord from '../../../components/Addrecord.svelte';
 	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
@@ -33,6 +35,8 @@
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
 		let records = await getAllRecords($authStore.user.uid);
+		let notifs = await notificationsList($authStore.user.uid);
+		notificationsStore.set(notifs);
 		recordsStore.set(records);
 		let initial, income, expenses, transferout, transferin;
 		if (activeWallet == null) {
@@ -55,7 +59,7 @@
 
 <!-- Check if the user is authenticated using the $authStore variable -->
 
-{#if $authStore && $monthlySummaryStores}
+{#if $authStore && $monthlySummaryStores && $notificationsStore}
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary />
 		<Wallet />
