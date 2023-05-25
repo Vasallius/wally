@@ -242,7 +242,7 @@ const spaceOnlyCheck = (string) => {
 export const budgetErrorCheck = (budget, interval, budgetStores) => {
   const intervals = {"Monthly": "MonthRecords", "Weekly": "WeekRecords", "Daily": "DayRecords"};
   const check = budgetStores[intervals[interval]].filter((budg) => {
-    return budg.title == budget.title;
+    return budg.title == budget.title && budg.budget != 0;
   });
   if (check.length > 0) {
     return [false, "Budget already exists."];

@@ -16,52 +16,51 @@
 
 	const handleSubmit = async (event) => {
 		// Paki re-implement na lang @frongz
-		// let errorCheck = budgetErrorCheck({ title: label, initial: budget }, intervals, $budgetStores);
-		// console.log(errorCheck);
-		// if (!errorCheck[0]) {
-		// 	alert(errorCheck[1]);
-		// } else {
-
-		// }
-		event.preventDefault();
-		if (intervals == 'Daily') {
-			let budgets = $budgetStores;
-			let dailybudgets = budgets.DayRecords;
-			dailybudgets.map((record) => {
-				if (record.title == label) {
-					return { ...record, budget: (record.budget = budget) };
-				} else {
-					return record;
-				}
-			});
-			budgetStores.set({ ...$budgetStores, DayRecords: dailybudgets });
-			updateBudgets($authStore.user.uid, $budgetStores);
-		} else if (intervals == 'Weekly') {
-			let budgets = $budgetStores;
-			let weeklybudgets = budgets.WeekRecords;
-			weeklybudgets.map((record) => {
-				if (record.title == label) {
-					return { ...record, budget: (record.budget = budget) };
-				} else {
-					return record;
-				}
-			});
-			budgetStores.set({ ...$budgetStores, WeekRecords: weeklybudgets });
-			updateBudgets($authStore.user.uid, $budgetStores);
+		let errorCheck = budgetErrorCheck({ title: label, initial: budget }, intervals, $budgetStores);
+		console.log(errorCheck);
+		if (!errorCheck[0]) {
+			alert(errorCheck[1]);
 		} else {
-			let budgets = $budgetStores;
-			let monthlyBudgets = budgets.MonthRecords;
-			monthlyBudgets.map((record) => {
-				if (record.title == label) {
-					return { ...record, budget: (record.budget = budget) };
-				} else {
-					return record;
-				}
-			});
-			budgetStores.set({ ...$budgetStores, MonthRecords: monthlyBudgets });
-			updateBudgets($authStore.user.uid, $budgetStores);
+			event.preventDefault();
+			if (intervals == 'Daily') {
+				let budgets = $budgetStores;
+				let dailybudgets = budgets.DayRecords;
+				dailybudgets.map((record) => {
+					if (record.title == label) {
+						return { ...record, budget: (record.budget = budget) };
+					} else {
+						return record;
+					}
+				});
+				budgetStores.set({ ...$budgetStores, DayRecords: dailybudgets });
+				updateBudgets($authStore.user.uid, $budgetStores);
+			} else if (intervals == 'Weekly') {
+				let budgets = $budgetStores;
+				let weeklybudgets = budgets.WeekRecords;
+				weeklybudgets.map((record) => {
+					if (record.title == label) {
+						return { ...record, budget: (record.budget = budget) };
+					} else {
+						return record;
+					}
+				});
+				budgetStores.set({ ...$budgetStores, WeekRecords: weeklybudgets });
+				updateBudgets($authStore.user.uid, $budgetStores);
+			} else {
+				let budgets = $budgetStores;
+				let monthlyBudgets = budgets.MonthRecords;
+				monthlyBudgets.map((record) => {
+					if (record.title == label) {
+						return { ...record, budget: (record.budget = budget) };
+					} else {
+						return record;
+					}
+				});
+				budgetStores.set({ ...$budgetStores, MonthRecords: monthlyBudgets });
+				updateBudgets($authStore.user.uid, $budgetStores);
+			}
+			closeModal();
 		}
-		closeModal();
 	};
 
 	const closeModal = () => {
