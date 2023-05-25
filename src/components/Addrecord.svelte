@@ -5,7 +5,8 @@
 		recordsStore,
 		walletStores,
 		monthlySummaryStores,
-		budgetStores
+		budgetStores,
+		activeWalletStore
 	} from '../server/stores/stores.js';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import DropdownWallet from './DropdownWallet.svelte';
@@ -23,6 +24,8 @@
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 	import { getBudgets } from '../server/routes/budgetsAPI.js';
 	import { updateBudgets } from '../server/routes/budgetsAPI.js';
+	import { onMount } from 'svelte';
+	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	let transactionType = 'income';
 	let sign = '+';
@@ -31,6 +34,18 @@
 	let selectedWallet = '';
 	let selectedWallet2 = '';
 	let selectedCategory = '';
+	let activeWallet;
+	let wallets;
+
+	function getActiveWallet(wallets) {
+		return wallets.find((wallet) => wallet.active == 'True');
+	}
+
+	onMount(async () => {
+		wallets = await getWallets($authStore.user.uid);
+		activeWallet = getActiveWallet(wallets);
+		activeWalletStore.set(activeWallet);
+	});
 
 	function changeTransactionType(event: Event) {
 		const target = event.currentTarget as HTMLInputElement;
@@ -118,7 +133,9 @@
 						let transferout = sumTransferFrom($recordsStore, selectedWallet);
 						let transferin = sumTransferTo($recordsStore, selectedWallet);
 						let initial = wallet.initial;
-						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						if (selectedWallet == $activeWalletStore.name) {
+							monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						}
 						let newBalance = wallet.initial + income - expenses - transferout + transferin;
 						return {
 							...wallet,
@@ -137,7 +154,9 @@
 						let transferout = sumTransferFrom($recordsStore, selectedWallet);
 						let transferin = sumTransferTo($recordsStore, selectedWallet);
 						let initial = wallet.initial;
-						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						if (selectedWallet == $activeWalletStore.name) {
+							monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						}
 						let newBalance = wallet.initial + income - expenses - transferout + transferin;
 						return {
 							...wallet,
@@ -164,7 +183,12 @@
 						let transferout = sumTransferFrom($recordsStore, selectedWallet);
 						let transferin = sumTransferTo($recordsStore, selectedWallet);
 						let initial = wallet.initial;
-						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						console.log($activeWalletStore.name);
+						console.log(selectedWallet);
+						console.log(selectedWallet2);
+						if (selectedWallet == $activeWalletStore.name) {
+							monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						}
 						let newBalance = wallet.initial + income - expenses - transferout + transferin;
 						return {
 							...wallet,
@@ -176,7 +200,9 @@
 						let transferout = sumTransferFrom($recordsStore, selectedWallet2);
 						let transferin = sumTransferTo($recordsStore, selectedWallet2);
 						let initial = wallet.initial;
-						monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						if (selectedWallet2 == $activeWalletStore.name) {
+							monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+						}
 						let newBalance = wallet.initial + income - expenses - transferout + transferin;
 						return {
 							...wallet,
