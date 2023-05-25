@@ -3,7 +3,7 @@
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import BudgetRecord from '../../../components/BudgetRecord.svelte';
 	import PopUpBudget from '../../../components/PopUpBudget.svelte';
-	import { getBudgets, updateBudgets } from '../../../server/routes/budgetsAPI';
+	import { getBudgets } from '../../../server/routes/budgetsAPI';
 	import { onMount } from 'svelte';
 	import {
 		authStore,
@@ -13,6 +13,7 @@
 	} from '../../../server/stores/stores';
 	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	import { getCategories } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { goto } from '$app/navigation';
 	export const name = 'budget';
 	let isModalOpen = false;
 	let label = '';
@@ -108,76 +109,85 @@
 		};
 		budgetStores.set(newBudgets);
 	});
+
+	const redirect = () => {
+		goto('/login');
+	}
 </script>
 
-<SettingsNav redirect="menu">Budget</SettingsNav>
+{#if $authStore}
+	<SettingsNav redirect="menu">Budget</SettingsNav>
 
-<div class="max-h-full flex flex-col overflow-y-scroll">
-	<div
-		class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
-	>
-		Monthly
+	<div class="max-h-full flex flex-col overflow-y-scroll">
+		<div
+			class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
+		>
+			Monthly
+		</div>
+		<div>
+			<!-- INSERT MONTHLY BUDGET RECORDS HERE -->
+			{#if $budgetStores}
+				{#each $budgetStores.MonthRecords as item}
+					{#if item.budget > 0}
+						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Monthly"}/>
+					{/if}
+				{/each}
+			{:else}
+				<p>Loading Wallets</p>
+			{/if}
+		</div>
+		<div
+			class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
+		>
+			Weekly
+		</div>
+		<div>
+			<!-- INSERT WEEKLY BUDGET RECORDS HERE -->
+			{#if $budgetStores}
+				{#each $budgetStores.WeekRecords as item}
+					{#if item.budget > 0}
+						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Weekly"}/>
+					{/if}
+				{/each}
+			{:else}
+				<p>Loading Wallets</p>
+			{/if}
+		</div>
+		<div
+			class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
+		>
+			Daily
+		</div>
+		<div>
+			{#if $budgetStores}
+				{#each $budgetStores.DayRecords as item}
+					{#if item.budget > 0}
+						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Daily"}/>
+					{/if}
+				{/each}
+			{:else}
+				<p>Loading Wallets</p>
+			{/if}
+		</div>
 	</div>
-	<div>
-		<!-- INSERT MONTHLY BUDGET RECORDS HERE -->
-		{#if $budgetStores}
-			{#each $budgetStores.MonthRecords as item}
-				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Monthly"}/>
-				{/if}
-			{/each}
-		{:else}
-			<p>Loading Wallets</p>
-		{/if}
-	</div>
-	<div
-		class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
-	>
-		Weekly
-	</div>
-	<div>
-		<!-- INSERT WEEKLY BUDGET RECORDS HERE -->
-		{#if $budgetStores}
-			{#each $budgetStores.WeekRecords as item}
-				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Weekly"}/>
-				{/if}
-			{/each}
-		{:else}
-			<p>Loading Wallets</p>
-		{/if}
-	</div>
-	<div
-		class="flex flex-row justify-between bg-agray-50 text-agray-600 text-base font-semibold px-8 py-1"
-	>
-		Daily
-	</div>
-	<div>
-		{#if $budgetStores}
-			{#each $budgetStores.DayRecords as item}
-				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Daily"}/>
-				{/if}
-			{/each}
-		{:else}
-			<p>Loading Wallets</p>
-		{/if}
-	</div>
-</div>
 
-<div class="flex flex-col mt-auto relative">
-	<button
-		on:click={openPopUp}
-		class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"
-	>
-		+
-	</button>
-</div>
+	<div class="flex flex-col mt-auto relative">
+		<button
+			on:click={openPopUp}
+			class="w-14 h-14 absolute bottom-8 right-8 rounded-full bg-primary text-3xl text-center text-white font-primary hover:opacity-90 pb-1"
+		>
+			+
+		</button>
+	</div>
 
-<!-- need - center (ayusin position!), bg, design   -->
-<div class="absolute z-50 h-full m-auto">
-	<PopUpBudget bind:isOpen={isModalOpen} {label} {budget} {intervals} />
-</div>
+	<!-- need - center (ayusin position!), bg, design   -->
+	<div class="absolute z-50 h-full m-auto">
+		<PopUpBudget bind:isOpen={isModalOpen} {label} {budget} {intervals} />
+	</div>
+{:else}
+	<div on:load={redirect()} />
+{/if}
+
 
 <style>
 	::-webkit-scrollbar {

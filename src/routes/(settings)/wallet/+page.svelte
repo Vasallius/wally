@@ -5,6 +5,7 @@
 	import WalletRecordList from '../../../components/WalletRecordList.svelte';
 	import PopUpWallet from '../../../components/PopUpWallet.svelte';
 	import { authStore } from '../../../server/stores/stores';
+	import { goto } from '$app/navigation';
 
 	export const name = 'wallet';
 	let isModalOpen = false;
@@ -13,6 +14,10 @@
 
 	const openPopUp = () => {
 		isModalOpen = true;
+	};
+
+	const redirect = () => {
+		goto('/login');
 	};
 </script>
 
@@ -36,7 +41,7 @@
 		<PopUpWallet bind:isOpen={isModalOpen} {label} {amount} />
 	</div>
 {:else}
-	<div>You must be authenticated to access the dashboard.</div>
+	<div on:load={redirect()} />
 {/if}
 
 <style>
