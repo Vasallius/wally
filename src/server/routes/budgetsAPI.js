@@ -199,6 +199,39 @@ export const deleteBudget = async (userID, index) => {
 };
 
 /**
+ * Utitlity function that checks for special characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * contains a special character or not.
+ */
+const specialCharactersCheck = (string) => {
+  const special_characters = "~`!@#$%^*()+={}[]|\\/:;\"<>,.?";
+  for(let i=0; i<string.length; i++){
+    for(let j=0; j<special_characters.length; j++){
+      if (special_characters[j] == string[i]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if a string only contains space characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * is a space-only string.
+ */
+const spaceOnlyCheck = (string) => {
+  for(let i=0; i<string.length; i++){
+    if(string[i] != ' '){
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * Checks if the budget being added has valid inputs.
  * @param {object} budget 
  * @param {string} interval 
@@ -207,15 +240,18 @@ export const deleteBudget = async (userID, index) => {
  * inputs are valid and a message about the result.
  */
 export const budgetErrorCheck = (budget, interval, budgetStores) => {
-  console.log(budgetStores, interval);
   const intervals = {"Monthly": "MonthRecords", "Weekly": "WeekRecords", "Daily": "DayRecords"};
   const check = budgetStores[intervals[interval]].filter((budg) => {
     return budg.title == budget.title;
   });
   if (check.length > 0) {
     return [false, "Budget already exists."];
-  } else if (budget.title === '') {
+  } else if (specialCharactersCheck(budget.title)) {
+    return [false, "Special character not allowed."];
+  } else if (budget.title.name === '') {
     return [false, "Budget title must contain at least one character."];
+  } else if (spaceOnlyCheck(budget.title)) {
+    return [false, "Budget title must not contain space-only characters."];
   } else if (budget.initial < 0) {
     return [false, "Initial budget must be non-negative."];
   } else {
