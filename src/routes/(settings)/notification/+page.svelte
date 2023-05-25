@@ -14,6 +14,4 @@
 	{#each $notificationsStore as item}
 		<NotificationRecord title={item.title} content={item.content} />
 	{/each}
-{:else}
-	<p>No notifications</p>
 {/if}

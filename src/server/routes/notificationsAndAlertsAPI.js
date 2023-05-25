@@ -12,7 +12,7 @@ export const notificationsList = async (userID) => {
   const budgetsList = await getBudgets(userID);
   console.log(budgetsList);
   const keys = ["DayRecords", "WeekRecords", "MonthRecords"];
-  const interval = ["DAILY", "WEEKLY", "MONTHLY"];
+  const interval = ["Daily", "Weekly", "Monthly"];
   const res = [];
   for(let j=0; j<3; j++){
     for(let i=0; i<budgetsList[keys[j]].length; i++){
@@ -26,8 +26,8 @@ export const notificationsList = async (userID) => {
           });
         } else if (budgetsList[keys[j]][i].spent > budgetsList[keys[j]][i].budget) {
           res.push({
-            title: `${interval[j]} BUDGET EXCEEDED`,
-            content: `You have spent $${budgetsList[keys[j]][i].spent} which is over your budget $${budgetsList[keys[j]][i].budget}`,
+            title: `[${budgetsList[keys[j]][i].title}] ${interval[j]} Budget Exceeded  `,
+            content: `You have spent ₱${budgetsList[keys[j]][i].spent} which is over your budget ₱${budgetsList[keys[j]][i].budget}`,
           });
         }
       }
