@@ -141,6 +141,38 @@ export const deleteCategory = async (userID, categoryIndex) => {
   }
 }
 
+/**
+ * Utitlity function that checks for special characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * contains a special character or not.
+ */
+const specialCharactersCheck = (string) => {
+  const special_characters = "~`!@#$%^*()+={}[]|\\/:;\"<>,.?";
+  for(let i=0; i<string.length; i++){
+    for(let j=0; j<special_characters.length; j++){
+      if (special_characters[j] == string[i]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if a string only contains space characters.
+ * @param {string} string 
+ * @returns A boolean value that tells whether the string
+ * is a space-only string.
+ */
+const spaceOnlyCheck = (string) => {
+  for(let i=0; i<string.length; i++){
+    if(string[i] != ' '){
+      return false;
+    }
+  }
+  return true;
+}
 
 /**
  * Checks if the category being added has valid inputs.
@@ -155,10 +187,12 @@ export const categoriesErrorCheck = (categories, categoriesStore) => {
   });
   if (check.length > 0) {
     return [false, "Category already exists."];
-  } else if (categories.name.match(/\W/)) {
-    return [false, "No special characters allowed."];
+  } else if (specialCharactersCheck(categories)) {
+    return [false, "Special character not allowed."];
   } else if (categories === '') {
     return [false, "Category name must contain at least one character."];
+  } else if (spaceOnlyCheck(categories)) {
+    return [false, "Category name must not contain space-only characters."];
   } else {
     return [true, "Valid"];
   }

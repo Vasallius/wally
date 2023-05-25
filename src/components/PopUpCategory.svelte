@@ -4,6 +4,7 @@
 	import { authStore, categoriesStore } from '../server/stores/stores';
 	import { addCategory } from '../server';
 	import { categoriesErrorCheck } from '../server/routes/dashboard_routes/categoriesAPI';
+	import { error } from '@sveltejs/kit';
 
 	export let isOpen = false;
 	export let label = '';
@@ -13,6 +14,7 @@
 		let categories = $categoriesStore;
 		let newCategory = label;
 		let errorCheck = categoriesErrorCheck(newCategory, categories);
+		console.log(errorCheck);
 		if (!errorCheck[0]) {
 			alert(errorCheck[1]);
 		} else {
