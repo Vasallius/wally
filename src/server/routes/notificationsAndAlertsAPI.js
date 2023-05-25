@@ -10,15 +10,13 @@ import { getBudgets } from './budgetsAPI';
  */
 export const notificationsList = async (userID) => {
   const budgetsList = await getBudgets(userID);
-  console.log(budgetsList);
   const keys = ["DayRecords", "WeekRecords", "MonthRecords"];
   const interval = ["Daily", "Weekly", "Monthly"];
   const res = [];
   for(let j=0; j<3; j++){
     for(let i=0; i<budgetsList[keys[j]].length; i++){
-      console.log(budgetsList[keys[j]][i]);
       if (budgetsList[keys[j]][i].budget != 0) {
-        if ( budgetsList[keys[j]][i].spent >= budgetsList[keys[j]][i].budget*0.9 &&
+        if ( budgetsList[keys[j]][i].spent >= budgetsList[keys[j]][i].budget*0.75 &&
               budgetsList[keys[j]][i].spent <= budgetsList[keys[j]][i].budget ) {
           res.push({
             title: `${interval[j]} BUDGET LIMIT`,
@@ -33,6 +31,5 @@ export const notificationsList = async (userID) => {
       }
     }
   }
-  
   return res;
 }
