@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import BudgetRecord from '../../../components/BudgetRecord.svelte';
 	import PopUpBudget from '../../../components/PopUpBudget.svelte';
@@ -122,7 +123,7 @@
 		{#if $budgetStores}
 			{#each $budgetStores.MonthRecords as item}
 				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Monthly"}/>
 				{/if}
 			{/each}
 		{:else}
@@ -139,7 +140,7 @@
 		{#if $budgetStores}
 			{#each $budgetStores.WeekRecords as item}
 				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Weekly"}/>
 				{/if}
 			{/each}
 		{:else}
@@ -155,7 +156,7 @@
 		{#if $budgetStores}
 			{#each $budgetStores.DayRecords as item}
 				{#if item.budget > 0}
-					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} />
+					<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Daily"}/>
 				{/if}
 			{/each}
 		{:else}

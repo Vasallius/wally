@@ -15,13 +15,12 @@
 	let categoryRecords = [];
 
 	const handleSubmit = async (event) => {
-		// Paki re-implement na lang @frongz
-		let errorCheck = budgetErrorCheck({ title: label, initial: budget }, intervals, $budgetStores);
+		let errorCheck = budgetErrorCheck({ title: label, initial: budget }, intervals, $budgetStores, 'add');
+		event.preventDefault();
 		console.log(errorCheck);
 		if (!errorCheck[0]) {
 			alert(errorCheck[1]);
 		} else {
-			event.preventDefault();
 			if (intervals == 'Daily') {
 				let budgets = $budgetStores;
 				let dailybudgets = budgets.DayRecords;

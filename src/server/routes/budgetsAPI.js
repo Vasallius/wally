@@ -239,22 +239,29 @@ const spaceOnlyCheck = (string) => {
  * @returns A list that contains a boolean that tells if the
  * inputs are valid and a message about the result.
  */
-export const budgetErrorCheck = (budget, interval, budgetStores) => {
-  const intervals = {"Monthly": "MonthRecords", "Weekly": "WeekRecords", "Daily": "DayRecords"};
-  const check = budgetStores[intervals[interval]].filter((budg) => {
-    return budg.title == budget.title && budg.budget != 0;
-  });
-  if (check.length > 0) {
-    return [false, "Budget already exists."];
-  } else if (specialCharactersCheck(budget.title)) {
-    return [false, "Special character not allowed."];
-  } else if (budget.title.name === '') {
-    return [false, "Budget title must contain at least one character."];
-  } else if (spaceOnlyCheck(budget.title)) {
-    return [false, "Budget title must not contain space-only characters."];
-  } else if (budget.initial < 0) {
-    return [false, "Initial budget must be non-negative."];
-  } else {
+export const budgetErrorCheck = (budget, interval, budgetStores, action) => {
+  if (action == 'edit') {
+    if (budget.budget < 0) {
+      return [false, "Initial budget must be non-negative."];
+    }
     return [true, "Valid"];
+  } else {
+    const intervals = {"Monthly": "MonthRecords", "Weekly": "WeekRecords", "Daily": "DayRecords"};
+    const check = budgetStores[intervals[interval]].filter((budg) => {
+      return budg.title == budget.title && budg.budget != 0;
+    });
+    if (check.length > 0) {
+      return [false, "Budget already exists."];
+    } else if (specialCharactersCheck(budget.title)) {
+      return [false, "Special character not allowed."];
+    } else if (budget.title.name === '') {
+      return [false, "Budget title must contain at least one character."];
+    } else if (spaceOnlyCheck(budget.title)) {
+      return [false, "Budget title must not contain space-only characters."];
+    } else if (budget.budget < 0) {
+      return [false, "Initial budget must be non-negative."];
+    } else {
+      return [true, "Valid"];
+    }
   }
 }

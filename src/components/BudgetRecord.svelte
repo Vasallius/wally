@@ -1,9 +1,10 @@
 <script lang="ts">
-	import EditBudgetModal from "./EditBudgetModal.svelte";
+	import EditBudgetModal2 from "./EditBudgetModal2.svelte";
 
 	export let title: string;
 	export let budgetSpent: number;
 	export let budget: number;
+	export let interval: string;
 	$: percent = (budgetSpent / budget) * 100;
 
 	let isModalOpen = false;
@@ -33,4 +34,4 @@
 	</div>
 </button>
 
-<EditBudgetModal bind:isOpen={isModalOpen} />
+<EditBudgetModal2 bind:isOpen={isModalOpen} label={title} interval={interval}/>
