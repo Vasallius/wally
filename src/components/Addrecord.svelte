@@ -215,6 +215,7 @@
 				updateWallets($authStore.user.uid, updatedWallets);
 			}
 		}
+		numberInput = '';
 	};
 
 	function isDuplicate(value: string | number) {
