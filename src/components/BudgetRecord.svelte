@@ -21,7 +21,7 @@
 <button on:click={handleEditClick} class="flex flex-col px-8 py-4 justify-between border-b hover:bg-agray-50 w-full">
 	<div class="flex flex-row justify-between w-full items-center">
 		<h1 class="text-agray-700 font-semibold pb-1">{title}</h1>
-		<p class="text-xs text-agray-600">₱{budget}</p>
+		<p class="text-xs text-agray-600">₱{budgetSpent}/₱{budget}</p>
 	</div>
 	<div class="flex w-full bg-gray-200 rounded-full h-2">
 		{#if budgetSpent > budget}
