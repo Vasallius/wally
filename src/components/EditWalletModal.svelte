@@ -5,32 +5,37 @@
 	export let label = '';
 	export let title;
 	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { updateRecords, updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		let newInitial = parseInt(label);
 
-		function sumRecords(array, recordType, walletname) {
-			return array.reduce((total, current) => {
-				if (current.recordType === recordType && current.wallet === walletname) {
-					return total + current.amount;
-				} else {
-					return total;
+		// function sumRecords(array, recordType, walletname) {
+		// 	return array.reduce((total, current) => {
+		// 		if (current.recordType === recordType && current.wallet === walletname) {
+		// 			return total + current.amount;
+		// 		} else {
+		// 			return total;
+		// 		}
+		// 	}, 0);
+		// }
+		const updatedRecords = $recordsStore.map((records) => {
+			if (records.wallet == title ) {
+				return {
+					...records,
+					wallet: label
 				}
-			}, 0);
-		}
-
+			}
+			return records;
+		})
+		recordsStore.set(updatedRecords);
+		updateRecords($authStore.user.uid, updatedRecords);
 		const updatedWallets = $walletStores.map((wallet) => {
 			if (wallet.name === title) {
-				let income = sumRecords($recordsStore, 'income', title);
-				let expenses = sumRecords($recordsStore, 'expenses', title);
-				let newBalance = newInitial + income - expenses;
 
 				return {
 					...wallet,
-					initial: newInitial,
-					balance: newBalance
+					name: label
 				};
 			}
 			return wallet;
@@ -54,7 +59,7 @@
 			on:submit={handleSubmit}
 			class="flex flex-col gap-4 bg-white rounded-xl text-agray-700 text-base font-semibold py-10 px-10 mx-auto"
 		>
-			<h1>Edit Inital Balance</h1>
+			<h1>Edit Label</h1>
 			<div class="flex w-auto flex-col gap-6">
 				<div class="relative h-10 w-48 min-w-[200px]">
 					<input
@@ -63,7 +68,7 @@
               placeholder-shown:border-t-agray-600 focus:border-2 focus:border-teal-500 focus:border-t-transparent focus:outline-0
               disabled:border-0 disabled:bg-blue-gray-50"
 						placeholder=" "
-						type="number"
+						type="text"
 						id="label-input"
 						bind:value={label}
 					/>
@@ -81,7 +86,7 @@
               peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent
               peer-disabled:peer-placeholder-shown:text-blue-gray-500"
 					>
-						Balance
+						Label
 					</label>
 				</div>
 
