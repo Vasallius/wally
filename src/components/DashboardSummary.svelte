@@ -70,7 +70,7 @@
 			>
 				<div class="font-primary font-normal text-agray-700 text-xs">Transfer Out</div>
 				<div class="font-primary font-semibold text-tertiary text-xs">
-					-₱{$monthlySummaryStores[3]}
+					{$monthlySummaryStores[3]*-1 > 0 ? `+₱${$monthlySummaryStores[3]*-1}` : `-₱${$monthlySummaryStores[3]}`}
 				</div>
 			</div>
 			<div class="mx-5 flex flex-row justify-between items-center pb-4">

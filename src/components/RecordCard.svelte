@@ -15,7 +15,7 @@
 		{:else if recordType == 'expense'}
 			<div class="text-secondary font-primary font-semibold">-{amount}</div>
 		{:else}
-			<div class="text-tertiary font-primary font-semibold">-{amount}</div>
+			<div class="text-tertiary font-primary font-semibold">{amount*-1 > 0 ? `+${amount*-1}` : `-${amount}`}</div>
 		{/if}
 	</div>
 	<div class="flex justify-between">
