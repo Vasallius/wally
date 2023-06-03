@@ -21,35 +21,37 @@
 
 	// This function handles the delete button click event
 	async function handleDeleteClick() {
-		let records = $recordsStore.filter((data) => data.wallet != title);
-		recordsStore.set(records);
-		let wallets = $walletStores;
-		wallets = wallets.filter((wallet) => wallet.name != title);
-		let records2 = records.filter((data) => data.recordType == 'expense');
-		console.log(records2);
-		const today = new Date();
-		let newRecords = records2.filter((val) => {
-			const currentDate = new Date(val.date.seconds * 1000);
-			console.log(currentDate, today);
-			return true;
-		});
-		// Check if there are still wallets
-		if (wallets.length > 0) {
-			let activeWallet = getActiveWallet(wallets);
-			if (activeWallet != null) {
-				// Do nothing
+		let val = confirm(`Are you sure you want to delete this wallet?`);
+		if (val) {
+			let records = $recordsStore.filter((data) => data.wallet != title);
+			recordsStore.set(records);
+			let wallets = $walletStores;
+			wallets = wallets.filter((wallet) => wallet.name != title);
+			let records2 = records.filter((data) => data.recordType == 'expense');
+			const today = new Date();
+			let newRecords = records2.filter((val) => {
+				const currentDate = new Date(val.date.seconds * 1000);
+				console.log(currentDate, today);
+				return true;
+			});
+			// Check if there are still wallets
+			if (wallets.length > 0) {
+				let activeWallet = getActiveWallet(wallets);
+				if (activeWallet != null) {
+					// Do nothing
+				} else {
+					// If there is no active wallet, set first wallet to active
+					wallets[0].active = 'True';
+				}
 			} else {
-				// If there is no active wallet, set first wallet to active
-				wallets[0].active = 'True';
+				console.log('No more wallets to delete');
 			}
-		} else {
-			console.log('No more wallets to delete');
-		}
-		walletStores.set(wallets);
+			walletStores.set(wallets);
 
-		// Update Firebase
-		updateWallets($authStore.user.uid, wallets);
-		updateRecords($authStore.user.uid, records);
+			// Update Firebase
+			updateWallets($authStore.user.uid, wallets);
+			updateRecords($authStore.user.uid, records);
+		}
 	}
 
 	const openPopUp = () => {
