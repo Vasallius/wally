@@ -1,4 +1,5 @@
 <script lang="ts">
+	// @ts-nocheck
 	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import {
@@ -31,10 +32,10 @@
 				// console.log(`Changing active wallet to ${label}`);
 				activeWalletStore.set(wallet);
 				let initial = wallet.initial;
-				let income = sumRecords($recordsStore, 'income', wallet.name);
-				let expense = sumRecords($recordsStore, 'expense', wallet.name);
-				let transferout = sumTransferFrom($recordsStore, wallet.name);
-				let transferin = sumTransferTo($recordsStore, wallet.name);
+				let income = sumRecords($recordsStore, 'income', label);
+				let expense = sumRecords($recordsStore, 'expense', label);
+				let transferout = sumTransferFrom($recordsStore, label);
+				let transferin = sumTransferTo($recordsStore, label);
 				monthlySummaryStores.set([income, expense, transferin, transferout, initial]);
 			} else {
 				wallet.active = 'False';

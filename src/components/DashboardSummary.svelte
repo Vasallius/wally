@@ -63,7 +63,7 @@
 			<div class="mx-5 flex flex-row justify-between items-center pb-1.5">
 				<div class="font-primary font-normal text-agray-700 text-xs">Transfer in</div>
 				<div class="font-primary font-semibold text-tertiary text-xs">
-					+₱{$monthlySummaryStores[2]}
+					{$monthlySummaryStores[2] > 0 ? `+₱${$monthlySummaryStores[2]}` : `-₱${$monthlySummaryStores[2]*-1}`}
 				</div>
 			</div>
 			<div
