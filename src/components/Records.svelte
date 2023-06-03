@@ -23,6 +23,7 @@
 		activeWalletStore.set(activeWallet);
 
 		recordsStore.set(records);
+		console.log(records, recordType);
 	});
 
 	function convertTimestamp(timestamp) {
@@ -34,6 +35,16 @@
 {#if $recordsStore}
 	{#each $recordsStore as record}
 		{#if record.wallet == $activeWalletStore?.name && recordType == 'all'}
+			<RecordCard
+				category={record.category}
+				wallet={record.wallet}
+				wallet2={record.wallet2}
+				amount={record.amount}
+				date={convertTimestamp(record.date)}
+				recordType={record.recordType}
+			/>
+		{:else if (record.wallet == $activeWalletStore?.name || record.wallet2 == $activeWalletStore?.name)
+							&& record.recordType == 'transfer'}
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}

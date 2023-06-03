@@ -18,6 +18,7 @@
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
+		console.log($monthlySummaryStores);
 	});
 
 	const date = new Date();

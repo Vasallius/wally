@@ -43,7 +43,7 @@ export const  sumTransferTo = function(array, walletname) {
   let transfer = array.filter(
     (wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
   );
-  let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+  let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount*-1, 0);
   return sum;
 }
 
