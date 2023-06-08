@@ -123,17 +123,6 @@
 			alert(check[1]);
 		} else {
 			records = await addRecord($authStore.user.uid, newRecord);
-			if (transactionType === 'transfer') {
-				console.log(parseInt(parseInt(numberInput)*-1));
-				records = await addRecord($authStore.user.uid, {
-					amount: parseInt(parseInt(numberInput)*-1),
-					category: selectedCategory,
-					name: 'magic', // UNUSED FIELD LMFAO
-					recordType: transactionType,
-					wallet: selectedWallet2,
-					wallet2: selectedWallet
-				});
-			}
 			recordsStore.set(records);
 			updateRecords($authStore.user.uid, records);
 			if (transactionType === 'income') {
