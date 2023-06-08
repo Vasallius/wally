@@ -23,7 +23,7 @@
 	</div>
 	<div class="flex justify-between">
 		{#if recordType == 'transfer'}
-			<div class="text-xs leading-3 font-primary text-agray-500">{`${$activeWalletStore.name === wallet ? `Transferred to ${wallet2}` : `Transferred into ${wallet2}`}`}</div>
+			<div class="text-xs leading-3 font-primary text-agray-500">{`${$activeWalletStore.name === wallet ? `Transferred from ${wallet2}` : `Transferred into ${wallet2}`}`}</div>
 		{:else}
 			<div class="text-xs leading-3 font-primary text-agray-500">{wallet}</div>
 		{/if}
