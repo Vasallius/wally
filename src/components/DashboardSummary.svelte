@@ -1,9 +1,8 @@
 <script>
 	// @ts-nocheck
-	import { getWallets } from '../server';
-	import { monthlySummaryStores, authStore } from '../server/stores/stores.js';
-	import { activeWalletStore } from '../server/stores/stores.js';
 	import { onMount } from 'svelte';
+	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { activeWalletStore, authStore, monthlySummaryStores } from '../server/stores/stores.js';
 	import NotificationIcon from './NotificationIcon.svelte';
 
 	let activeWallet;
@@ -13,7 +12,6 @@
 		return wallets.find((wallet) => wallet.active == 'True');
 	}
 
-	// Frongz no need to pass active wallet as a prop, nakastore na sa activewalletstore, thanks
 	onMount(async () => {
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
@@ -25,7 +23,7 @@
 	const formattedDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 </script>
 
-<div class="flex justify-between mx-3 my-4 db-nav">
+<header class="flex justify-between mx-3 my-4 db-nav">
 	<div class="flex items-center">
 		<div class="rounded mr-4">
 			<a href="/menu"><img src="./Avatar.png" alt="profile" class="w-9 h-9" /></a>
@@ -35,7 +33,8 @@
 	<div class="flex items-center">
 		<NotificationIcon />
 	</div>
-</div>
+</header>
+
 <div class="db-summary mx-3">
 	<div class="flex flex-col bg-agray-50 rounded-xl border border-agray-200 border-solid">
 		<div class="mx-5 my-3 flex flex-row justify-between items-center">
@@ -63,7 +62,9 @@
 			<div class="mx-5 flex flex-row justify-between items-center pb-1.5">
 				<div class="font-primary font-normal text-agray-700 text-xs">Transfer in</div>
 				<div class="font-primary font-semibold text-tertiary text-xs">
-					{$monthlySummaryStores[2] > 0 ? `+₱${$monthlySummaryStores[2]}` : `-₱${$monthlySummaryStores[2]*-1}`}
+					{$monthlySummaryStores[2] > 0
+						? `+₱${$monthlySummaryStores[2]}`
+						: `-₱${$monthlySummaryStores[2] * -1}`}
 				</div>
 			</div>
 			<div
@@ -71,7 +72,9 @@
 			>
 				<div class="font-primary font-normal text-agray-700 text-xs">Transfer Out</div>
 				<div class="font-primary font-semibold text-tertiary text-xs">
-					{$monthlySummaryStores[3]*-1 > 0 ? `+₱${$monthlySummaryStores[3]*-1}` : `-₱${$monthlySummaryStores[3]}`}
+					{$monthlySummaryStores[3] * -1 > 0
+						? `+₱${$monthlySummaryStores[3] * -1}`
+						: `-₱${$monthlySummaryStores[3]}`}
 				</div>
 			</div>
 			<div class="mx-5 flex flex-row justify-between items-center pb-4">
