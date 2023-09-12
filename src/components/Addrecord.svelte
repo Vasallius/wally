@@ -1,15 +1,12 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { getWallets } from '$api/dashboard';
+	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
 	import { onMount } from 'svelte';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import { addRecord } from '../server';
 	import { getBudgets, updateBudgets } from '../server/routes/budgetsAPI.js';
 	import {
 		recordErrorCheck,
-		sumRecords,
-		sumTransferFrom,
-		sumTransferTo,
 		updateRecords,
 		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';

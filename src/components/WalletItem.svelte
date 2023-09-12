@@ -1,13 +1,8 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { getWallets } from '$api/dashboard';
+	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
 	import { onMount } from 'svelte';
-	import {
-		sumRecords,
-		sumTransferFrom,
-		sumTransferTo,
-		updateWallets
-	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import {
 		activeWalletStore,
 		authStore,

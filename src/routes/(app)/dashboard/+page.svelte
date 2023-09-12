@@ -1,13 +1,13 @@
 <script>
 	// @ts-nocheck
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
+	import { getAllRecords } from '$api/records';
 	import Addrecord from '$components/Addrecord.svelte';
 	import DashboardSummary from '$components/DashboardSummary.svelte';
 	import RecordBar from '$components/RecordBar.svelte';
 	import Wallet from '$components/Wallet.svelte';
 	import { onMount } from 'svelte';
 	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
-	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	import {
 		activeWalletStore,
 		authStore,
