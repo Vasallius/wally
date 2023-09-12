@@ -5,16 +5,14 @@
 	import { signUp } from '../../../server/index.js';
 
 	let isLoading = false;
-
+	let name = '';
+	let email = '';
+	let password = '';
 	const submit = () => {
 		isLoading = true;
 		try {
 			// @ts-ignore
-			signUp(
-				document.querySelector('.signup').name.value,
-				document.querySelector('.signup').email.value,
-				document.querySelector('.signup').password.value
-			);
+			signUp(name, email, password);
 			console.log('User succesfully created.');
 		} catch (error) {
 			console.log('Signup process faield.');
@@ -36,13 +34,13 @@
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Sign Up</div>
 	<form class="signup">
 		<div class="mx-7 mb-2">
-			<Textfield type="text" id="name">Name</Textfield>
+			<Textfield type="text" bind:value={name} id="name">Name</Textfield>
 		</div>
 		<div class="mx-7 mb-2">
-			<Textfield type="email" id="email">Email</Textfield>
+			<Textfield type="email" bind:value={email} id="email">Email</Textfield>
 		</div>
 		<div class="mx-7 mb-64">
-			<Textfield type="password" id="password">Password</Textfield>
+			<Textfield type="password" bind:value={password} id="password">Password</Textfield>
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button
