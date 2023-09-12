@@ -46,24 +46,6 @@ export const sumTransferTo = function (array, walletname) {
 	return sum;
 };
 
-// USELESS
-// export const getMonthlySummary = async (userID, currentActiveWallet) => {
-//   try {
-//     const expense = await getRecords('expense', userID, currentActiveWallet);
-//     const income = await getRecords('income', userID, currentActiveWallet);
-//     const totalExpense = expense.reduce((total, val) => {
-//       return total + val.amount;
-//     }, 0);
-//     const totalIncome = income.reduce((total, val) => {
-//       return total + val.amount;
-//     }, 0);
-//     return [totalIncome, totalExpense];
-//   } catch (error) {
-//     console.log("Error in getting monthly summary.")
-//     return [0, 0];
-//   }
-// };
-
 /**
  * Searches for the current active wallet for a
  * user.
