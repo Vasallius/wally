@@ -1,25 +1,20 @@
 <script>
 	// @ts-nocheck
+	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
+	import Addrecord from '$components/Addrecord.svelte';
+	import DashboardSummary from '$components/DashboardSummary.svelte';
+	import RecordBar from '$components/RecordBar.svelte';
+	import Wallet from '$components/Wallet.svelte';
 	import { onMount } from 'svelte';
-	import DashboardSummary from './../../../components/DashboardSummary.svelte';
-	import Wallet from '../../../components/Wallet.svelte';
-	import RecordBar from '../../../components/RecordBar.svelte';
-	import {
-		authStore,
-		monthlySummaryStores,
-		activeWalletStore,
-		recordsStore,
-		notificationsStore
-	} from '../../../server/stores/stores';
 	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
-	import Addrecord from '../../../components/Addrecord.svelte';
-	import { getWallets } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	import {
-		sumRecords,
-		sumTransferFrom,
-		sumTransferTo
-	} from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
+		activeWalletStore,
+		authStore,
+		monthlySummaryStores,
+		notificationsStore,
+		recordsStore
+	} from '../../../server/stores/stores';
 
 	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
@@ -54,7 +49,6 @@
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
-
 </script>
 
 <!-- Check if the user is authenticated using the $authStore variable -->

@@ -27,6 +27,7 @@ interface Record {
 	name: string;
 	recordType: string;
 	wallet: string;
+	wallet2: string;
 }
 
 // /**
@@ -69,18 +70,31 @@ export const sumRecords = function (array: Record[], recordType: string, walletN
 	}, 0);
 };
 
-// export const sumTransferFrom = function (array, walletname) {
-// 	let transfer = array.filter(
-// 		(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletname
-// 	);
-// 	let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-// 	return sum;
-// };
+/**
+ * Calculates the sum of the amounts transferred from the specified wallet.
+ * @function
+ * @param {Record[]} array - Array of record objects.
+ * @param {string} walletName - Name of the wallet.
+ * @returns {number} Sum of the amount of the matching records.
+ */ export const sumTransferFrom = function (array: Record[], walletName: string) {
+	let transfer = array.filter(
+		(wallet) => wallet.recordType == 'transfer' && wallet.wallet == walletName
+	);
+	let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+	return sum;
+};
 
-// export const sumTransferTo = function (array, walletname) {
-// 	let transfer = array.filter(
-// 		(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletname
-// 	);
-// 	let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-// 	return sum;
-// };
+/**
+ * Calculates the sum of the amounts transferred to the specified wallet.
+ * @function
+ * @param {Record[]} array - Array of record objects.
+ * @param {string} walletName - Name of the wallet.
+ * @returns {number} Sum of the amount of the matching records.
+ */
+export const sumTransferTo = function (array: Record[], walletName: string) {
+	let transfer = array.filter(
+		(wallet) => wallet.recordType == 'transfer' && wallet.wallet2 == walletName
+	);
+	let sum = transfer.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+	return sum;
+};
