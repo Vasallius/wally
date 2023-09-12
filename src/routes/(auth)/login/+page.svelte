@@ -12,10 +12,7 @@
 		isLoading = true;
 
 		try {
-			// let x = document.querySelector('.login').email.value;
-			// let y = document.querySelector('.login').password.value;
-
-			const errorMessage = await logIn(email, password); // Add 'await' here
+			const errorMessage = await logIn(email, password);
 
 			if (errorMessage === '') {
 				console.log('Log in succesful.');
@@ -27,6 +24,7 @@
 		} catch (error) {
 			console.log('error');
 		}
+
 		isLoading = false;
 	};
 </script>
