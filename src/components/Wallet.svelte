@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
+	import { getWallets } from '$api/dashboard';
 	import { onMount } from 'svelte';
-	import { getWallets } from '../api/dashboard';
 	import { authStore, walletStores } from '../server/stores/stores';
 	import WalletItem from './WalletItem.svelte';
 

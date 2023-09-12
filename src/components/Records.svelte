@@ -1,10 +1,10 @@
 <script>
 	// @ts-nocheck
-	import RecordCard from './RecordCard.svelte';
-	import { getWallets } from '../server';
-	import { authStore, recordsStore, activeWalletStore } from '../server/stores/stores';
+	import { getWallets } from '$api/dashboard';
 	import { onMount } from 'svelte';
 	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
+	import { activeWalletStore, authStore, recordsStore } from '../server/stores/stores';
+	import RecordCard from './RecordCard.svelte';
 
 	export let recordType;
 
@@ -43,8 +43,7 @@
 				date={convertTimestamp(record.date)}
 				recordType={record.recordType}
 			/>
-		{:else if (record.wallet == $activeWalletStore?.name || record.wallet2 == $activeWalletStore?.name)
-							&& record.recordType == 'transfer'}
+		{:else if (record.wallet == $activeWalletStore?.name || record.wallet2 == $activeWalletStore?.name) && record.recordType == 'transfer'}
 			<RecordCard
 				category={record.category}
 				wallet={record.wallet}

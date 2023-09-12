@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
-	import { getWallets } from '../server';
-	import WalletRecord from './WalletRecord.svelte';
-	import { authStore, walletStores } from '../server/stores/stores';
+	import { getWallets } from '$api/dashboard';
 	import { onMount } from 'svelte';
+	import { authStore, walletStores } from '../server/stores/stores';
+	import WalletRecord from './WalletRecord.svelte';
 
 	onMount(async () => {
 		const wallets = await getWallets($authStore.user.uid);

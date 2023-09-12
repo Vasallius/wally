@@ -1,20 +1,20 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import {
-		authStore,
-		walletStores,
-		activeWalletStore,
-		recordsStore,
-		monthlySummaryStores
-	} from '../server/stores/stores';
+	import { getWallets } from '$api/dashboard';
 	import { onMount } from 'svelte';
 	import {
 		sumRecords,
 		sumTransferFrom,
-		sumTransferTo
+		sumTransferTo,
+		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import {
+		activeWalletStore,
+		authStore,
+		monthlySummaryStores,
+		recordsStore,
+		walletStores
+	} from '../server/stores/stores';
 
 	export let label: string;
 	export let amount: string;

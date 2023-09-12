@@ -1,31 +1,28 @@
 <script lang="ts">
 	// @ts-nocheck
-	import {
-		authStore,
-		recordsStore,
-		walletStores,
-		monthlySummaryStores,
-		budgetStores,
-		activeWalletStore
-	} from '../server/stores/stores.js';
+	import { getWallets } from '$api/dashboard';
+	import { onMount } from 'svelte';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
-	import DropdownWallet from './DropdownWallet.svelte';
-	import DropdownCategory from './DropdownCategory.svelte';
 	import { addRecord } from '../server';
+	import { getBudgets, updateBudgets } from '../server/routes/budgetsAPI.js';
 	import {
-		updateWallets,
 		recordErrorCheck,
-		updateRecords
-	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import {
 		sumRecords,
 		sumTransferFrom,
-		sumTransferTo
+		sumTransferTo,
+		updateRecords,
+		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import { getBudgets } from '../server/routes/budgetsAPI.js';
-	import { updateBudgets } from '../server/routes/budgetsAPI.js';
-	import { onMount } from 'svelte';
-	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import {
+		activeWalletStore,
+		authStore,
+		budgetStores,
+		monthlySummaryStores,
+		recordsStore,
+		walletStores
+	} from '../server/stores/stores.js';
+	import DropdownCategory from './DropdownCategory.svelte';
+	import DropdownWallet from './DropdownWallet.svelte';
 
 	let transactionType = 'income';
 	let sign = '+';
