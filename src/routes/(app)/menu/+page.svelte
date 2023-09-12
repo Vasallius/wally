@@ -1,10 +1,10 @@
 <script>
 	// @ts-nocheck
 
+	import { goto } from '$app/navigation';
 	import Menu from '../../../components/Menu.svelte';
 	import { authStore } from '../../../server/stores/stores';
-	import { goto } from '$app/navigation';
-	
+
 	const redirect = () => {
 		goto('/login');
 	};

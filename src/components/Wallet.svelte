@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
-	import WalletItem from './WalletItem.svelte';
 	import { onMount } from 'svelte';
-	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { getWallets } from '../api/dashboard';
 	import { authStore, walletStores } from '../server/stores/stores';
+	import WalletItem from './WalletItem.svelte';
 
 	onMount(async () => {
 		const wallets = await getWallets($authStore.user.uid);
@@ -23,14 +23,16 @@
 		<p>Loading Wallets</p>
 	{/if}
 </div>
-<style>/* Hide scrollbar for Chrome, Safari and Opera */
+
+<style>
+	/* Hide scrollbar for Chrome, Safari and Opera */
 	.walletscroll::-webkit-scrollbar {
-	  display: none;
+		display: none;
 	}
-	
+
 	/* Hide scrollbar for IE, Edge and Firefox */
 	.walletscroll {
-	  -ms-overflow-style: none;  /* IE and Edge */
-	  scrollbar-width: none;  /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
 	}
 </style>
