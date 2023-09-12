@@ -1,20 +1,21 @@
 <script>
 	// @ts-nocheck
 
-	import Loader from '../../../components/Loader.svelte';
-	import Textfield from '../../../components/Textfield.svelte';
+	import Loader from '$components/Loader.svelte';
+	import Textfield from '$components/Textfield.svelte';
 	import { logIn } from '../../../server';
 	let message = '';
 	let isLoading = false;
-
+	let email = '';
+	let password = '';
 	const login = async () => {
 		isLoading = true;
 
 		try {
-			let x = document.querySelector('.login').email.value;
-			let y = document.querySelector('.login').password.value;
+			// let x = document.querySelector('.login').email.value;
+			// let y = document.querySelector('.login').password.value;
 
-			const errorMessage = await logIn(x, y); // Add 'await' here
+			const errorMessage = await logIn(email, password); // Add 'await' here
 
 			if (errorMessage === '') {
 				console.log('Log in succesful.');
@@ -43,10 +44,10 @@
 	<div class="text-header2 text-agray-700 mx-7 font-semibold font-primary mb-5">Log In</div>
 	<form class="login">
 		<div class="mx-7 mb-2">
-			<Textfield type="email" id="email" value="">Email</Textfield>
+			<Textfield type="email" id="email" bind:value={email}>Email</Textfield>
 		</div>
 		<div class="mx-7 mb-64">
-			<Textfield type="password" id="password" value="">Password</Textfield>
+			<Textfield type="password" id="password" bind:value={password}>Password</Textfield>
 			<span class="text-xs text-secondary font-semibold">{message}</span>
 		</div>
 
