@@ -1,10 +1,9 @@
 <script>
 	// @ts-nocheck
-
-	import Textfield from '../../../components/Textfield.svelte';
+	import Loader from '$components/Loader.svelte';
+	import Textfield from '$components/Textfield.svelte';
 	import { signUp } from '../../../server/index.js';
-	import { goto } from '$app/navigation';
-	import Loader from '../../../components/Loader.svelte';
+
 	let isLoading = false;
 
 	const submit = () => {
