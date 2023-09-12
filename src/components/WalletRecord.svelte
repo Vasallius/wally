@@ -1,23 +1,18 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { TrashFill, XLg } from 'svelte-bootstrap-icons';
-	import { authStore, walletStores, recordsStore, budgetStores } from '../server/stores/stores';
+	import { getActiveWallet } from '$api/wallets';
+	import { TrashFill } from 'svelte-bootstrap-icons';
 	import {
-		updateWallets,
-		updateRecords
+		updateRecords,
+		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
-
+	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
 	import EditWalletModal from './EditWalletModal.svelte';
 	let isModalOpen = false;
 	let label = '';
 
 	export let title: string;
 	export let balance: number;
-
-	function getActiveWallet(wallets) {
-		return wallets.find((wallet) => wallet.active == 'True');
-	}
 
 	// This function handles the delete button click event
 	async function handleDeleteClick() {

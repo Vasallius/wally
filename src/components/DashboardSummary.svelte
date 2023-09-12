@@ -1,5 +1,6 @@
 <script>
 	// @ts-nocheck
+	import { getActiveWallet } from '$api/wallets';
 	import { onMount } from 'svelte';
 	import { getWallets } from '../api/dashboard';
 	import { activeWalletStore, authStore, monthlySummaryStores } from '../server/stores/stores.js';
@@ -7,10 +8,6 @@
 
 	let activeWallet;
 	let wallets;
-
-	function getActiveWallet(wallets) {
-		return wallets.find((wallet) => wallet.active == 'True');
-	}
 
 	onMount(async () => {
 		wallets = await getWallets($authStore.user.uid);

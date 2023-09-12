@@ -1,6 +1,7 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
+	import { getActiveWallet } from '$api/wallets';
 	import { onMount } from 'svelte';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import { addRecord } from '../server';
@@ -20,7 +21,6 @@
 	} from '../server/stores/stores.js';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import DropdownWallet from './DropdownWallet.svelte';
-
 	let transactionType = 'income';
 	let sign = '+';
 	let color = 'primary';
@@ -30,10 +30,6 @@
 	let selectedCategory = '';
 	let activeWallet;
 	let wallets;
-
-	function getActiveWallet(wallets) {
-		return wallets.find((wallet) => wallet.active == 'True');
-	}
 
 	onMount(async () => {
 		wallets = await getWallets($authStore.user.uid);
