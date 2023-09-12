@@ -74,6 +74,7 @@ export const signUp = async (name, email, password) => {
 			return true;
 		})
 		.catch((err) => {
+			console.log('Error with signing up');
 			console.log(err.message);
 			return false;
 		});
