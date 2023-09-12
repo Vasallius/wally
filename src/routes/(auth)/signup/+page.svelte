@@ -1,21 +1,29 @@
 <script>
+	import { signUp } from '../../../server';
 	// @ts-nocheck
 	import Loader from '$components/Loader.svelte';
 	import Textfield from '$components/Textfield.svelte';
-	import { signUp } from '../../../server/index.js';
 
 	let isLoading = false;
 	let name = '';
 	let email = '';
 	let password = '';
-	const submit = () => {
+	let message = '';
+
+	const submit = async () => {
 		isLoading = true;
 		try {
 			// @ts-ignore
-			signUp(name, email, password);
-			console.log('User succesfully created.');
+			const errorMessage = await signUp(name, email, password);
+			if (errorMessage === '') {
+				console.log('User successfully created.');
+				message = '';
+			} else {
+				console.log('error:', errorMessage);
+				message = errorMessage;
+			}
 		} catch (error) {
-			console.log('Signup process faield.');
+			console.log('Signup process failed.');
 		}
 		isLoading = false;
 	};
@@ -41,6 +49,7 @@
 		</div>
 		<div class="mx-7 mb-64">
 			<Textfield type="password" bind:value={password} id="password">Password</Textfield>
+			<span class="text-xs text-secondary font-semibold">{message}</span>
 		</div>
 		<div class="flex flex-col items-center mb-5">
 			<button

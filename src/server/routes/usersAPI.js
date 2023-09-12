@@ -15,69 +15,68 @@ import { authStore } from '../stores/stores';
  * @param {string} password
  */
 export const signUp = async (name, email, password) => {
-	await createUserWithEmailAndPassword(auth, email, password)
-		.then((cred) => {
-			goto('/login');
+	try {
+		const cred = await createUserWithEmailAndPassword(auth, email, password);
+		goto('/login');
 
-			const records = {
-				records: []
-			};
+		const records = {
+			records: []
+		};
 
-			const wallets = {
-				wallets: [
-					{
-						name: 'Cash',
-						initial: 0,
-						balance: 0,
-						dailyBudget: 0,
-						weeklyBudget: 0,
-						active: 'True'
-					}
-				]
-			};
-
-			const categories = {
-				categories: [
-					'Food & Drinks',
-					'Shopping',
-					'Housing',
-					'Transportation',
-					'Vehicle',
-					'Life & Entertainment',
-					'Communication, PC',
-					'Financial expenses',
-					'Investments',
-					'Income',
-					'Others',
-					'Unknown'
-				]
-			};
-
-			const budgets = {
-				budgets: {
-					DayRecords: [],
-					WeekRecords: [],
-					MonthRecords: []
+		const wallets = {
+			wallets: [
+				{
+					name: 'Cash',
+					initial: 0,
+					balance: 0,
+					dailyBudget: 0,
+					weeklyBudget: 0,
+					active: 'True'
 				}
-			};
+			]
+		};
 
-			const users = {
-				name
-			};
+		const categories = {
+			categories: [
+				'Food & Drinks',
+				'Shopping',
+				'Housing',
+				'Transportation',
+				'Vehicle',
+				'Life & Entertainment',
+				'Communication, PC',
+				'Financial expenses',
+				'Investments',
+				'Income',
+				'Others',
+				'Unknown'
+			]
+		};
 
-			setDoc(doc(db, 'records', cred.user.uid), records);
-			setDoc(doc(db, 'wallets', cred.user.uid), wallets);
-			setDoc(doc(db, 'categories', cred.user.uid), categories);
-			setDoc(doc(db, 'users', cred.user.uid), users);
-			setDoc(doc(db, 'budgets', cred.user.uid), budgets);
+		const budgets = {
+			budgets: {
+				DayRecords: [],
+				WeekRecords: [],
+				MonthRecords: []
+			}
+		};
 
-			return true;
-		})
-		.catch((err) => {
-			console.log('Error with signing up');
-			console.log(err.message);
-			return false;
-		});
+		const users = {
+			name
+		};
+
+		await setDoc(doc(db, 'records', cred.user.uid), records);
+		await setDoc(doc(db, 'wallets', cred.user.uid), wallets);
+		await setDoc(doc(db, 'categories', cred.user.uid), categories);
+		await setDoc(doc(db, 'users', cred.user.uid), users);
+		await setDoc(doc(db, 'budgets', cred.user.uid), budgets);
+
+		return '';
+	} catch (err) {
+		console.log('Error with signing up');
+		console.log(err.message);
+		return err.message;
+	}
 };
 
 /**
@@ -88,7 +87,7 @@ export const signUp = async (name, email, password) => {
  * @returns A message that tells if there is an
  *  error upon login.
  */
-export const logIn = (email, password) => {
+export const logIn = async (email, password) => {
 	return signInWithEmailAndPassword(auth, email, password)
 		.then((cred) => {
 			authStore.set(cred);

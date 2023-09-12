@@ -1,13 +1,14 @@
 <script>
 	// @ts-nocheck
-
 	import Loader from '$components/Loader.svelte';
 	import Textfield from '$components/Textfield.svelte';
 	import { logIn } from '../../../server';
+
 	let message = '';
 	let isLoading = false;
 	let email = '';
 	let password = '';
+
 	const login = async () => {
 		isLoading = true;
 
@@ -15,14 +16,14 @@
 			const errorMessage = await logIn(email, password);
 
 			if (errorMessage === '') {
-				console.log('Log in succesful.');
+				console.log('Log in successful.');
 				message = '';
 			} else {
 				console.log('error:', errorMessage);
 				message = errorMessage;
 			}
 		} catch (error) {
-			console.log('error');
+			console.log('Login Failed');
 		}
 
 		isLoading = false;
