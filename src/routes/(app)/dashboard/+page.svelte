@@ -2,6 +2,7 @@
 	// @ts-nocheck
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
 	import { getAllRecords } from '$api/records';
+	import { getActiveWallet } from '$api/wallets';
 	import Addrecord from '$components/Addrecord.svelte';
 	import DashboardSummary from '$components/DashboardSummary.svelte';
 	import RecordBar from '$components/RecordBar.svelte';
@@ -15,24 +16,20 @@
 		notificationsStore,
 		recordsStore
 	} from '../../../server/stores/stores';
-
-	let currentActiveWallet = 'Cash'; // Hardcoded value AVOID!
 	let isModalOpen = false;
 	let wallets;
 	let activeWallet;
-
-	function getActiveWallet(wallets) {
-		return wallets.find((wallet) => wallet.active == 'True');
-	}
 
 	onMount(async () => {
 		wallets = await getWallets($authStore.user.uid);
 		activeWallet = getActiveWallet(wallets);
 		activeWalletStore.set(activeWallet);
-		let records = await getAllRecords($authStore.user.uid);
-		let notifs = await notificationsList($authStore.user.uid);
+
+		const records = await getAllRecords($authStore.user.uid);
+		const notifs = await notificationsList($authStore.user.uid);
 		notificationsStore.set(notifs);
 		recordsStore.set(records);
+
 		let initial, income, expenses, transferout, transferin;
 		if (activeWallet == null) {
 			monthlySummaryStores.set([0, 0, 0, 0, 0]);
