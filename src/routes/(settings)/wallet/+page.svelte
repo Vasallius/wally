@@ -1,11 +1,11 @@
 <script>
 	// @ts-nocheck
 
+	import { goto } from '$app/navigation';
+	import { authStore } from '$stores/stores';
+	import PopUpWallet from '../../../components/PopUpWallet.svelte';
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import WalletRecordList from '../../../components/WalletRecordList.svelte';
-	import PopUpWallet from '../../../components/PopUpWallet.svelte';
-	import { authStore } from '../../../server/stores/stores';
-	import { goto } from '$app/navigation';
 
 	export const name = 'wallet';
 	let isModalOpen = false;

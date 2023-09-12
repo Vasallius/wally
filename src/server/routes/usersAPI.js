@@ -2,9 +2,9 @@
 /* eslint-disable no-unused-vars */
 import { goto } from '$app/navigation';
 import { auth, db } from '$lib/firebase/firebase';
+import { authStore } from '$stores/stores';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { authStore } from '../stores/stores';
 
 /**
  * A function that signs-up the user. Utilizes the

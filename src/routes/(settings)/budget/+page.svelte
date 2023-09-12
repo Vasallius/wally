@@ -1,19 +1,14 @@
 <script>
 	// @ts-nocheck
-	import SettingsNav from '../../../components/SettingsNav.svelte';
+	import { goto } from '$app/navigation';
+	import { authStore, budgetStores, categoriesStore, recordsStore } from '$stores/stores';
+	import { onMount } from 'svelte';
 	import BudgetRecord from '../../../components/BudgetRecord.svelte';
 	import PopUpBudget from '../../../components/PopUpBudget.svelte';
+	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import { getBudgets } from '../../../server/routes/budgetsAPI';
-	import { onMount } from 'svelte';
-	import {
-		authStore,
-		budgetStores,
-		recordsStore,
-		categoriesStore
-	} from '../../../server/stores/stores';
-	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	import { getCategories } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { goto } from '$app/navigation';
+	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
 	export const name = 'budget';
 	let isModalOpen = false;
 	let label = '';
@@ -112,7 +107,7 @@
 
 	const redirect = () => {
 		goto('/login');
-	}
+	};
 </script>
 
 {#if $authStore}
@@ -129,7 +124,12 @@
 			{#if $budgetStores}
 				{#each $budgetStores.MonthRecords as item}
 					{#if item.budget > 0}
-						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Monthly"}/>
+						<BudgetRecord
+							title={item.title}
+							budgetSpent={item.spent}
+							budget={item.budget}
+							interval={'Monthly'}
+						/>
 					{/if}
 				{/each}
 			{:else}
@@ -146,7 +146,12 @@
 			{#if $budgetStores}
 				{#each $budgetStores.WeekRecords as item}
 					{#if item.budget > 0}
-						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Weekly"}/>
+						<BudgetRecord
+							title={item.title}
+							budgetSpent={item.spent}
+							budget={item.budget}
+							interval={'Weekly'}
+						/>
 					{/if}
 				{/each}
 			{:else}
@@ -162,7 +167,12 @@
 			{#if $budgetStores}
 				{#each $budgetStores.DayRecords as item}
 					{#if item.budget > 0}
-						<BudgetRecord title={item.title} budgetSpent={item.spent} budget={item.budget} interval={"Daily"}/>
+						<BudgetRecord
+							title={item.title}
+							budgetSpent={item.spent}
+							budget={item.budget}
+							interval={'Daily'}
+						/>
 					{/if}
 				{/each}
 			{:else}
@@ -187,7 +197,6 @@
 {:else}
 	<div on:load={redirect()} />
 {/if}
-
 
 <style>
 	::-webkit-scrollbar {

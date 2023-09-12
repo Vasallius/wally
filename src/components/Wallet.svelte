@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
 	import { getWallets } from '$api/dashboard';
+	import { authStore, walletStores } from '$stores/stores';
 	import { onMount } from 'svelte';
-	import { authStore, walletStores } from '../server/stores/stores';
 	import WalletItem from './WalletItem.svelte';
 
 	onMount(async () => {

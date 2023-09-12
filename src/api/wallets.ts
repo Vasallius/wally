@@ -7,6 +7,6 @@ interface Wallet {
 	weeklyBudget: number;
 }
 
-export function getActiveWallet(wallets: Wallet[]) {
+export function getActiveWallet(wallets: Wallet[]): Wallet | undefined {
 	return wallets.find((wallet) => wallet.active == 'True');
 }

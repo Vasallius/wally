@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
+	import { authStore, categoriesStore } from '$stores/stores';
+	import { onMount } from 'svelte';
 	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import CategoryRecord from './CategoryRecord.svelte';
-	import { onMount } from 'svelte';
-	import { authStore, categoriesStore } from '../server/stores/stores';
 
 	export let user;
 

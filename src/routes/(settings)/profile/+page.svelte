@@ -1,11 +1,11 @@
 <script>
 	// @ts-nocheck
 
+	import { goto } from '$app/navigation';
+	import { authStore } from '$stores/stores';
 	import SettingsNav from '../../../components/SettingsNav.svelte';
 	import Textfield from '../../../components/Textfield.svelte';
 	import { updateProfile } from '../../../server/routes/settingsAPI';
-	import { authStore } from '../../../server/stores/stores';
-	import { goto } from '$app/navigation';
 
 	let name = '';
 	let email = '';
@@ -13,12 +13,14 @@
 
 	const submit = async () => {
 		try {
-			let check = await updateProfile(name, email, password, $authStore.user.uid).then(val => val);
+			let check = await updateProfile(name, email, password, $authStore.user.uid).then(
+				(val) => val
+			);
 			if (!check) {
-				throw new Error("Update unsuccessful");
+				throw new Error('Update unsuccessful');
 			}
-			alert("Update successful");
-			goto("/menu");
+			alert('Update successful');
+			goto('/menu');
 		} catch (error) {
 			alert(error.message);
 		}
@@ -28,10 +30,11 @@
 		goto('/login');
 	};
 </script>
+
 {#if $authStore}
 	<SettingsNav redirect="menu">Profile</SettingsNav>
 
-	<div class="my-14"> 
+	<div class="my-14">
 		<form>
 			<div class="mx-7 mb-2">
 				<Textfield type="text" id="name" bind:value={name}>Name</Textfield>
@@ -45,7 +48,8 @@
 			<div class="flex flex-col items-center mb-5">
 				<button
 					on:click={submit}
-					class="text-header5 bg-primary px-4 text-center text-white py-2 font-semibold rounded-full font-primary hover:opacity-90">
+					class="text-header5 bg-primary px-4 text-center text-white py-2 font-semibold rounded-full font-primary hover:opacity-90"
+				>
 					Update
 				</button>
 			</div>

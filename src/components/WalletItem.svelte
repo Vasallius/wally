@@ -1,15 +1,15 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
-	import { onMount } from 'svelte';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import {
 		activeWalletStore,
 		authStore,
 		monthlySummaryStores,
 		recordsStore,
 		walletStores
-	} from '../server/stores/stores';
+	} from '$stores/stores';
+	import { onMount } from 'svelte';
+	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	export let label: string;
 	export let amount: string;

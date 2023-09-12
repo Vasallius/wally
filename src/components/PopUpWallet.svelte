@@ -1,10 +1,8 @@
 <script>
 	// @ts-nocheck
-	import { addWallet } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore, walletStores } from '../server/stores/stores';
+	import { authStore, walletStores } from '$stores/stores';
+	import { addWallet, updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import { walletErrorCheck } from '../server/routes/walletsAPI';
-	import { updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { error } from '@sveltejs/kit';
 	export let isOpen = false;
 	export let label = '';
 	export let amount = 0;
@@ -45,7 +43,7 @@
 
 {#if isOpen}
 	<div
-	class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-screen sm:w-[448px] z-20"
+		class="flex absolute top-0 min-h-full items-center bg-black/40 border border-x-1 border-black/40 border-r-transparent z-index-100 justify-center w-screen sm:w-[448px] z-20"
 	>
 		<form
 			on:submit={handleSubmit}

@@ -1,5 +1,4 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
 	import { getAllRecords } from '$api/records';
 	import { getActiveWallet } from '$api/wallets';
@@ -7,39 +6,52 @@
 	import DashboardSummary from '$components/DashboardSummary.svelte';
 	import RecordBar from '$components/RecordBar.svelte';
 	import Wallet from '$components/Wallet.svelte';
-	import { onMount } from 'svelte';
-	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
 	import {
 		activeWalletStore,
 		authStore,
 		monthlySummaryStores,
 		notificationsStore,
 		recordsStore
-	} from '../../../server/stores/stores';
+	} from '$stores/stores';
+	import { onMount } from 'svelte';
+	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
+
+	interface Wallet {
+		active: string;
+		balance: number;
+		dailyBudget: number;
+		initial: number;
+		name: string;
+		weeklyBudget: number;
+	}
 	let isModalOpen = false;
-	let wallets;
+	let wallets: Wallet[];
 	let activeWallet;
 
 	onMount(async () => {
-		wallets = await getWallets($authStore.user.uid);
-		activeWallet = getActiveWallet(wallets);
-		activeWalletStore.set(activeWallet);
+		if ($authStore) {
+			wallets = await getWallets($authStore.user.uid);
+			activeWallet = getActiveWallet(wallets);
+			activeWalletStore.set(activeWallet);
 
-		const records = await getAllRecords($authStore.user.uid);
-		const notifs = await notificationsList($authStore.user.uid);
-		notificationsStore.set(notifs);
-		recordsStore.set(records);
+			const records = await getAllRecords($authStore.user.uid);
+			const notifs = await notificationsList($authStore.user.uid);
+			notificationsStore.set(notifs);
+			recordsStore.set(records);
 
-		let initial, income, expenses, transferout, transferin;
-		if (activeWallet == null) {
-			monthlySummaryStores.set([0, 0, 0, 0, 0]);
-		} else {
-			initial = activeWallet.initial;
-			income = sumRecords($recordsStore, 'income', activeWallet.name);
-			expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
-			transferout = sumTransferFrom($recordsStore, activeWallet.name);
-			transferin = sumTransferTo($recordsStore, activeWallet.name);
-			monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+			let initial, income, expenses, transferout, transferin;
+			if (activeWallet == null || activeWallet == undefined) {
+				monthlySummaryStores.set([0, 0, 0, 0, 0]);
+			} else {
+				initial = activeWallet.initial;
+				if ($recordsStore) {
+					income = sumRecords($recordsStore, 'income', activeWallet.name);
+					expenses = sumRecords($recordsStore, 'expense', activeWallet.name);
+					transferout = sumTransferFrom($recordsStore, activeWallet.name);
+					transferin = sumTransferTo($recordsStore, activeWallet.name);
+					monthlySummaryStores.set([income, expenses, transferin, transferout, initial]);
+				}
+			}
 		}
 	});
 

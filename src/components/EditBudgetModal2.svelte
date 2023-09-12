@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
-  
-  import { authStore, budgetStores } from '../server/stores/stores';
-  import { budgetErrorCheck, updateBudgets } from '../server/routes/budgetsAPI';
+
+	import { authStore, budgetStores } from '$stores/stores';
+	import { budgetErrorCheck, updateBudgets } from '../server/routes/budgetsAPI';
 
 	export let isOpen = false;
 	export let label = '';
@@ -10,7 +10,12 @@
 	export let interval;
 
 	const handleSubmit = async (event) => {
-		let errorCheck = budgetErrorCheck({ title: label, budget: budget }, interval, $budgetStores, 'edit');
+		let errorCheck = budgetErrorCheck(
+			{ title: label, budget: budget },
+			interval,
+			$budgetStores,
+			'edit'
+		);
 		event.preventDefault();
 		if (!errorCheck[0]) {
 			alert(errorCheck[1]);
@@ -74,7 +79,6 @@
 		>
 			<h1>Edit Budget</h1>
 			<div class="flex w-auto flex-col gap-6">
-
 				<div class="relative h-10 w-48 min-w-[200px]">
 					<input
 						class="peer h-full w-full rounded-[7px] border border-agray-600 border-t-transparent bg-transparent px-3 py-2.5 font-primary text-sm

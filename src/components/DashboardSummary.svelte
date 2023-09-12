@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
 	import { getActiveWallet } from '$api/wallets';
+	import { activeWalletStore, authStore, monthlySummaryStores } from '$stores/stores';
 	import { onMount } from 'svelte';
 	import { getWallets } from '../api/dashboard';
-	import { activeWalletStore, authStore, monthlySummaryStores } from '../server/stores/stores.js';
 	import NotificationIcon from './NotificationIcon.svelte';
 
 	let activeWallet;

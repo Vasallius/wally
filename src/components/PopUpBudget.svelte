@@ -1,11 +1,10 @@
 <script>
 	// @ts-nocheck
 
-	import { addBudget } from '../server';
-	import { authStore, budgetStores } from '../server/stores/stores';
-	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { authStore, budgetStores } from '$stores/stores';
 	import { onMount } from 'svelte';
 	import { budgetErrorCheck, updateBudgets } from '../server/routes/budgetsAPI';
+	import { getCategories } from '../server/routes/dashboard_routes/dashboardCardsAPI';
 
 	export let isOpen = false;
 	export let label = '';
@@ -15,7 +14,12 @@
 	let categoryRecords = [];
 
 	const handleSubmit = async (event) => {
-		let errorCheck = budgetErrorCheck({ title: label, initial: budget }, intervals, $budgetStores, 'add');
+		let errorCheck = budgetErrorCheck(
+			{ title: label, initial: budget },
+			intervals,
+			$budgetStores,
+			'add'
+		);
 		event.preventDefault();
 		console.log(errorCheck);
 		if (!errorCheck[0]) {

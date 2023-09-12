@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getWallets } from '$api/dashboard';
+	import { authStore, walletStores } from '$stores/stores';
 	import { onMount } from 'svelte';
-	import { authStore, walletStores } from '../server/stores/stores';
 
 	export let labelName: string;
 	export let selectedWallet: string;

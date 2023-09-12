@@ -1,12 +1,12 @@
 <script lang="ts">
 	// @ts-nocheck
 	import { getActiveWallet } from '$api/wallets';
+	import { authStore, recordsStore, walletStores } from '$stores/stores';
 	import { TrashFill } from 'svelte-bootstrap-icons';
 	import {
 		updateRecords,
 		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
 	import EditWalletModal from './EditWalletModal.svelte';
 	let isModalOpen = false;
 	let label = '';

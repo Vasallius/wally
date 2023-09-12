@@ -2,9 +2,9 @@
 	// @ts-nocheck
 	import { getWallets } from '$api/dashboard';
 	import { getActiveWallet } from '$api/wallets';
+	import { activeWalletStore, authStore, recordsStore } from '$stores/stores';
 	import { onMount } from 'svelte';
 	import { getAllRecords } from '../server/routes/recordManipulationsAPI';
-	import { activeWalletStore, authStore, recordsStore } from '../server/stores/stores';
 	import RecordCard from './RecordCard.svelte';
 
 	export let recordType;

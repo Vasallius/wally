@@ -4,10 +4,10 @@
 	export let isOpen = false;
 	export let label = '';
 	export let category;
-	import { authStore, recordsStore, categoriesStore } from '../server/stores/stores';
+	import { authStore, categoriesStore, recordsStore } from '$stores/stores';
 	import {
-		updateRecords,
-		updateCategories
+		updateCategories,
+		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {

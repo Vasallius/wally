@@ -2,6 +2,14 @@
 	// @ts-nocheck
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
 	import { getActiveWallet } from '$api/wallets';
+	import {
+		activeWalletStore,
+		authStore,
+		budgetStores,
+		monthlySummaryStores,
+		recordsStore,
+		walletStores
+	} from '$stores/stores';
 	import { onMount } from 'svelte';
 	import { BackspaceFill, Check, X } from 'svelte-bootstrap-icons';
 	import { addRecord } from '../server';
@@ -11,14 +19,6 @@
 		updateRecords,
 		updateWallets
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
-	import {
-		activeWalletStore,
-		authStore,
-		budgetStores,
-		monthlySummaryStores,
-		recordsStore,
-		walletStores
-	} from '../server/stores/stores.js';
 	import DropdownCategory from './DropdownCategory.svelte';
 	import DropdownWallet from './DropdownWallet.svelte';
 	let transactionType = 'income';

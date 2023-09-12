@@ -4,8 +4,11 @@
 	export let isOpen = false;
 	export let label = '';
 	export let title;
-	import { authStore, recordsStore, walletStores } from '../server/stores/stores';
-	import { updateRecords, updateWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
+	import { authStore, recordsStore, walletStores } from '$stores/stores';
+	import {
+		updateRecords,
+		updateWallets
+	} from '../server/routes/dashboard_routes/dashboardCardsAPI.js';
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -20,19 +23,18 @@
 		// 	}, 0);
 		// }
 		const updatedRecords = $recordsStore.map((records) => {
-			if (records.wallet == title ) {
+			if (records.wallet == title) {
 				return {
 					...records,
 					wallet: label
-				}
+				};
 			}
 			return records;
-		})
+		});
 		recordsStore.set(updatedRecords);
 		updateRecords($authStore.user.uid, updatedRecords);
 		const updatedWallets = $walletStores.map((wallet) => {
 			if (wallet.name === title) {
-
 				return {
 					...wallet,
 					name: label

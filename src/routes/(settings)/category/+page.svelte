@@ -1,11 +1,11 @@
 <script>
 	// @ts-nocheck
 
-	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import PopUpCategory from '../../../components/PopUpCategory.svelte';
-	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';
-	import { authStore } from '../../../server/stores/stores';
 	import { goto } from '$app/navigation';
+	import { authStore } from '$stores/stores';
+	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';
+	import PopUpCategory from '../../../components/PopUpCategory.svelte';
+	import SettingsNav from '../../../components/SettingsNav.svelte';
 	export const name = 'wallet';
 	let isModalOpen = false;
 	let label = '';
@@ -18,6 +18,7 @@
 		goto('/login');
 	};
 </script>
+
 {#if $authStore}
 	<SettingsNav redirect="menu">Category</SettingsNav>
 
@@ -34,13 +35,12 @@
 		</button>
 	</div>
 
-	<div class="absolute z-50 h-full m-auto ">
+	<div class="absolute z-50 h-full m-auto">
 		<PopUpCategory bind:isOpen={isModalOpen} {label} />
 	</div>
 {:else}
 	<div on:load={redirect()} />
 {/if}
-
 
 <style>
 	::-webkit-scrollbar {

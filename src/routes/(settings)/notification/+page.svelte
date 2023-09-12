@@ -1,10 +1,10 @@
 <script>
 	// @ts-nocheck
 
+	import { goto } from '$app/navigation';
+	import { authStore, notificationsStore } from '$stores/stores';
 	import NotificationRecord from '../../../components/NotificationRecord.svelte';
 	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import { authStore, notificationsStore } from '../../../server/stores/stores';
-	import { goto } from '$app/navigation';
 	export const name = 'wallet';
 	const redirect = () => {
 		goto('/login');

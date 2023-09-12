@@ -2,11 +2,11 @@
 	// @ts-nocheck
 	export let category: string;
 	export let options = '';
-	import { BagHeartFill, ThreeDotsVertical, TrashFill } from 'svelte-bootstrap-icons';
-	import { authStore, categoriesStore, recordsStore } from '../server/stores/stores';
+	import { authStore, categoriesStore, recordsStore } from '$stores/stores';
+	import { BagHeartFill, TrashFill } from 'svelte-bootstrap-icons';
 	import {
-		updateRecords,
 		updateCategories,
+		updateRecords
 	} from '../server/routes/dashboard_routes/dashboardCardsAPI';
 	import EditCategoryModal from './EditCategoryModal.svelte';
 
@@ -25,24 +25,23 @@
 			updateCategories($authStore.user.uid, categories);
 			updateRecords($authStore.user.uid, records);
 		}
-		
 	}
 
 	const openPopUp = () => {
 		isModalOpen = true;
-	}
+	};
 
 	function handleEditClick() {
 		openPopUp();
 	}
-$: {
-	if(options == "Delete"){
-		handleDeleteClick();
+	$: {
+		if (options == 'Delete') {
+			handleDeleteClick();
+		}
 	}
-}
 </script>
 
-<!-- changed from a to div muna --> 
+<!-- changed from a to div muna -->
 <div class="flex flex-row px-4 py-4 justify-between border-b hover:bg-agray-50 items-center">
 	<button on:click={handleEditClick} class="w-full">
 		<div class="flex flex-row gap-4">
@@ -55,7 +54,7 @@ $: {
 		</div>
 	</button>
 	<button on:click={handleDeleteClick}>
-		<TrashFill class="fill-agray-400 hover:fill-secondary"/>
+		<TrashFill class="fill-agray-400 hover:fill-secondary" />
 	</button>
 </div>
 

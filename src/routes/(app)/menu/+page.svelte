@@ -2,8 +2,8 @@
 	// @ts-nocheck
 
 	import { goto } from '$app/navigation';
+	import { authStore } from '$stores/stores';
 	import Menu from '../../../components/Menu.svelte';
-	import { authStore } from '../../../server/stores/stores';
 
 	const redirect = () => {
 		goto('/login');
