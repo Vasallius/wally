@@ -1,45 +1,40 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { db, auth} from './routes/firebase'
+import { auth, db } from '$lib/firebase/firebase';
 import { addBudget, deleteBudget } from './routes/budgetsAPI';
-import { signUp, logIn, logOut } from './routes/usersAPI';
-import { 
-  getAllCategories, 
-  addCategory, 
-  editCategory, 
-  deleteCategory,
-  getWallets,
-  getDashboardRecords,
-  getIncomeRecords,
-  getExpenseRecords,
-  getTransferRecords,
-} from './routes/dashboardsAPI';
 import {
-  addRecord,
-  getRecord,
-  deleteRecord,
-  editRecord,
-} from './routes/recordManipulationsAPI';
+	addCategory,
+	deleteCategory,
+	editCategory,
+	getAllCategories,
+	getDashboardRecords,
+	getExpenseRecords,
+	getIncomeRecords,
+	getTransferRecords,
+	getWallets
+} from './routes/dashboardsAPI';
+import { addRecord, deleteRecord, editRecord, getRecord } from './routes/recordManipulationsAPI';
+import { logIn, logOut, signUp } from './routes/usersAPI';
 
 export {
-  addBudget,
-  deleteBudget,
-  signUp,
-  logIn,
-  logOut,
-  getAllCategories, 
-  addCategory, 
-  editCategory, 
-  deleteCategory,
-  getWallets,
-  getDashboardRecords,
-  getIncomeRecords,
-  getExpenseRecords,
-  getTransferRecords,
-  addRecord,
-  getRecord,
-  deleteRecord,
-  editRecord,
-  db,
-  auth
-}
+	addBudget,
+	addCategory,
+	addRecord,
+	auth,
+	db,
+	deleteBudget,
+	deleteCategory,
+	deleteRecord,
+	editCategory,
+	editRecord,
+	getAllCategories,
+	getDashboardRecords,
+	getExpenseRecords,
+	getIncomeRecords,
+	getRecord,
+	getTransferRecords,
+	getWallets,
+	logIn,
+	logOut,
+	signUp
+};

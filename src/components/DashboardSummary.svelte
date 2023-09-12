@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { onMount } from 'svelte';
-	import { getWallets } from '../server/routes/dashboard_routes/dashboardCardsAPI';
+	import { getWallets } from '../api/dashboard';
 	import { activeWalletStore, authStore, monthlySummaryStores } from '../server/stores/stores.js';
 	import NotificationIcon from './NotificationIcon.svelte';
 
