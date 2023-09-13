@@ -6,7 +6,7 @@
 	import Addrecord from '$components/Addrecord.svelte';
 	import DashboardSummary from '$components/DashboardSummary.svelte';
 	import RecordBar from '$components/RecordBar.svelte';
-	import Wallet from '$components/Wallet.svelte';
+	import Wallets from '$components/Wallets.svelte';
 	import {
 		activeWalletStore,
 		authStore,
@@ -70,7 +70,7 @@
 {#if $authStore && $monthlySummaryStores && $notificationsStore}
 	<div class:scroll-lock={isModalOpen}>
 		<DashboardSummary />
-		<Wallet />
+		<Wallets />
 		<RecordBar />
 	</div>
 

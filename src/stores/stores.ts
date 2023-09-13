@@ -1,6 +1,4 @@
-// @ts-nocheck
-// stores.js
-
+import type { Timestamp } from 'firebase/firestore';
 interface Wallet {
 	active: string;
 	balance: number;
@@ -41,7 +39,7 @@ import { writable } from 'svelte/store';
 export const authStore = writable<UserCredential | null>(null);
 export const recordsStore = writable<Record[] | null>(null);
 export const categoriesStore = writable<string[] | null>(null);
-export const walletStores = writable<Walletp[] | null>(null);
+export const walletStores = writable<Wallet[] | null>(null);
 export const activeWalletStore = writable<Wallet | null | undefined>(null);
 export const budgetStores = writable<Budget | null>(null);
 export const monthlySummaryStores = writable<number[] | null>(null);
