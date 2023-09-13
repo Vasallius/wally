@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { getBudgets } from '$api/budgets';
+	import {
+		filterByDay,
+		filterByMonth,
+		filterByWeek,
+		getBudgets,
+		sumAmountByCategory
+	} from '$api/budgets';
 	import { getCategories } from '$api/categories';
 	import { getAllRecords } from '$api/records';
 	import { goto } from '$app/navigation';
@@ -26,68 +32,6 @@
 	let budget = 0;
 	let intervals = '';
 	let expenses: Record[];
-
-	function filterByDay(expenses: Record[]) {
-		const today = new Date();
-		today.setHours(0, 0, 0, 0); // Set to the start of the day
-
-		return expenses.filter((item) => {
-			const itemDate = new Date(item.date.seconds * 1000);
-			return itemDate >= today;
-		});
-	}
-
-	function filterByWeek(expenses: Record[]) {
-		const startOfWeek = new Date();
-		startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Set to the start of the week
-		startOfWeek.setHours(0, 0, 0, 0); // Set to the start of the day
-
-		return expenses.filter((item) => {
-			const itemDate = new Date(item.date.seconds * 1000);
-			return itemDate >= startOfWeek;
-		});
-	}
-
-	function filterByMonth(expenses: Record[]) {
-		const startOfMonth = new Date();
-		startOfMonth.setDate(1); // Set to the start of the month
-		startOfMonth.setHours(0, 0, 0, 0); // Set to the start of the day
-
-		return expenses.filter((item) => {
-			const itemDate = new Date(item.date.seconds * 1000);
-			return itemDate >= startOfMonth;
-		});
-	}
-
-	interface budgetRecord {
-		budget: number;
-		spent: number;
-		title: string;
-	}
-
-	function sumAmountByCategory(expenses: Record[], categories: string[], array: budgetRecord[]) {
-		return categories.map((category) => {
-			const filteredExpenses = expenses.filter((item) => item.category === category);
-			const totalSpent = filteredExpenses.reduce((sum, item) => sum + item.amount, 0);
-
-			const result = array.find((el) => el.title === category);
-
-			if (result) {
-				const budget = result.budget || 0;
-				return {
-					title: category,
-					spent: totalSpent,
-					budget: budget
-				};
-			} else {
-				return {
-					title: category,
-					spent: totalSpent,
-					budget: 0
-				};
-			}
-		});
-	}
 
 	const openPopUp = () => {
 		isModalOpen = true;
