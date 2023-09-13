@@ -27,7 +27,7 @@
 
 	let isModalOpen = false;
 	let wallets: Wallet[];
-	let activeWallet;
+	let activeWallet: Wallet | undefined;
 
 	onMount(async () => {
 		if ($authStore) {
@@ -40,7 +40,11 @@
 			notificationsStore.set(notifs);
 			recordsStore.set(records);
 
-			let initial, income, expenses, transferout, transferin;
+			let initial: number;
+			let income: number;
+			let expenses: number;
+			let transferout: number;
+			let transferin: number;
 			if (activeWallet == null || activeWallet == undefined) {
 				monthlySummaryStores.set([0, 0, 0, 0, 0]);
 			} else {
