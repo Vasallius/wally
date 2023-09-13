@@ -24,6 +24,7 @@
 		name: string;
 		weeklyBudget: number;
 	}
+
 	let isModalOpen = false;
 	let wallets: Wallet[];
 	let activeWallet;
