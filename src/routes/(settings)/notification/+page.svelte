@@ -1,11 +1,11 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { goto } from '$app/navigation';
+	import NotificationRecord from '$components/NotificationRecord.svelte';
+	import SettingsNav from '$components/SettingsNav.svelte';
 	import { authStore, notificationsStore } from '$stores/stores';
-	import NotificationRecord from '../../../components/NotificationRecord.svelte';
-	import SettingsNav from '../../../components/SettingsNav.svelte';
+
 	export const name = 'wallet';
+
 	const redirect = () => {
 		goto('/login');
 	};
@@ -13,11 +13,11 @@
 
 {#if $authStore}
 	<SettingsNav redirect="dashboard">Notification</SettingsNav>
-	{#if $notificationsStore.length > 0}
+	{#if $notificationsStore}
 		{#each $notificationsStore as item}
 			<NotificationRecord title={item.title} content={item.content} />
 		{/each}
 	{/if}
 {:else}
-	<div on:load={redirect()} />
+	<div on:load={redirect} />
 {/if}
