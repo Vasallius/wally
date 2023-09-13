@@ -1,5 +1,6 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
+import { logIn, logOut, signUp } from '$api/auth';
 import { auth, db } from '$lib/firebase/firebase';
 import { addBudget, deleteBudget } from './routes/budgetsAPI';
 import {
@@ -14,7 +15,6 @@ import {
 	getWallets
 } from './routes/dashboardsAPI';
 import { addRecord, deleteRecord, editRecord, getRecord } from './routes/recordManipulationsAPI';
-import { logIn, logOut, signUp } from './routes/usersAPI';
 
 export {
 	addBudget,

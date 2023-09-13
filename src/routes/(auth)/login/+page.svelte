@@ -1,8 +1,7 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
+	import { logIn } from '$api/auth';
 	import Loader from '$components/Loader.svelte';
 	import Textfield from '$components/Textfield.svelte';
-	import { logIn } from '../../../server';
 
 	let message = '';
 	let isLoading = false;

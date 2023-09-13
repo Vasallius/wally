@@ -1,5 +1,5 @@
-<script>
-	import { signUp } from '../../../server';
+<script lang="ts">
+	import { signUp } from '$api/auth';
 	// @ts-nocheck
 	import Loader from '$components/Loader.svelte';
 	import Textfield from '$components/Textfield.svelte';
@@ -13,7 +13,6 @@
 	const submit = async () => {
 		isLoading = true;
 		try {
-			// @ts-ignore
 			const errorMessage = await signUp(name, email, password);
 			if (errorMessage === '') {
 				console.log('User successfully created.');

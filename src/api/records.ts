@@ -1,5 +1,5 @@
+import { db } from '$lib/firebase/firebase';
 import { Timestamp, doc, getDoc } from 'firebase/firestore';
-import { db } from '../server';
 
 interface Record {
 	amount: number;
