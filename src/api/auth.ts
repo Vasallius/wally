@@ -89,7 +89,7 @@ export const signUp = async (name: string, email: string, password: string) => {
  * @returns A message that tells if there is an
  *  error upon login.
  */
-export const logIn = async (email: string, password: string) => {
+export const logIn = async (email: string, password: string): Promise<string> => {
 	return signInWithEmailAndPassword(auth, email, password)
 		.then((cred) => {
 			authStore.set(cred);

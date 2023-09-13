@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Menu from '$components/Menu.svelte';
 	import { authStore } from '$stores/stores';
-	import Menu from '../../../components/Menu.svelte';
 
 	const redirect: EventListener = () => {
 		goto('/login');
