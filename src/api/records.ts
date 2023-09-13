@@ -15,7 +15,7 @@ export const getAllRecords = async (userID: string) => {
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {
-		const data = docSnap.data().records;
+		const data: Record[] = docSnap.data().records;
 		return data;
 	} else {
 		console.log('No such document!');

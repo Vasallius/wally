@@ -1,22 +1,33 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
+	import { getBudgets } from '$api/budgets';
+	import { getCategories } from '$api/categories';
+	import { getAllRecords } from '$api/records';
 	import { goto } from '$app/navigation';
+	import BudgetRecord from '$components/BudgetRecord.svelte';
+	import PopUpBudget from '$components/PopUpBudget.svelte';
+	import SettingsNav from '$components/SettingsNav.svelte';
 	import { authStore, budgetStores, categoriesStore, recordsStore } from '$stores/stores';
+	import type { Timestamp } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import BudgetRecord from '../../../components/BudgetRecord.svelte';
-	import PopUpBudget from '../../../components/PopUpBudget.svelte';
-	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import { getBudgets } from '../../../server/routes/budgetsAPI';
-	import { getCategories } from '../../../server/routes/dashboard_routes/dashboardCardsAPI';
-	import { getAllRecords } from '../../../server/routes/recordManipulationsAPI';
+
 	export const name = 'budget';
+
+	interface Record {
+		amount: number;
+		category: string;
+		date: Timestamp;
+		name: string;
+		recordType: string;
+		wallet: string;
+		wallet2: string;
+	}
 	let isModalOpen = false;
 	let label = '';
 	let budget = 0;
 	let intervals = '';
-	let expenses;
+	let expenses: Record[];
 
-	function filterByDay(expenses) {
+	function filterByDay(expenses: Record[]) {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0); // Set to the start of the day
 
@@ -26,7 +37,7 @@
 		});
 	}
 
-	function filterByWeek(expenses) {
+	function filterByWeek(expenses: Record[]) {
 		const startOfWeek = new Date();
 		startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Set to the start of the week
 		startOfWeek.setHours(0, 0, 0, 0); // Set to the start of the day
@@ -37,7 +48,7 @@
 		});
 	}
 
-	function filterByMonth(expenses) {
+	function filterByMonth(expenses: Record[]) {
 		const startOfMonth = new Date();
 		startOfMonth.setDate(1); // Set to the start of the month
 		startOfMonth.setHours(0, 0, 0, 0); // Set to the start of the day
@@ -48,7 +59,13 @@
 		});
 	}
 
-	function sumAmountByCategory(expenses, categories, array) {
+	interface budgetRecord {
+		budget: number;
+		spent: number;
+		title: string;
+	}
+
+	function sumAmountByCategory(expenses: Record[], categories: string[], array: budgetRecord[]) {
 		return categories.map((category) => {
 			const filteredExpenses = expenses.filter((item) => item.category === category);
 			const totalSpent = filteredExpenses.reduce((sum, item) => sum + item.amount, 0);
@@ -71,38 +88,45 @@
 			}
 		});
 	}
+
 	const openPopUp = () => {
 		isModalOpen = true;
 	};
+
 	let budgets;
 	onMount(async () => {
-		let records = await getAllRecords($authStore.user.uid);
-		recordsStore.set(records);
-		expenses = records.filter((item) => item.recordType === 'expense');
-		let dayExpenses = filterByDay(expenses);
-		let weeklyExpenses = filterByWeek(expenses);
-		let monthlyExpenses = filterByMonth(expenses);
-		const categories = await getCategories($authStore.user.uid);
-		// Initialize the store value
-		categoriesStore.set(categories);
-		budgets = await getBudgets($authStore.user.uid);
-		const dayAmountByCategory = sumAmountByCategory(dayExpenses, categories, budgets.DayRecords);
-		const weekAmountByCategory = sumAmountByCategory(
-			weeklyExpenses,
-			categories,
-			budgets.WeekRecords
-		);
-		const monthAmountByCategory = sumAmountByCategory(
-			monthlyExpenses,
-			categories,
-			budgets.MonthRecords
-		);
-		let newBudgets = {
-			DayRecords: dayAmountByCategory,
-			WeekRecords: weekAmountByCategory,
-			MonthRecords: monthAmountByCategory
-		};
-		budgetStores.set(newBudgets);
+		if ($authStore) {
+			let records = await getAllRecords($authStore.user.uid);
+			recordsStore.set(records);
+			expenses = records.filter((item) => item.recordType === 'expense');
+
+			let dayExpenses = filterByDay(expenses);
+			let weeklyExpenses = filterByWeek(expenses);
+			let monthlyExpenses = filterByMonth(expenses);
+
+			const categories = await getCategories($authStore.user.uid);
+			categoriesStore.set(categories);
+			budgets = await getBudgets($authStore.user.uid);
+
+			const dayAmountByCategory = sumAmountByCategory(dayExpenses, categories, budgets.DayRecords);
+			const weekAmountByCategory = sumAmountByCategory(
+				weeklyExpenses,
+				categories,
+				budgets.WeekRecords
+			);
+			const monthAmountByCategory = sumAmountByCategory(
+				monthlyExpenses,
+				categories,
+				budgets.MonthRecords
+			);
+			let newBudgets = {
+				DayRecords: dayAmountByCategory,
+				WeekRecords: weekAmountByCategory,
+				MonthRecords: monthAmountByCategory
+			};
+
+			budgetStores.set(newBudgets);
+		}
 	});
 
 	const redirect = () => {
@@ -120,7 +144,6 @@
 			Monthly
 		</div>
 		<div>
-			<!-- INSERT MONTHLY BUDGET RECORDS HERE -->
 			{#if $budgetStores}
 				{#each $budgetStores.MonthRecords as item}
 					{#if item.budget > 0}
@@ -142,7 +165,6 @@
 			Weekly
 		</div>
 		<div>
-			<!-- INSERT WEEKLY BUDGET RECORDS HERE -->
 			{#if $budgetStores}
 				{#each $budgetStores.WeekRecords as item}
 					{#if item.budget > 0}
@@ -190,12 +212,11 @@
 		</button>
 	</div>
 
-	<!-- need - center (ayusin position!), bg, design   -->
 	<div class="absolute z-50 h-full m-auto">
 		<PopUpBudget bind:isOpen={isModalOpen} {label} {budget} {intervals} />
 	</div>
 {:else}
-	<div on:load={redirect()} />
+	<div on:load={redirect} />
 {/if}
 
 <style>
