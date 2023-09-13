@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { signUp } from '$api/auth';
-	// @ts-nocheck
 	import Loader from '$components/Loader.svelte';
 	import Textfield from '$components/Textfield.svelte';
 
