@@ -1,10 +1,8 @@
-<script>
-	// @ts-nocheck
-
-	import Tabs from './Tabs.svelte';
-	import TabPanel from './TabPanel.svelte';
-	import Tab from './Tab.svelte';
-	import Records from './Records.svelte';
+<script lang="ts">
+	import Records from '$components/Records.svelte';
+	import Tab from '$components/Tab.svelte';
+	import TabPanel from '$components/TabPanel.svelte';
+	import Tabs from '$components/Tabs.svelte';
 </script>
 
 <div class="flex mx-3 mt-5 mb-4">
@@ -21,27 +19,23 @@
 
 	<TabPanel>
 		<div class="max-h-80 flex flex-col overflow-y-auto">
-			<!-- Show recordType [All] here -->
 			<Records recordType="all" />
 		</div>
 	</TabPanel>
 
 	<TabPanel>
 		<div class="max-h-80 flex flex-col overflow-y-auto">
-			<!-- Show recordType [Income] here -->
 			<Records recordType="income" />
 		</div>
 	</TabPanel>
 
 	<TabPanel>
 		<div class="max-h-80 flex flex-col overflow-y-auto">
-			<!-- Show recordType [Expense] here -->
 			<Records recordType="expense" />
 		</div>
 	</TabPanel>
 	<TabPanel>
 		<div class="max-h-80 flex flex-col overflow-y-auto">
-			<!-- Show recordType [Transfer] here -->
 			<Records recordType="transfer" />
 		</div>
 	</TabPanel>
