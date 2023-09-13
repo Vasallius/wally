@@ -5,13 +5,15 @@
 
    # Wally
 
-
 </div>
 
+Wally is a lightweight and minimalist mobile wallet that allows users to 
+- track and cateogize expenses and income
+- set and manage budgets
+- get notifications when budgets are breached
 
-This is a course requirements for CS191/192 Software Engineering Courses of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman under the guidance of Ma. Rowena C. Solamo for AY 2022-2023.
 
-- Calderon, Jamielle Kyle Calderon 
-- Frongoso, Justin Clyde 
-- Rey, Pe Arian
-- Tan, Jedidiah Carl  To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+To checkout the app visit this link: https://wally-dun.vercel.app/
+
+
