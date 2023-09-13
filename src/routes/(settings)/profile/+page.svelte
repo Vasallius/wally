@@ -2,9 +2,9 @@
 	// @ts-nocheck
 
 	import { goto } from '$app/navigation';
+	import SettingsNav from '$components/SettingsNav.svelte';
+	import Textfield from '$components/Textfield.svelte';
 	import { authStore } from '$stores/stores';
-	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import Textfield from '../../../components/Textfield.svelte';
 	import { updateProfile } from '../../../server/routes/settingsAPI';
 
 	let name = '';

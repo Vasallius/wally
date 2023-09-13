@@ -1,13 +1,12 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { goto } from '$app/navigation';
+	import PopUpWallet from '$components/PopUpWallet.svelte';
+	import SettingsNav from '$components/SettingsNav.svelte';
+	import WalletRecordList from '$components/WalletRecordList.svelte';
 	import { authStore } from '$stores/stores';
-	import PopUpWallet from '../../../components/PopUpWallet.svelte';
-	import SettingsNav from '../../../components/SettingsNav.svelte';
-	import WalletRecordList from '../../../components/WalletRecordList.svelte';
 
 	export const name = 'wallet';
+
 	let isModalOpen = false;
 	let label = '';
 	let amount = 0;
@@ -41,7 +40,7 @@
 		<PopUpWallet bind:isOpen={isModalOpen} {label} {amount} />
 	</div>
 {:else}
-	<div on:load={redirect()} />
+	<div on:load={redirect} />
 {/if}
 
 <style>
