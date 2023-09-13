@@ -1,6 +1,17 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../server';
 
+interface budgetRecord {
+	budget: number;
+	spent: number;
+	title: string;
+}
+interface Budget {
+	DayRecords: budgetRecord[];
+	WeekRecords: budgetRecord[];
+	MonthRecords: budgetRecord[];
+	[key: string]: budgetRecord[]; // Index signature
+}
 /**
  * Gets the list of all budgets from a specific user.
  * @param {string} userID
@@ -13,10 +24,13 @@ export const getBudgets = async (userID: string) => {
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {
-		const data = docSnap.data().budgets;
-		// console.log(data)
+		const data: Budget = docSnap.data().budgets;
 		return data;
 	} else {
-		return 'NO BUDGETS';
+		return {
+			DayRecords: [],
+			WeekRecords: [],
+			MonthRecords: []
+		};
 	}
 };

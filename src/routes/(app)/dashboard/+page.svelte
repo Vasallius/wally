@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getWallets, sumRecords, sumTransferFrom, sumTransferTo } from '$api/dashboard';
+	import { notificationsList } from '$api/notifications';
 	import { getAllRecords } from '$api/records';
 	import { getActiveWallet } from '$api/wallets';
 	import Addrecord from '$components/Addrecord.svelte';
@@ -14,7 +15,6 @@
 		recordsStore
 	} from '$stores/stores';
 	import { onMount } from 'svelte';
-	import { notificationsList } from '../../../server/routes/notificationsAndAlertsAPI';
 
 	interface Wallet {
 		active: string;
