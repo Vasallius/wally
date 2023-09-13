@@ -1,12 +1,11 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { goto } from '$app/navigation';
+	import CategoryRecordList from '$components/CategoryRecordList.svelte';
+	import PopUpCategory from '$components/PopUpCategory.svelte';
+	import SettingsNav from '$components/SettingsNav.svelte';
 	import { authStore } from '$stores/stores';
-	import CategoryRecordList from '../../../components/CategoryRecordList.svelte';
-	import PopUpCategory from '../../../components/PopUpCategory.svelte';
-	import SettingsNav from '../../../components/SettingsNav.svelte';
 	export const name = 'wallet';
+
 	let isModalOpen = false;
 	let label = '';
 
@@ -39,7 +38,7 @@
 		<PopUpCategory bind:isOpen={isModalOpen} {label} />
 	</div>
 {:else}
-	<div on:load={redirect()} />
+	<div on:load={redirect} />
 {/if}
 
 <style>
