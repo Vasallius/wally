@@ -4,6 +4,7 @@
 	import PopUpCategory from '$components/PopUpCategory.svelte';
 	import SettingsNav from '$components/SettingsNav.svelte';
 	import { authStore } from '$stores/stores';
+
 	export const name = 'wallet';
 
 	let isModalOpen = false;

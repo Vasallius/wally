@@ -1,6 +1,14 @@
 import { db } from '$lib/firebase/firebase';
 import { Timestamp, doc, getDoc } from 'firebase/firestore';
 
+interface Wallet {
+	active: string;
+	balance: number;
+	dailyBudget: number;
+	initial: number;
+	name: string;
+	weeklyBudget: number;
+}
 /**
  * A function that returns the list of wallets for the
  * specified user.
@@ -8,15 +16,15 @@ import { Timestamp, doc, getDoc } from 'firebase/firestore';
  * @returns A list that contains the wallets for the
  * specified user.
  */
-export const getWallets = async (userID: string) => {
+export const getWallets = async (userID: string): Promise<Wallet[]> => {
 	const docRef = doc(db, 'wallets', userID);
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {
-		const data = docSnap.data().wallets;
+		const data: Wallet[] = docSnap.data().wallets;
 		return data;
 	} else {
-		return 'NO WALLETS';
+		return [];
 	}
 };
 

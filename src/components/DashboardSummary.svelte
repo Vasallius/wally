@@ -1,19 +1,27 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
+	import { getWallets } from '$api/dashboard';
 	import { getActiveWallet } from '$api/wallets';
+	import NotificationIcon from '$components/NotificationIcon.svelte';
 	import { activeWalletStore, authStore, monthlySummaryStores } from '$stores/stores';
 	import { onMount } from 'svelte';
-	import { getWallets } from '../api/dashboard';
-	import NotificationIcon from './NotificationIcon.svelte';
 
-	let activeWallet;
-	let wallets;
+	interface Wallet {
+		active: string;
+		balance: number;
+		dailyBudget: number;
+		initial: number;
+		name: string;
+		weeklyBudget: number;
+	}
+	let activeWallet: Wallet | undefined;
+	let wallets: Wallet[];
 
 	onMount(async () => {
-		wallets = await getWallets($authStore.user.uid);
-		activeWallet = getActiveWallet(wallets);
-		activeWalletStore.set(activeWallet);
-		console.log($monthlySummaryStores);
+		if ($authStore) {
+			wallets = await getWallets($authStore.user.uid);
+			activeWallet = getActiveWallet(wallets);
+			activeWalletStore.set(activeWallet);
+		}
 	});
 
 	const date = new Date();
