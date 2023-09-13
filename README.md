@@ -12,8 +12,10 @@ Wally is a lightweight and minimalist mobile wallet that allows users to
 - set and manage budgets
 - get notifications when budgets are breached
 
-
-
 To checkout the app visit this link: https://wally-dun.vercel.app/
+
+## Built With
+
+[![My Skills](https://skillicons.dev/icons?i=svelte,vite,tailwind,typescript,firebase,vercel)](https://skillicons.dev)
 
 
